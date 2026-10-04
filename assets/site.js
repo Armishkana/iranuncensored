@@ -140,6 +140,8 @@
       if (!b) { return; }
       var r = sf.querySelector('input[name=kind][value="' + b.getAttribute('data-say') + '"]');
       if (r) { r.checked = true; }
+      // a "Discuss this" button under one measure carries what the note is about
+      if (b.hasAttribute('data-about')) { about = b.getAttribute('data-about'); }
       paintSay();
       setTimeout(function () { msg.focus({ preventScroll: true }); }, 50);
     });

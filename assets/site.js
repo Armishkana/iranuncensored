@@ -55,7 +55,7 @@
         var d = li.dataset;
         var ok = (!v || d.name.indexOf(v) > -1 || d.state.toLowerCase() === v) && (!f.ch.value || d.ch === f.ch.value) && (!f.party.value || d.party === f.party.value) &&
           (!f.state.value || d.state === f.state.value) && (!f.grade.value || d.grade === f.grade.value) &&
-          (!f.mark.value || (f.mark.value === 'mek' && +d.mek > 0) || (f.mark.value === 'mek4' && +d.mek >= 4) || (f.mark.value === 'pah' && d.pah === '1'));
+          (!f.mark.value || (f.mark.value === 'mek' && +d.mek > 0) || (f.mark.value === 'mek3' && +d.mek >= 3) || (f.mark.value === 'pah' && d.pah === '1'));
         li.hidden = !ok; n += ok;
         rows.appendChild(li);
       });

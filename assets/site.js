@@ -1,0 +1,198 @@
+/* Iran Scorecard. Every page works without this file: the lists are in the HTML and the language switch is a
+   plain link. What this adds: the search, the scorecard filters, joining (a name and an email kept in this
+   browser and sent to the form in data/form.json), the members' vote on a grade, and the note box. */
+(function () {
+  'use strict';
+  var doc = document, html = doc.documentElement, root = html.getAttribute('data-root') || './', lang = html.getAttribute('data-lang') || 'en';
+  var fa = lang === 'fa';
+  function T(en, f) { return fa ? f : en; }
+  function $(id) { return doc.getElementById(id); }
+  function digits(s) { return fa ? String(s).replace(/[0-9]/g, function (d) { return '۰۱۲۳۴۵۶۷۸۹'[d]; }) : String(s); }
+  function store(k, v) { try { if (v === undefined) { return JSON.parse(localStorage.getItem(k) || 'null'); } if (v === null) { localStorage.removeItem(k); } else { localStorage.setItem(k, JSON.stringify(v)); } } catch (x) { } return null; }
+
+  // remember the language a reader picked, so the bare address sends them back to it
+  doc.addEventListener('click', function (ev) {
+    var a = ev.target.closest ? ev.target.closest('[data-setlang]') : null;
+    if (a) { try { localStorage.setItem('iu-lang', a.getAttribute('data-setlang')); } catch (x) { } }
+  });
+  try { if (!localStorage.getItem('iu-lang')) { localStorage.setItem('iu-lang', lang); } } catch (x) { }
+
+  // ---- search on the front page -------------------------------------------------------------------
+  var q = $('q'), hits = $('hits');
+  if (q && hits) {
+    var index = null;
+    var load = function () { if (index) { return; } index = []; fetch(root + 'assets/index.json').then(function (r) { return r.json(); }).then(function (d) { index = d; show(); }); };
+    var show = function () {
+      var v = q.value.trim().toLowerCase();
+      hits.textContent = '';
+      if (v.length < 2 || !index) { return; }
+      var found = index.filter(function (m) { return m.n.toLowerCase().indexOf(v) > -1 || m.sn.toLowerCase().indexOf(v) === 0 || m.st.toLowerCase() === v; }).slice(0, 8);
+      found.forEach(function (m) {
+        var li = doc.createElement('li'), a = doc.createElement('a'), b = doc.createElement('b'), s = doc.createElement('small');
+        a.href = root + lang + '/members/' + m.s + '/';
+        b.textContent = m.n; b.dir = 'ltr';
+        s.textContent = m.p + '-' + m.st + (m.g ? ' · ' + m.g : ''); s.dir = 'ltr';
+        a.appendChild(b); a.appendChild(s); li.appendChild(a); hits.appendChild(li);
+      });
+    };
+    q.addEventListener('focus', load);
+    q.addEventListener('input', function () { load(); show(); });
+  }
+
+  // ---- the scorecard filters ----------------------------------------------------------------------
+  var rows = $('rows');
+  if (rows && $('tools')) {
+    var all = Array.prototype.slice.call(rows.children), count = $('count'), empty = $('empty');
+    var f = { q: $('fq'), ch: $('fch'), party: $('fparty'), state: $('fstate'), grade: $('fgrade'), mark: $('fmark'), sort: $('fsort') };
+    var pre = /[?&]q=([^&]*)/.exec(location.search);
+    if (pre) { f.q.value = decodeURIComponent(pre[1].replace(/\+/g, ' ')); }
+    var apply = function () {
+      var v = f.q.value.trim().toLowerCase(), n = 0;
+      var order = all.slice();
+      if (f.sort.value === 'worst') { order.sort(function (a, b) { var x = +a.dataset.score, y = +b.dataset.score; return (x < 0) - (y < 0) || x - y; }); }
+      else if (f.sort.value === 'name') { order.sort(function (a, b) { return a.dataset.name.split(' ').pop().localeCompare(b.dataset.name.split(' ').pop()); }); }
+      order.forEach(function (li) {
+        var d = li.dataset;
+        var ok = (!v || d.name.indexOf(v) > -1 || d.state.toLowerCase() === v) && (!f.ch.value || d.ch === f.ch.value) && (!f.party.value || d.party === f.party.value) &&
+          (!f.state.value || d.state === f.state.value) && (!f.grade.value || d.grade === f.grade.value) &&
+          (!f.mark.value || (f.mark.value === 'mek' && +d.mek > 0) || (f.mark.value === 'mek4' && +d.mek >= 4) || (f.mark.value === 'pah' && d.pah === '1'));
+        li.hidden = !ok; n += ok;
+        rows.appendChild(li);
+      });
+      count.textContent = digits(n) + ' ' + count.dataset.of + ' ' + digits(all.length) + ' ' + count.dataset.word;
+      empty.hidden = n > 0;
+    };
+    Object.keys(f).forEach(function (k) { f[k].addEventListener(k === 'q' ? 'input' : 'change', apply); });
+    apply();
+  }
+
+  // ---- membership: a name and an email, kept here and sent once to the form ------------------------
+  var cfg = (window.IU && window.IU.form) || null;
+  function me() { var m = store('iu-me'); return m && m.email ? m : null; }
+  function okMail(s) { return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(s); }
+  function post(kind, message, about, page) {
+    // One row in the sheet. The form takes any text for each field; the reader's own name and email ride
+    // in their own columns. no-cors: the answer cannot be read, so a network failure is the only failure seen.
+    var m = me() || {}, d = new URLSearchParams(), F = cfg.fields;
+    d.append(F.kind, kind); d.append(F.message, message); d.append(F.name, m.name || ''); d.append(F.email, m.email || '');
+    d.append(F.page, page || location.href); d.append(F.about, about || ''); d.append(F.lang, lang);
+    return fetch(cfg.action, { method: 'POST', mode: 'no-cors', body: d });
+  }
+  function limited() {
+    var now = Date.now(), log = (store('iu-sent') || []).filter(function (t) { return now - t < 3600000; });
+    if (log.length >= 20) { return true; }
+    log.push(now); store('iu-sent', log); return false;
+  }
+  function signUp(nameEl, mailEl, status, page) {
+    var name = nameEl.value.trim(), mail = mailEl.value.trim();
+    if (!name) { status.textContent = T('Give a name to show with what you write.', 'نامی بنویسید که کنار نوشته‌تان دیده شود.'); status.className = 'status bad'; nameEl.focus(); return null; }
+    if (!okMail(mail)) { status.textContent = T('That email does not look right.', 'این ایمیل درست به نظر نمی‌رسد.'); status.className = 'status bad'; mailEl.focus(); return null; }
+    store('iu-me', { name: name.slice(0, 40), email: mail, since: new Date().toISOString().slice(0, 10) });
+    return post('join', 'joined', '', page);
+  }
+
+  var jf = $('joinform');
+  if (jf && cfg) {
+    var joined = $('joined'), as = $('joinedas'), js = $('joinstatus');
+    var paint = function () {
+      var m = me();
+      jf.hidden = !!m; joined.hidden = !m;
+      if (m) { as.textContent = T('Signed in on this device as ', 'در این دستگاه با این نام وارد شده‌اید: ') + m.name + '.'; }
+    };
+    jf.addEventListener('submit', function (ev) {
+      ev.preventDefault();
+      if ($('jhp').value) { return; }
+      var p = signUp($('jname'), $('jmail'), js, jf.dataset.page);
+      if (!p) { return; }
+      js.textContent = T('Joining…', 'در حال عضویت…'); js.className = 'status';
+      p.then(paint, function () { store('iu-me', null); js.textContent = T('That did not go through. Check your connection and try again.', 'انجام نشد. اتصال اینترنت را ببینید و دوباره بزنید.'); js.className = 'status bad'; });
+    });
+    $('leave').addEventListener('click', function () { store('iu-me', null); paint(); });
+    paint();
+  }
+
+  // ---- the note box ---------------------------------------------------------------------------------
+  var sf = $('sayform'), fab = $('fab');
+  if (sf && cfg) {
+    var msg = $('saymsg'), st = $('saystatus'), joinin = $('sayjoin'), meLine = $('sayme'), linkRow = $('saylinkrow'), link = $('saylink'), aboutLine = $('sayabout');
+    var about = sf.dataset.about || '';
+    var kind = function () { var r = sf.querySelector('input[name=kind]:checked'); return r ? r.value : 'opinion'; };
+    var needsMember = function () { return kind() !== 'wrong'; };
+    var hints = {
+      opinion: T('Write it in your own words.', 'با زبان خودتان بنویسید.'),
+      video: T('Say in a line what the video shows.', 'در یک خط بگویید ویدیو چه چیزی را نشان می‌دهد.'),
+      source: T('What did they say or do, and where did you see it?', 'چه گفته یا چه کرده، و کجا دیدید؟'),
+      wrong: T('What is wrong, and what should it say?', 'چه چیزی نادرست است و درستش چیست؟')
+    };
+    var paintSay = function () {
+      var k = kind(), m = me();
+      linkRow.hidden = !(k === 'video' || k === 'source');
+      msg.placeholder = hints[k];
+      joinin.hidden = !(needsMember() && !m);
+      meLine.hidden = !m;
+      if (m) { meLine.textContent = T('Sending as ', 'فرستنده: ') + m.name; }
+      aboutLine.hidden = !about;
+      if (about) { aboutLine.textContent = T('About: ', 'دربارهٔ: ') + about; }
+    };
+    sf.addEventListener('change', paintSay);
+    doc.addEventListener('click', function (ev) {
+      var b = ev.target.closest ? ev.target.closest('[data-say]') : null;
+      if (!b) { return; }
+      var r = sf.querySelector('input[name=kind][value="' + b.getAttribute('data-say') + '"]');
+      if (r) { r.checked = true; }
+      paintSay();
+      setTimeout(function () { msg.focus({ preventScroll: true }); }, 50);
+    });
+    sf.addEventListener('submit', function (ev) {
+      ev.preventDefault();
+      if ($('sayhp').value) { return; }
+      var text = msg.value.trim(), k = kind();
+      if (text.length < 3) { st.textContent = T('Write your note first.', 'اول نوشته‌تان را بنویسید.'); st.className = 'status bad'; msg.focus(); return; }
+      var first = Promise.resolve();
+      if (needsMember() && !me()) {
+        first = signUp($('sjname'), $('sjmail'), st, sf.dataset.page);
+        if (!first) { return; }
+      }
+      if (limited()) { st.textContent = T('That is a lot of notes in one hour. Come back a little later.', 'در یک ساعت نوشته‌های زیادی فرستاده‌اید. کمی بعد برگردید.'); st.className = 'status bad'; return; }
+      var body = text + (link.value.trim() && !linkRow.hidden ? '\n-----\nlink: ' + link.value.trim() : '');
+      st.textContent = T('Sending…', 'در حال فرستادن…'); st.className = 'status';
+      first.then(function () { return post(k, body, about, sf.dataset.page); }).then(function () {
+        msg.value = ''; link.value = '';
+        st.textContent = T('Sent. Thank you. We read every one.', 'فرستاده شد. سپاس. همه را می‌خوانیم.'); st.className = 'status ok';
+        paintSay();
+      }, function () { st.textContent = T('That did not go through. Check your connection and try again.', 'انجام نشد. اتصال اینترنت را ببینید و دوباره بزنید.'); st.className = 'status bad'; });
+    });
+    paintSay();
+    if (fab && 'IntersectionObserver' in window) {
+      new IntersectionObserver(function (en) { fab.hidden = en[0].isIntersecting; }).observe(sf);
+    }
+  }
+
+  // ---- is this grade fair: one vote per member per politician ---------------------------------------
+  var fair = doc.querySelector('[data-fair]');
+  if (fair && cfg) {
+    var slug = fair.getAttribute('data-fair'), who = fair.getAttribute('data-name'), fs = fair.querySelector('.status'), btns = fair.querySelectorAll('[data-vote]');
+    var mine = function () { return (store('iu-votes') || {})[slug]; };
+    var paintFair = function () {
+      var v = mine();
+      Array.prototype.forEach.call(btns, function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-vote') === v)); });
+      if (v) { fs.textContent = T('Your vote is in. Counts on this page are updated when we publish.', 'رأی شما ثبت شد. شمار رأی‌ها با هر به‌روزرسانی سایت تازه می‌شود.'); fs.className = 'status ok'; }
+    };
+    Array.prototype.forEach.call(btns, function (b) {
+      b.addEventListener('click', function () {
+        if (!me()) {
+          fs.innerHTML = '';
+          var a = doc.createElement('a');
+          a.href = root + lang + '/join/'; a.className = 'btn btn-key'; a.textContent = T('Join to vote: a name and an email', 'برای رأی دادن عضو شوید: یک نام و یک ایمیل');
+          fs.appendChild(a); fs.className = 'status';
+          return;
+        }
+        var v = b.getAttribute('data-vote'), votes = store('iu-votes') || {};
+        if (votes[slug] === v || limited()) { return; }
+        votes[slug] = v; store('iu-votes', votes); paintFair();
+        post('vote', v, who, location.href).then(null, function () { delete votes[slug]; store('iu-votes', votes); paintFair(); fs.textContent = T('That did not go through. Try again.', 'انجام نشد. دوباره بزنید.'); fs.className = 'status bad'; });
+      });
+    });
+    paintFair();
+  }
+})();

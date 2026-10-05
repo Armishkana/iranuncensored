@@ -17,6 +17,22 @@
   });
   try { if (!localStorage.getItem('iu-lang')) { localStorage.setItem('iu-lang', lang); } } catch (x) { }
 
+  // ---- the campaign page: play a post from X only when the reader asks for it ---------------------
+  doc.addEventListener('click', function (ev) {
+    var b = ev.target.closest ? ev.target.closest('[data-tweet]') : null;
+    if (!b) { return; }
+    var li = b.closest('.tw'), box = li.querySelector('.tw-embed'), list = li.closest('.tws');
+    var url = 'https://twitter.com/' + list.getAttribute('data-handle') + '/status/' + b.getAttribute('data-tweet');
+    box.hidden = false; b.hidden = true;
+    box.innerHTML = '<blockquote class="twitter-tweet" data-theme="dark" data-dnt="true" data-lang="' + (fa ? 'fa' : 'en') + '"><a href="' + url + '"></a></blockquote>';
+    var miss = function () { if (!box.querySelector('iframe')) { box.innerHTML = '<p>' + T('X did not load here. Use "Open on X".', 'ایکس در این‌جا بارگیری نشد. «باز کردن در ایکس» را بزنید.') + '</p>'; } };
+    if (window.twttr && window.twttr.widgets) { window.twttr.widgets.load(box); }
+    else if (!doc.getElementById('tw-js')) {
+      var s = doc.createElement('script'); s.id = 'tw-js'; s.async = true; s.src = 'https://platform.twitter.com/widgets.js'; s.onerror = miss; doc.head.appendChild(s);
+    }
+    setTimeout(miss, 9000);
+  });
+
   // ---- search on the front page -------------------------------------------------------------------
   var q = $('q'), hits = $('hits');
   if (q && hits) {

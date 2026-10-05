@@ -323,3 +323,316 @@ html[lang="fa"] .bfacts li{line-height:1.9}
 html[lang="en"] .who dt{text-transform:uppercase}
 html[lang="fa"] .who dt{font-weight:400}
 .who dd{margin:6px 0 0}
+
+/* ---- the discussion: one room, two languages (5 October 2026). Drawn only when data/firebase-config.json
+   exists. The markup and the class names are the Liberty Politics site's, because the same two scripts draw
+   it (../../site/build/community.js and discussion.js); these are this site's own styles for them: its
+   tokens, and every side written as inline-start / inline-end so the Persian pages mirror by themselves.
+   Gold is spent where it already is: the headline, the buttons, the links, and the side of the switch that
+   leads to the discussion. A reader's words keep the direction of the language they were written in
+   (dir="auto" on the post), on a Persian page and on an English one. ---- */
+/* A reader's words may be in either language on either page: Persian letters come from the site's own
+   Persian font on an English page too, never from whatever the device falls back to. */
+html{--mix:"Public Sans","Vazirmatn","Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif}
+html[lang="fa"]{--mix:"Vazirmatn",Tahoma,"Segoe UI",sans-serif}
+.top nav a.acct{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 12px;border:1px solid var(--field-lo);color:var(--field);font-weight:700;white-space:nowrap}
+.top nav a.acct:hover{background:var(--raise);border-color:var(--field)}
+.top nav a.acct.in{padding-inline:6px 12px;border-color:transparent;color:var(--ink)}
+.acct-i{display:inline-flex;align-items:center;justify-content:center;inline-size:32px;block-size:32px;flex:none;border-radius:50%;background:var(--field);color:var(--on-field);font:800 1.05rem/1 var(--body)}
+.acct-n{max-inline-size:9rem;overflow:hidden;text-overflow:ellipsis}
+@media(max-width:559px){.acct-n{display:none}.top nav a.acct.in{padding-inline:6px}}
+@media(max-width:419px){.top .wrap{gap:8px}.mark{gap:8px}.mark img{width:36px;height:36px}.top nav a.acct,.top nav a.lang{padding:0 9px}}
+
+/* the switch under the header: the side the reader is on is filled, the other side is a button */
+.modes{position:sticky;top:61px;z-index:19;background:var(--sunk);border-bottom:1px solid var(--line)}
+.modes .wrap{display:flex;align-items:center;gap:8px;padding:6px 8px}
+.modes-sw{position:relative;flex:1 1 auto;min-width:0;display:grid;grid-template-columns:1fr 1fr;padding:3px;background:var(--bg);border:1px solid var(--line);border-radius:999px}
+.mode{position:relative;z-index:1;min-width:0;display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:42px;padding:0 10px;border-radius:999px;font:700 .96rem/1 var(--body);text-decoration:none;color:var(--ink);white-space:nowrap}
+.mode:focus-visible{border-radius:999px}
+.mode>span{min-width:0;overflow:hidden;text-overflow:ellipsis;line-height:1.5}
+.mode svg{flex:none}
+.mode-d{color:var(--field)}
+.modes-on .modes-sw::before{content:"";position:absolute;top:3px;bottom:3px;inset-inline-start:3px;inline-size:calc(50% - 3px);border-radius:999px;background:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.55);transition:transform .28s cubic-bezier(.16,1,.3,1),background-color .28s}
+.modes-on[data-mode="discussion"] .modes-sw::before{transform:translateX(100%);background:var(--field)}
+html[dir="rtl"].modes-on[data-mode="discussion"] .modes-sw::before{transform:translateX(-100%)}
+.modes-on[data-mode="record"] .mode-r,.modes-on[data-mode="discussion"] .mode-d{color:var(--on-field);cursor:default}
+.modes-on[data-mode="record"] .mode-d{background:rgba(217,180,90,.14);box-shadow:inset 0 0 0 1.5px var(--field)}
+.modes-on[data-mode="record"] .mode-d:hover{background:rgba(217,180,90,.26)}
+.modes-on[data-mode="discussion"] .mode-r:hover{background:var(--raise)}
+.mode-n{display:inline-flex;align-items:center;justify-content:center;min-inline-size:22px;block-size:22px;padding:0 6px;background:var(--field);color:var(--on-field);border-radius:999px;font-size:.8rem;font-weight:800}
+.modes-on[data-mode="discussion"] .mode-n{background:var(--on-field);color:var(--field)}
+.mode-n[hidden]{display:none}
+@media(max-width:430px){.mode-d:has(.mode-n:not([hidden])) svg{display:none}.mode-r svg{display:none}}
+.mode-share{flex:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-width:44px;min-height:44px;padding:0 12px;background:none;border:1px solid var(--line);border-radius:999px;color:var(--dim);font:600 .92rem/1 var(--body);cursor:pointer;white-space:nowrap}
+.mode-share:hover{color:var(--ink);border-color:var(--dim)}
+.mode-share span{display:none}
+.mode-share.said span{display:inline;color:var(--ga)}
+@media(min-width:760px){.modes .wrap{padding:8px var(--gutter)}.modes-sw{flex:0 1 27rem}.mode-share{margin-inline-start:auto;border-color:transparent}.mode-share span{display:inline}}
+.modes-on[data-mode="record"] #discussion,.modes-on[data-mode="discussion"] #record{display:none}
+html.modes-on{scroll-padding-top:128px}
+.modes-on .said,.modes-on .talk{scroll-margin-top:128px}
+
+/* the page's question, high on the record, shaped like a box to write in */
+.nudge-sec{padding:18px 0;border-bottom:1px solid var(--line)}
+.nudge{display:grid;gap:10px;max-width:46rem;padding:14px;background:var(--panel);border:1px solid var(--field-lo);border-radius:8px;text-decoration:none;color:var(--ink)}
+.nudge:hover{border-color:var(--field)}
+.nudge-q{display:flex;align-items:flex-start;gap:8px;font-size:1.1rem;line-height:1.4}
+.nudge-q svg{flex:none;margin-top:3px;color:var(--field)}
+.nudge-q b{font-weight:700}
+.nudge-n{flex:none;margin-inline-start:auto;padding:3px 9px;background:var(--raise);border-radius:999px;font-size:.82rem;font-weight:700;color:var(--field);white-space:nowrap}
+.nudge-n[hidden],.nudge-top[hidden]{display:none}
+.nudge-top{display:block;padding-inline-start:12px;border-inline-start:3px solid var(--field-lo);color:var(--dim);font-size:.98rem;line-height:1.5;overflow-wrap:anywhere;text-align:start}
+.nudge-top b{color:var(--ink);font-weight:600}
+.nudge-in{display:flex;align-items:center;gap:10px;min-height:52px;padding-block:4px;padding-inline:16px 4px;background:var(--bg);border:1px solid var(--line);border-radius:999px;color:var(--dim);font-size:.98rem;line-height:1.35}
+.nudge-in>span{flex:1 1 auto;min-width:0}
+.nudge.kept .nudge-in>span{color:var(--ink)}
+.nudge-in i{flex:none;display:inline-flex;align-items:center;min-height:42px;padding:0 16px;background:var(--field);color:var(--on-field);border-radius:999px;font-style:normal;font-weight:700}
+.nudge:hover .nudge-in i{background:var(--field-hi)}
+.band-top{margin-top:14px;max-width:44rem;padding:12px 14px;background:var(--raise);border-inline-start:4px solid var(--field);border-radius:var(--r)}
+.band-top[hidden]{display:none}
+.band-top blockquote{margin:0;padding:0;border:0;background:none;font:600 1.05rem/1.6 var(--mix);text-align:start;overflow-wrap:anywhere;white-space:pre-line}
+.band-top p{margin-top:6px;font-size:.9rem;font-weight:700;color:var(--dim)}
+
+/* the discussion of a page: a way back, what it is about, the box, then the posts */
+.disc{padding-top:10px}
+.crumb{display:inline-flex;align-items:center;gap:6px;min-height:44px;font-weight:700;text-decoration:none;color:var(--dim)}
+.crumb:hover{color:var(--ink)}
+.disc-back{margin-bottom:8px}
+.disc-col{max-width:46rem}
+.disc-head{display:flex;align-items:center;gap:12px}
+.disc-head>div{min-width:0}
+.disc-eye{font:800 .8rem/1.4 var(--body);color:var(--dim)}
+html[lang="en"] .disc-eye{letter-spacing:.1em;text-transform:uppercase}
+.disc-head h2{margin:4px 0 0;font-size:clamp(1.9rem,7vw,2.8rem);overflow-wrap:anywhere;color:var(--field)}
+.disc-all{display:inline-flex;align-items:center;gap:6px;min-height:44px;margin-top:6px;font-weight:700;color:var(--field)}
+.talk-lede{margin-top:12px;max-width:62ch;color:var(--dim)}
+.fb{margin-top:18px;padding:14px;background:var(--panel);border:1px solid var(--line);border-radius:8px}
+.fb:focus-within{border-color:var(--field-lo)}
+.fbform{display:grid;gap:8px}
+.fbform fieldset{border:0;margin:0;padding:0;min-width:0}
+.fbform>label{display:block;font-weight:700}
+.fbform>label#fbmsglab{font-size:1.1rem;line-height:1.5}
+.fbform textarea,.reply-f textarea{width:100%;min-height:5.5rem;padding:12px 14px;font:500 1rem/1.6 var(--mix);color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:var(--r);resize:vertical;caret-color:var(--field);text-align:start}
+.fbform textarea::placeholder,.reply-f textarea::placeholder{color:var(--dim)}
+.fbform input[type=url]{min-height:48px;background:var(--bg)}
+.fbform textarea:focus-visible,.fbform input:focus-visible,.reply-f textarea:focus-visible{border-color:var(--field)}
+.fb .picks{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.fb .pick{position:relative;display:inline-flex;align-items:center;min-height:44px;padding:0 14px;background:var(--bg);border:1px solid var(--line);border-radius:999px;font-weight:600;font-size:.92rem;cursor:pointer;margin:0}
+.fb .pick input{position:absolute;opacity:0;inline-size:1px;block-size:1px;min-height:0;padding:0}
+.fb .pick.on,.fb .pick:has(input:checked){background:var(--field);border-color:var(--field);color:var(--on-field)}
+.fb .pick:focus-within{outline:3px solid var(--field);outline-offset:2px}
+.fbrow{display:grid;gap:8px}
+/* hidden means hidden, whatever a rule above says about display */
+.fb [hidden],.talk [hidden],.sheet [hidden],.modes [hidden]{display:none!important}
+/* An empty box has no letters to take its direction from, so on a Persian page it would open left to right
+   and put the full stop of its own hint on the wrong side. Empty, it follows the page; with words in it,
+   it follows the words (dir="auto"). */
+html[dir="rtl"] textarea[dir="auto"]:placeholder-shown,html[dir="rtl"] input[dir="auto"]:placeholder-shown{direction:rtl}
+.fbrow>label{margin-top:10px;font-weight:700}
+.fbhint{color:var(--dim);font-size:.92rem;max-width:62ch}
+.fbcheck{display:inline-flex;align-items:center;gap:10px;min-height:44px;cursor:pointer}
+.fbcheck input{inline-size:20px;block-size:20px;min-height:0;margin:0;padding:0;accent-color:var(--field)}
+.fbabout{display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--bg);border:1px solid var(--field-lo);border-radius:var(--r);font-size:.95rem;overflow-wrap:anywhere}
+.fbabout[hidden]{display:none}
+.fbabout-x{flex:none;margin-inline-start:auto;min-height:44px;padding:0 6px;background:none;border:0;color:var(--dim);font:600 .9rem/1 var(--body);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.fbabout-x:hover{color:var(--ink)}
+.fbsend{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;margin-top:10px}
+.fbsend .fbhint{flex:1 1 14rem}
+.fbform button[disabled],.reply-f .btn[disabled]{opacity:.6;cursor:default}
+.fbcount{color:var(--dim);font-size:.88rem;text-align:end;font-variant-numeric:tabular-nums}
+.fbcount.bad{color:var(--gd);font-weight:700}
+.fbwho{color:var(--dim);font-size:.92rem}
+.fbnote{min-height:1.5em;font-weight:600;color:var(--ga)}
+.fbnote:empty{min-height:0}
+.fbnote.bad{color:var(--gd)}
+.fbnote a,.fbdone a{color:var(--field);font-weight:700;display:inline-flex;align-items:center;min-height:40px}
+.fbdone{display:grid;gap:10px;justify-items:start;margin-top:4px;padding:14px 16px;background:var(--bg);border:1px solid var(--field-lo);border-radius:var(--r)}
+.fbdone[hidden]{display:none}
+.fbfine{margin-top:14px;color:var(--dim);font-size:.92rem;max-width:62ch}
+.fbfine a{display:inline-flex;align-items:center;min-height:44px;color:var(--ink);font-weight:600}
+/* the box at rest: the question, a place to type, the button. discussion.js wakes it on the first tap. */
+.fb.rest fieldset,.fb.rest .fbsend .fbhint,.fb.rest .fbwho{display:none}
+
+/* what readers say */
+.talk{margin-top:24px;scroll-margin-top:84px}
+.talk-ctl[hidden]{display:none}
+.talk-ctl .chips{display:flex;flex-wrap:nowrap;gap:8px;overflow-x:auto;margin:0 calc(var(--gutter) * -1);padding:0 var(--gutter) 6px;scrollbar-width:thin;scrollbar-color:var(--line) transparent}
+.talk-ctl .chip{flex:none;min-height:44px;padding:0 14px;font:600 .92rem/1 var(--mix);color:var(--ink);background:var(--panel);border:1px solid var(--line);border-radius:999px;cursor:pointer;white-space:nowrap}
+.talk-ctl .chip[aria-pressed="true"]{background:var(--field);color:var(--on-field);border-color:var(--field)}
+.chips-gap{flex:none;inline-size:1px;margin:8px 4px;background:var(--line)}
+.talk-ctl .chips + .chips{margin-top:8px}
+.busy{margin:0 0 14px}
+.busy-h{font:800 .8rem/1.4 var(--body);color:var(--dim)}
+.busy-l{margin:8px 0 0;display:flex;flex-wrap:wrap;gap:8px}
+.busy-a{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 14px;border:1px solid var(--line);border-radius:999px;background:var(--panel);font-weight:600;text-decoration:none;max-width:100%}
+.busy-a span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.busy-a b{flex:none;color:var(--field)}
+.votes{display:grid;gap:10px;margin:16px 0 0}
+.talk-list{max-width:48rem}
+.vote{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:16px}
+.vote .meta{display:flex;flex-wrap:wrap;gap:4px 8px;align-items:center;color:var(--dim);font-size:.88rem}
+.tag{display:inline-block;font-size:.75rem;font-weight:700;line-height:1.5;padding:1px 6px;border:1px solid currentColor;border-radius:2px;white-space:nowrap}
+.tag.ok{color:var(--ga)}
+.said{scroll-margin-top:84px}
+.said-head{display:flex;align-items:center;gap:10px}
+.said-head .meta{flex:1;min-width:0}
+.said .who{display:flex;flex-direction:row;flex-wrap:wrap;align-items:baseline;gap:0 8px;margin-top:0;overflow-wrap:anywhere}
+.said .who b{font-size:.98rem;color:var(--ink);font-family:var(--mix)}
+.said-sub{white-space:nowrap}
+.said .meta .tag{color:var(--dim)}
+.said .meta .tag.best{color:var(--field)}
+.said .meta .tag.kind-wrong,.said .meta .tag.kind-bug{color:var(--gd)}
+.said .meta .tag.kind-idea,.said .meta .tag.kind-source{color:var(--field-hi)}
+.said .meta .tag.host{color:var(--on-field);background:var(--field);border-color:var(--field)}
+.av{flex:none;display:grid;place-items:center;inline-size:36px;block-size:36px;border-radius:50%;overflow:hidden;background:var(--raise);color:var(--ink);font:800 1rem/1 var(--mix)}
+.av img{display:block;width:100%;height:100%;object-fit:cover}
+.av-0{background:oklch(.40 .07 25)}.av-1{background:oklch(.40 .06 75)}.av-2{background:oklch(.40 .06 150)}
+.av-3{background:oklch(.40 .06 205)}.av-4{background:oklch(.40 .07 265)}.av-5{background:oklch(.40 .07 325)}
+.av-host{background:var(--bg);border:2px solid var(--field)}
+.said blockquote{margin:12px 0 0;padding:0;border:0;background:none;max-width:66ch;font:400 1.05rem/1.7 var(--mix);text-align:start;overflow-wrap:anywhere;white-space:pre-line}
+.said .at{font-weight:700;color:var(--field)}
+.said-on,.said-link{display:inline-flex;align-items:center;min-height:44px;font-weight:700;color:var(--field);overflow-wrap:anywhere}
+.said-link{font-weight:600;margin-top:4px}
+.said.own{border-style:dashed;border-color:var(--field-lo)}
+.vote .said-about{margin-top:8px;font-size:.92rem;color:var(--dim);overflow-wrap:anywhere}
+.vote .said-note{margin-top:12px;font-size:.95rem;font-weight:600}
+.vote .said-msg{margin-top:8px;font-size:.92rem;font-weight:600;color:var(--dim)}
+.vote .said-msg.bad{color:var(--gd)}
+/* translate a post written in the other language */
+.tr{display:flex;flex-wrap:wrap;align-items:center;gap:0 10px;margin-top:2px}
+.tr-b{display:inline-flex;align-items:center;min-height:44px;font:700 .92rem/1 var(--mix);color:var(--field);text-decoration:underline;text-underline-offset:3px}
+.tr-msg{color:var(--dim);font-size:.9rem}
+.tr-msg:empty{display:none}
+/* like, unlike, reply, report */
+.said-bar{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:12px}
+.vt{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-width:56px;min-height:44px;padding:0 12px;background:var(--bg);border:1px solid var(--line);border-radius:999px;color:var(--ink);font:600 .92rem/1 var(--body);cursor:pointer}
+.vt svg{flex:none}
+.vt b{font-weight:700;font-variant-numeric:tabular-nums lining-nums;min-inline-size:1ch;text-align:end}
+.vt:hover{border-color:var(--dim)}
+.vt-up[aria-pressed="true"]{background:var(--ga);border-color:var(--ga);color:var(--on-grade)}
+.vt-down[aria-pressed="true"]{background:var(--gf);border-color:var(--gf);color:var(--on-grade)}
+.vt[disabled]{color:var(--dim);cursor:default;opacity:.6}
+.vt[disabled]:hover{border-color:var(--line)}
+.said-acts{display:flex;align-items:center;flex:1 1 auto;gap:4px}
+.said-acts .rp,.said-acts .del-b{margin-inline-start:auto}
+@media(max-width:520px){.vt>span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}}
+.reply-b,.said-go{display:inline-flex;align-items:center;min-height:44px;padding:0 12px;background:none;border:0;border-radius:999px;color:var(--ink);font:700 .92rem/1 var(--body);cursor:pointer;text-decoration:none}
+.reply-b:hover,.said-go:hover{background:var(--raise)}
+.reply-b[aria-expanded="true"]{color:var(--field)}
+.rp{position:relative}
+.rp-b,.del-b{min-height:44px;padding:0 6px;background:none;border:0;color:var(--dim);font:600 .9rem/1 var(--body);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.rp-b:hover,.rp-b[aria-expanded="true"],.del-b:hover{color:var(--ink)}
+.del-b.armed{color:var(--gf);font-weight:700}
+.del-b[disabled]{cursor:default;text-decoration:none}
+.rp-m{position:absolute;inset-inline-end:0;top:calc(100% + 2px);z-index:12;display:grid;width:max-content;min-width:13rem;max-width:calc(100vw - 64px);padding:4px;background:var(--raise);border:1px solid var(--line);border-radius:var(--r);box-shadow:0 14px 30px -10px rgba(0,0,0,.75)}
+.rp-m[hidden]{display:none}
+.rp-m button{min-height:46px;padding:0 12px;text-align:start;background:none;border:0;border-radius:2px;color:var(--ink);font:600 .95rem/1.4 var(--body);cursor:pointer}
+.rp-m button:hover,.rp-m button:focus-visible{background:var(--panel)}
+.rp-done{display:inline-flex;align-items:center;min-height:44px;color:var(--dim);font-size:.9rem;font-weight:600}
+/* the thread: one thin line down the side, replies as rows on it */
+.replies{margin:14px 0 0;padding-inline-start:14px;border-inline-start:1px solid var(--line);display:grid;gap:14px}
+.replies .vote{padding:0;background:none;border:0;border-radius:0}
+.replies .said.own{padding:10px 12px;border:1px dashed var(--field-lo);border-radius:var(--r)}
+.replies .av{inline-size:28px;block-size:28px;font-size:.8rem}
+.replies .said blockquote{margin-top:8px;font-size:1rem}
+.replies .said-bar{margin-top:6px}
+.replies .vt{min-width:52px;background:none}
+.thread-more{display:inline-flex;align-items:center;min-height:44px;margin-block:6px 0;margin-inline:14px 0;padding:0;background:none;border:0;color:var(--field);font:700 .92rem/1 var(--body);cursor:pointer}
+.thread-more:hover{text-decoration:underline;text-underline-offset:3px}
+.reply-f{display:grid;gap:10px;margin-top:10px}
+.reply-f .btn{min-height:44px;padding:0 16px}
+/* waiting, nothing yet, could not load: the same box, so the page does not jump between them */
+.vote.sk{min-height:92px}
+.vote.sk::before,.vote.sk::after{content:"";display:block;block-size:12px;border-radius:2px;background:var(--raise)}
+.vote.sk::before{inline-size:36%}
+.vote.sk::after{inline-size:84%;margin-top:16px;box-shadow:0 24px 0 var(--raise)}
+.talk-state{display:grid;gap:12px;align-content:center;justify-items:start;min-height:160px;padding:20px 16px;border:1px dashed var(--line);border-radius:var(--r)}
+.talk-state p{max-width:44ch;font-weight:600;font-size:1.05rem}
+/* a video a reader shared: a plain link until it is tapped */
+.tv{margin-top:12px;background:var(--sunk);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.tv-play{position:relative;display:grid;align-content:end;min-height:190px;text-decoration:none;color:var(--ink)}
+.tv-youtube .tv-play{aspect-ratio:16/9;min-height:0}
+.tv-play img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.55}
+.tv-go{position:absolute;left:50%;top:42%;width:64px;height:64px;margin:-32px 0 0 -32px;border-radius:50%;background:var(--field);box-shadow:0 6px 18px -4px rgba(0,0,0,.7)}
+.tv-go::after{content:"";position:absolute;left:25px;top:19px;border-style:solid;border-width:13px 0 13px 21px;border-color:transparent transparent transparent var(--on-field)}
+.tv-what{position:relative;display:grid;gap:2px;padding:44px 14px 12px;background:linear-gradient(transparent,rgba(12,12,9,.94) 55%)}
+.tv-what b{font-weight:700;overflow-wrap:anywhere}
+.tv-what span{color:var(--dim);font-size:.9rem}
+.tv-play:hover .tv-go{background:var(--field-hi)}
+.tv iframe{display:block;width:100%;border:0;background:var(--sunk)}
+.tv-youtube iframe{aspect-ratio:16/9}
+.tv-x iframe{height:560px}
+.tv-instagram iframe{height:640px}
+
+/* the panel: create an account, sign in, check your email, your account. A real dialog: at the bottom of a
+   phone screen, in the middle of a computer screen. */
+.sheet{width:100%;max-width:100%;max-height:100%;margin:auto 0 0;padding:0;border:0;background:transparent;color:var(--ink);overflow:visible}
+.sheet::backdrop{background:rgba(6,6,4,.78)}
+.sheet-in{display:flex;flex-direction:column;max-height:92vh;max-height:92dvh;background:var(--panel);border:1px solid var(--line);border-radius:8px 8px 0 0;box-shadow:0 -18px 44px -12px rgba(0,0,0,.8)}
+.sheet-top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:6px;padding-inline:16px 6px;background:var(--sunk);border-bottom:1px solid var(--line);border-radius:8px 8px 0 0}
+.sheet-top h2{font-size:1.8rem;color:var(--field)}
+.sheet-top h2:focus{outline:0}
+.sheet-x{display:inline-flex;align-items:center;justify-content:center;inline-size:48px;block-size:48px;flex:none;background:none;border:0;border-radius:var(--r);color:var(--ink);cursor:pointer}
+.sheet-x:hover{background:var(--raise)}
+.sheet-body{display:grid;gap:14px;align-content:start;padding:16px 16px 24px;overflow-y:auto;overscroll-behavior:contain}
+@media(min-width:640px){.sheet{width:min(30rem,calc(100% - 32px));margin:auto}.sheet-in{max-height:min(52rem,94vh);border-radius:8px;box-shadow:0 30px 70px -20px rgba(0,0,0,.9)}.sheet-top{border-radius:8px 8px 0 0}.sheet-body{padding:20px 20px 24px}}
+.gbtn{width:100%;min-height:52px;gap:12px;background:#fff;border-color:#fff;color:#1F1F1F;font-size:1.05rem}
+.gbtn:hover{background:#F1F1EC;border-color:#F1F1EC}
+.gbtn svg{flex:none}
+.sheet-or{display:flex;align-items:center;gap:12px;color:var(--dim);font-size:.9rem;font-weight:600}
+.sheet-or::before,.sheet-or::after{content:"";flex:1;block-size:1px;background:var(--line)}
+.sheet-why{padding:10px 12px;background:var(--bg);border:1px solid var(--field-lo);border-radius:var(--r);font-weight:600}
+.sheet-lead{font-size:1.1rem;line-height:1.6;font-weight:600}
+.sheet-lead b{color:var(--field);overflow-wrap:anywhere}
+.sheet-hint{color:var(--dim);font-size:.92rem}
+.sheet-hint.safety{padding:10px 12px;border-inline-start:3px solid var(--field);background:var(--bg);color:var(--ink)}
+.sheet-form{display:grid;gap:14px}
+.sheet-f{display:grid;gap:6px}
+.sheet-f label{font-weight:700}
+.sheet input[type=text],.sheet input[type=email],.sheet input[type=password],.sheet input[type=url]{display:block;width:100%;min-height:52px;padding:0 14px;font:500 1rem/1.5 var(--mix);color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:var(--r);caret-color:var(--field)}
+.sheet input:focus-visible{border-color:var(--field)}
+.pw{position:relative}
+.sheet .pw input{padding-inline-end:78px}
+.pw-eye{position:absolute;inset-inline-end:3px;top:3px;bottom:3px;min-inline-size:66px;background:var(--raise);border:0;border-radius:2px;color:var(--ink);font:700 .9rem/1 var(--body);cursor:pointer}
+html[dir="rtl"] .sheet .pw input{padding-inline:78px 14px}
+html[dir="rtl"] .pw-eye{inset-inline:auto 3px}
+.pw-eye:hover{background:var(--line)}
+.seg{display:grid;grid-template-columns:1fr 1fr;padding:3px;gap:3px;background:var(--bg);border:1px solid var(--line);border-radius:var(--r)}
+.seg button{min-height:46px;background:none;border:0;border-radius:2px;color:var(--dim);font:700 .98rem/1.2 var(--body);cursor:pointer}
+.seg button:hover{color:var(--ink)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--sunk)}
+.sheet-check{display:flex;align-items:center;gap:12px;min-height:44px;font-weight:600;cursor:pointer}
+.sheet-check input{inline-size:22px;block-size:22px;min-height:0;flex:none;margin:0;padding:0;accent-color:var(--field)}
+.sw input{appearance:none;-webkit-appearance:none;position:relative;inline-size:48px;block-size:28px;border-radius:999px;background:var(--line);border:0;cursor:pointer}
+.sw input::after{content:"";position:absolute;inset-inline-start:3px;top:3px;inline-size:22px;block-size:22px;border-radius:50%;background:var(--ink)}
+.sw input:checked{background:var(--field)}
+.sw input:checked::after{transform:translateX(20px);background:var(--on-field)}
+html[dir="rtl"] .sw input:checked::after{transform:translateX(-20px)}
+.sheet-msg{font-weight:600;color:var(--ga)}
+.sheet-msg:empty{display:none}
+.sheet-msg.bad{color:var(--gd)}
+.sheet-go{width:100%;min-height:52px;font-size:1.05rem}
+.sheet .btn[disabled],.mod-list .btn[disabled]{opacity:.6;cursor:default}
+.sheet-acts{display:grid;gap:10px}
+.sheet-text{display:flex;align-items:center;justify-self:start;min-height:44px;padding:0;background:none;border:0;color:var(--ink);font:600 .95rem/1.4 var(--body);text-align:start;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.sheet-text:hover{color:var(--field)}
+.sheet-row{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;align-items:center;min-height:44px}
+.sheet-k{font-weight:700}
+.sheet-v{color:var(--dim);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sheet-foot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 18px;margin-top:8px;padding-top:16px;border-top:1px solid var(--line)}
+.danger{color:var(--gf)}
+.armed,.btn.armed:hover{padding:0 14px;background:var(--gf);border-color:var(--gf);border-radius:var(--r);color:var(--on-grade);text-decoration:none}
+.news-hint{margin-top:-4px}
+@media(prefers-reduced-motion:no-preference){.sheet[open] .sheet-in{animation:sheet-up .24s cubic-bezier(.16,1,.3,1)}}
+@keyframes sheet-up{from{transform:translateY(18px)}}
+@media(prefers-reduced-motion:reduce){.modes-sw::before{transition:none!important}}
+
+/* mod/: for the people who run the site */
+.talk-h1{font-size:clamp(2.2rem,8vw,3.4rem);color:var(--field)}
+.mod-h{font-size:1.8rem;margin-top:36px}
+.mod-hold{margin-top:20px}
+.mod-mail{overflow-wrap:anywhere}
+.mod-list{max-width:48rem}
+.mod-list .row{margin-top:12px}
+.mod-list .talk-state{min-height:0}
+.mod-csv{display:block;width:100%;max-width:48rem;margin-top:12px;font:500 .9rem/1.5 ui-monospace,Consolas,monospace}

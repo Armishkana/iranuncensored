@@ -19,6 +19,10 @@
 }
 html[lang="fa"]{--display:"Vazirmatn",Tahoma,"Segoe UI",sans-serif;--body:"Vazirmatn",Tahoma,"Segoe UI",sans-serif}
 *,*::before,*::after{box-sizing:border-box}
+/* A thing marked hidden is never drawn. Without this line any class that sets display (.btn, .joined, .row)
+   beats the hidden mark, and the page shows what the script just put away: the Join page said "You are in"
+   to everyone, and "Play it here" stayed after it was pressed (7 October 2026). */
+[hidden]{display:none!important}
 html{-webkit-text-size-adjust:100%;scroll-padding-top:76px;scrollbar-color:var(--line) var(--sunk)}
 body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.6 var(--body);overflow-x:hidden}
 html[lang="fa"] body{line-height:1.85}
@@ -231,7 +235,7 @@ blockquote{margin:8px 0 0;padding:10px 12px;border:1px solid var(--line);border-
 /* buttons, forms */
 .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
 .btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 18px;border-radius:var(--r);font:700 1rem/1.2 var(--body);text-decoration:none;border:2px solid transparent;cursor:pointer;text-align:center}
-.btn-key{background:var(--field);color:var(--on-field)}.btn-key:hover{background:var(--field-hi)}
+.btn-key{background:var(--field);color:var(--on-field)}.btn.btn-key,.btn.btn-key:visited{color:var(--on-field)}.btn-key:hover{background:var(--field-hi)}
 .btn-ink{background:var(--on-field);color:var(--field)}.btn-ink:hover{background:#2A2610}
 .btn-line{background:transparent;color:inherit;border-color:currentColor}
 .btn-line:hover{background:rgba(127,127,127,.18)}
@@ -338,8 +342,12 @@ html[lang="fa"] .askp{line-height:1.9}
 .tw .row{margin-top:10px;gap:8px}
 .tw .btn{min-height:44px;padding:0 14px;font-size:.95rem}
 .tw-embed{grid-column:1/-1;min-height:120px}
-.tw-embed[hidden]{display:none}
 .tw-embed p{color:var(--dim)}
+/* an open card grows by the height of X's player: the card beside it keeps its own height instead of
+   stretching into an empty box, and the player sits in the middle of the card */
+.tws:has(.tw.open){align-items:start}
+.tw-embed .twitter-tweet{margin:0 auto!important}
+.tw-embed blockquote{margin:0;text-align:start;color:var(--dim)}
 .asteps{display:grid;gap:14px;max-width:54rem}
 .asteps>li{display:grid;grid-template-columns:44px minmax(0,1fr);gap:14px;padding:18px 16px;background:var(--panel);border:1px solid var(--line);border-radius:8px}
 .sunk .asteps>li{background:var(--bg)}

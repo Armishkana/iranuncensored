@@ -25,13 +25,20 @@
   }
 
   // ---- the campaign page: play a post from X only when the reader asks for it ---------------------
+  // The button and the picture with the play mark both do it. Without this script the picture is a plain
+  // link to the post on X. X has no player that shows the video alone: its createVideo() draws the whole
+  // post (tried on the live page, 7 October 2026), so the whole post is what opens in the card.
   doc.addEventListener('click', function (ev) {
-    var b = ev.target.closest ? ev.target.closest('[data-tweet]') : null;
-    if (!b) { return; }
-    var li = b.closest('.tw'), box = li.querySelector('.tw-embed'), list = li.closest('.tws');
+    var t = ev.target.closest ? ev.target.closest('[data-tweet],.tw-pic') : null, li = t ? t.closest('.tw') : null;
+    if (!li || ev.ctrlKey || ev.metaKey || ev.shiftKey) { return; }
+    var b = li.querySelector('[data-tweet]'), box = li.querySelector('.tw-embed'), list = li.closest('.tws');
+    if (!b || !box || !list) { return; }
+    ev.preventDefault();
+    if (li.classList.contains('open')) { box.scrollIntoView({ block: 'nearest' }); return; }
     var url = 'https://twitter.com/' + list.getAttribute('data-handle') + '/status/' + b.getAttribute('data-tweet');
-    box.hidden = false; b.hidden = true;
-    box.innerHTML = '<blockquote class="twitter-tweet" data-theme="dark" data-dnt="true" data-lang="' + (fa ? 'fa' : 'en') + '"><a href="' + url + '"></a></blockquote>';
+    li.classList.add('open'); box.hidden = false; b.hidden = true;
+    // the line inside is what a reader sees until X answers; X's script replaces the whole block
+    box.innerHTML = '<blockquote class="twitter-tweet" data-theme="dark" data-dnt="true" data-lang="' + (fa ? 'fa' : 'en') + '"><a href="' + url + '">' + T('Loading the post from X…', 'داره از ایکس لود می‌شه…') + '</a></blockquote>';
     var miss = function () { if (!box.querySelector('iframe')) { box.innerHTML = '<p>' + T('X did not load here. Use "Open on X".', 'ایکس اینجا باز نشد. ویدیو رو تو خود ایکس ببینید.') + '</p>'; } };
     if (window.twttr && window.twttr.widgets) { window.twttr.widgets.load(box); }
     else if (!doc.getElementById('tw-js')) {
@@ -202,7 +209,7 @@
       st.textContent = T('Sending…', 'داره فرستاده می‌شه…'); st.className = 'status';
       first.then(function () { return post(k, body, about, sf.dataset.page); }).then(function () {
         msg.value = ''; link.value = '';
-        st.textContent = T('Sent. Thank you. We read every one.', 'فرستاده شد. ممنون. همه رو می‌خونیم.'); st.className = 'status ok';
+        st.textContent = T('Sent. Thank you. I read every one.', 'فرستاده شد. ممنون. همه رو می‌خونم.'); st.className = 'status ok';
         paintSay();
       }, function () { st.textContent = T('That did not go through. Check your connection and try again.', 'فرستاده نشد. اینترنت‌تون رو چک کنید و دوباره امتحان کنید.'); st.className = 'status bad'; });
     });
@@ -220,7 +227,7 @@
     var paintFair = function () {
       var v = mine();
       Array.prototype.forEach.call(btns, function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-vote') === v)); });
-      if (v) { fs.textContent = T('Your vote is in. Counts on this page are updated when we publish.', 'رأی‌تون ثبت شد. تعداد رأی‌ها با هر به‌روزرسانی سایت عوض می‌شه.'); fs.className = 'status ok'; }
+      if (v) { fs.textContent = T('Your vote is in. Counts on this page are updated when I publish.', 'رأی‌تون ثبت شد. تعداد رأی‌ها با هر به‌روزرسانی سایت عوض می‌شه.'); fs.className = 'status ok'; }
     };
     Array.prototype.forEach.call(btns, function (b) {
       b.addEventListener('click', function () {

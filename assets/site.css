@@ -110,6 +110,13 @@ textarea{min-height:120px;resize:vertical}
 .hits a:hover,.hits a:focus-visible{background:var(--raise)}
 .hits small{color:var(--dim);margin-inline-start:auto}
 .find .all{display:inline-flex;align-items:center;min-height:44px;font-weight:700}
+/* under the search: pick a state, or open the whole list. One under the other on a phone, side by side from 520px */
+.statepick{display:grid;grid-template-columns:minmax(0,1fr);gap:8px;margin-top:10px}
+.statepick select{min-height:52px;color:var(--ink);background:var(--panel);border:1px solid var(--field-lo)}
+.statepick select:focus{border-color:var(--field)}
+.statepick select option{color:var(--ink);background:var(--panel)}
+.statepick .btn{min-height:52px;text-align:center}
+@media(min-width:520px){.statepick{grid-template-columns:minmax(0,1fr) auto}}
 .tools{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:20px}
 .tools input{grid-column:1/-1}
 .tools select{min-height:48px;padding-inline:10px 8px;font-size:.95rem;text-overflow:ellipsis}

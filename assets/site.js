@@ -55,9 +55,10 @@
         var li = doc.createElement('li'), a = doc.createElement('a'), b = doc.createElement('b'), s = doc.createElement('small');
         a.href = root + lang + '/members/' + m.s + '/';
         b.textContent = (fa && m.f) ? m.f : m.n; b.dir = 'auto';
-        // on a Persian page the state is in Persian and the letter keeps its own direction
-        if (fa && m.sf) { s.textContent = m.sf + (m.g ? ' · ' : ''); if (m.g) { var g = doc.createElement('bdi'); g.textContent = m.g; s.appendChild(g); } }
-        else { s.textContent = m.p + '-' + m.st + (m.g ? ' · ' + m.g : ''); s.dir = 'ltr'; }
+        // the score is a whole number out of 100 (a string, so a 0 is still shown); on a Persian page the
+        // state and the score are in Persian
+        if (fa && m.sf) { s.textContent = m.sf + (m.g ? ' · ' + digits(m.g) + ' از ۱۰۰' : ''); }
+        else { s.textContent = m.p + '-' + m.st + (m.g ? ' · ' + m.g + ' out of 100' : ''); s.dir = 'ltr'; }
         a.appendChild(b); a.appendChild(s); li.appendChild(a); hits.appendChild(li);
       });
     };
@@ -72,7 +73,7 @@
     var f = { q: $('fq'), ch: $('fch'), party: $('fparty'), state: $('fstate'), grade: $('fgrade'), mark: $('fmark'), sort: $('fsort') };
     var pre = /[?&]q=([^&]*)/.exec(location.search);
     if (pre) { f.q.value = decodeURIComponent(pre[1].replace(/\+/g, ' ')); }
-    // a door on the front page opens the list on one letter (?g=A) or one mark (?show=mek)
+    // a door on the front page opens the list on one range of scores (?g=A is 90 to 100, down to ?g=F) or one mark (?show=mek)
     var preG = /[?&]g=([ABCDF])(&|$)/.exec(location.search), preM = /[?&]show=(mek3|mek|pah)(&|$)/.exec(location.search);
     if (preG) { f.grade.value = preG[1]; }
     if (preM) { f.mark.value = preM[1]; }

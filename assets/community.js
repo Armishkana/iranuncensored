@@ -209,7 +209,7 @@ function pathOf(about) {
 function whatOf(about) { const k = keyKind(about); return k === 'race' ? tt('this race') : k === 'member' ? tt('this politician') : k === 'vote' ? tt('this vote') : k === 'state' ? tt('this state') : tt('this page'); }
 /* The tag on a post. The first three say what a plain post is; the other four are the kinds a reader picks
    in the box when it is more than an opinion (KINDS in render.py), and those also reach us through the form. */
-const TAGS = { wrong: tt('Something is wrong'), source: tt('Something I missed'), bug: tt('Bug'), idea: tt('Idea') };
+const TAGS = { wrong: tt('Something is wrong'), source: tt('Something missing'), bug: tt('Bug'), idea: tt('Idea') };
 const PLAIN = { opinion: tt('Opinion'), video: tt('Video'), link: tt('Link') };
 
 /* ------------------------------------------------------------------ what went wrong, in plain words */

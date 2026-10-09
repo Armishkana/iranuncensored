@@ -1484,7 +1484,10 @@ async function fetchPosts() {
   if (T.feed) {
     try {
       if (hook('lpnoindex')) throw { code: 'failed-precondition' };
-      take(await F.getDocs(F.query(P, F.where('status', '==', 'live'), F.orderBy('createdAt', 'desc'), F.limit(60))));
+      /* 300, the most the rules let any list ask for. It was 60 until 8 October 2026: with 110 posts on the site
+         the page that says "every discussion in one place" was leaving out the oldest fifty, and the number on
+         the switch fell from 110 to 61 the moment a reader opened it. */
+      take(await F.getDocs(F.query(P, F.where('status', '==', 'live'), F.orderBy('createdAt', 'desc'), F.limit(300))));
     } catch (e) {
       if (!e || e.code !== 'failed-precondition') throw e;
       /* The index for the ordered question is not there yet: ask without an order and sort here. */
@@ -1647,11 +1650,14 @@ function drawCtl(every) {
 function setCount(n) {
   const b = $('disc-n'), p = $('band-p');
   discCount = n > 0 ? n : 0;
-  if (b) { b.hidden = !(n > 0); b.textContent = n > 99 ? dig('99') + '+' : dig(n); }
+  /* The real number, up to what one count can see (the count asks for at most 300: initPeek). Until 8 October 2026
+     it stopped at "99+", and a reader pointed out that says nothing once there are more than that. */
+  const most = 300, shown = n >= most ? dig(most) + '+' : dig(n);
+  if (b) { b.hidden = !(n > 0); b.textContent = shown; }
   if (n > 0 && p && !p.hasAttribute('data-set')) { p.textContent = n === 1 ? tt('1 post so far. Read it, and say where you stand.') : tt('{n} posts so far. Read them, and say where you stand.', { n }); }
   /* The same number on the question high on the record. */
   const nn = $('nudge-n');
-  if (nn) { nn.hidden = !(n > 0); nn.textContent = n > 99 ? tt('99+ posts') : n === 1 ? tt('1 post') : tt('{n} posts', { n }); }
+  if (nn) { nn.hidden = !(n > 0); nn.textContent = n === 1 ? tt('1 post') : tt('{n} posts', { n: shown }); }
   /* The words on the button at the end of the record, on the question near the top and on the switch:
      one place writes them, because a note the reader never sent changes all three (keptMark). */
   keptMark(kept);

@@ -787,8 +787,11 @@ html[lang="fa"] .acards-short li:not(.ac-lead) h3{font-size:1.08rem}
 .vg-chip.now{background:var(--field);border-color:var(--field);color:var(--on-field)}
 .vg-open{padding-inline-start:14px;border-inline-start:3px solid var(--field);font-weight:600}
 .vg .src a{overflow-wrap:anywhere}
+.vg-rule{font-size:.92rem;color:var(--dim)}
 .vg-en{font-size:.92rem;color:var(--dim)}
-.vg-en span{unicode-bidi:isolate}
+/* English inside a Persian paragraph (the state's own words, the rule a date was counted from) stands as a block of its own,
+   left to right. Set inline it is broken over the lines of a right to left paragraph and read out of order. */
+html[lang="fa"] .vg-en span[lang="en"],html[lang="fa"] .vg-rule span[lang="en"]{display:block;direction:ltr;text-align:left;unicode-bidi:isolate;margin-top:4px}
 .vg-states{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 16px;margin-top:12px}
 .prose .vg-states a,.vg-states a{display:flex;align-items:center;min-height:44px;font-weight:600;color:var(--ink)}
 @media(min-width:720px){.vg-states{grid-template-columns:repeat(4,minmax(0,1fr))}}

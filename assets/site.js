@@ -24,6 +24,18 @@
     callsX.addEventListener('click', function () { calls.className += ' off'; try { sessionStorage.setItem('iu-calls', 'off'); } catch (x) { } });
   }
 
+  // ---- the mission board (act/): a reader who says they are inside Iran ----------------------------
+  // The chooser is run by quests.js (the Liberty Politics site's file, shipped from here as it is): it hides
+  // every mission that is not for the reader and marks the chip that is on with aria-pressed. This only
+  // marks the page for that one chip, so site.css can put the safety card first and the rank away. A
+  // browser that knows :has() does the same with no script at all (site.css, ".q-safe").
+  var inChip = doc.querySelector('[data-q-chip="who:inside"]');
+  if (inChip && window.MutationObserver) {
+    var inSet = function () { html.classList[inChip.getAttribute('aria-pressed') === 'true' ? 'add' : 'remove']('q-inside'); };
+    new MutationObserver(inSet).observe(inChip, { attributes: true, attributeFilter: ['aria-pressed'] });
+    inSet();
+  }
+
   // ---- the campaign page: play a post from X only when the reader asks for it ---------------------
   // The button and the picture with the play mark both do it. Without this script the picture is a plain
   // link to the post on X. X has no player that shows the video alone: its createVideo() draws the whole

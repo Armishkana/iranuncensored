@@ -528,6 +528,11 @@ html[dir="rtl"] textarea[dir="auto"]:placeholder-shown,html[dir="rtl"] input[dir
 .talk-ctl .chips{display:flex;flex-wrap:nowrap;gap:8px;overflow-x:auto;margin:0 calc(var(--gutter) * -1);padding:0 var(--gutter) 6px;scrollbar-width:thin;scrollbar-color:var(--line) transparent}
 .talk-ctl .chip{flex:none;min-height:44px;padding:0 14px;font:600 .92rem/1 var(--mix);color:var(--ink);background:var(--panel);border:1px solid var(--line);border-radius:999px;cursor:pointer;white-space:nowrap}
 .talk-ctl .chip[aria-pressed="true"]{background:var(--field);color:var(--on-field);border-color:var(--field)}
+/* The same fault a reader reported on libertypolitics.com on 12 October 2026: on a computer the row was cut off.
+   From 760px it wraps; narrower, it still slides under a thumb. */
+@media(min-width:760px){
+  .talk-ctl .chips{flex-wrap:wrap;overflow-x:visible}
+}
 .chips-gap{flex:none;inline-size:1px;margin:8px 4px;background:var(--line)}
 .talk-ctl .chips + .chips{margin-top:8px}
 .busy{margin:0 0 14px}

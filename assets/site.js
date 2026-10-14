@@ -54,40 +54,13 @@
     rkSet();
   }
 
-  // ---- the front page: the first way in knows when a show is on -----------------------------------------
-  // As printed, "Talk live" says when the show is on in U.S. Eastern time, and the Liberty Politics site's
-  // whatson.js adds the visitor's own clock after it. This adds one thing from the same register (the bubble
-  // carries it as data-on, and whatson.js leaves its own arithmetic on window.LPOn): while a show is on, the
-  // door says so and carries the red dot.
-  var wayLive = $('way-live');
-  if (wayLive) {
-    var wayB = wayLive.querySelector('b'), wayWas = wayB ? wayB.textContent : '', wayNow = wayLive.getAttribute('data-way-now') || '';
-    var wayDraw = function () {
-      var on = false;
-      try {
-        var cfg = JSON.parse(calls.getAttribute('data-on'));
-        on = window.LPOn.rows(cfg.items, Date.now()).some(function (r) { return r.on; });
-      } catch (x) { on = false; }
-      wayLive.classList[on ? 'add' : 'remove']('live');
-      if (wayB && wayNow) { wayB.textContent = on ? wayNow : wayWas; }
-    };
-    if (calls && window.LPOn) { wayDraw(); setInterval(wayDraw, 30000); }
-    else if (calls) { window.addEventListener('load', function () { if (window.LPOn) { wayDraw(); setInterval(wayDraw, 30000); } }); }
-  }
-
-  // ---- the bubble steps aside for the first thing a page asks for ------------------------------------
-  // The bubble in the corner is fixed to the screen, and on a phone it came to rest on the three ways in (which
-  // say the same two things bigger) and on the button of the reader's next mission. While a part marked
-  // data-calls-wait is on screen the bubble is not drawn; it is back as soon as that part has scrolled off.
-  var waitFor = doc.querySelectorAll('[data-calls-wait]');
-  if (calls && waitFor.length && 'IntersectionObserver' in window) {
-    var seen = [];
-    var io = new IntersectionObserver(function (en) {
-      en.forEach(function (x) { var i = seen.indexOf(x.target); if (x.isIntersecting && i < 0) { seen.push(x.target); } else if (!x.isIntersecting && i >= 0) { seen.splice(i, 1); } });
-      calls.classList[seen.length ? 'add' : 'remove']('wait');
-    });
-    Array.prototype.forEach.call(waitFor, function (el) { io.observe(el); });
-  }
+  // ---- THE BUBBLE NEVER STEPS ASIDE (14 October 2026, evening) -------------------------------------------
+  // Armin, about the bubble in the corner (the next show, the Discord): it "is good. I just don't like that I have to
+  // scroll down to see it ... It should be there all the time." Until that evening it stepped aside while the front
+  // page's three ways in, or the Missions page's next mission, were on screen, so a visitor arriving on the front page
+  // did not see it until they scrolled. The three ways in are gone, and so is the stepping aside: the bubble is on
+  // screen from the first pixel, on every page, until the reader's own cross puts it away for the visit. The red dot
+  // on the first way in went with the ways; the bubble itself says when a show is on (whatson.js).
 
   // ---- the campaign page: play a post from X only when the reader asks for it ---------------------
   // The button and the picture with the play mark both do it. Without this script the picture is a plain

@@ -36,6 +36,59 @@
     inSet();
   }
 
+  // ---- the Missions page: the drawing of the reader's rank ---------------------------------------------
+  // quests.js writes the NAME of the rank into [data-q="level"] and nothing else. The six drawings are all in
+  // the page; this says which one is the reader's (data-rank on #q-rank, which site.css reads) and puts the
+  // one plain line that says what the rank means beside it. With this script off the first rank is drawn.
+  var rankBox = $('q-rank'), rankName = rankBox && rankBox.querySelector('[data-q="level"]');
+  if (rankName && window.MutationObserver) {
+    var rkNames = [], rkLines = [];
+    try { rkNames = JSON.parse(rankBox.getAttribute('data-names')) || []; rkLines = JSON.parse(rankBox.getAttribute('data-lines')) || []; } catch (x) { }
+    var rkSet = function () {
+      var n = rkNames.indexOf(rankName.textContent.trim()), line = rankBox.querySelector('[data-rank-line]');
+      if (n < 0) { return; }
+      rankBox.setAttribute('data-rank', String(n));
+      if (line && rkLines[n] && line.textContent !== rkLines[n]) { line.textContent = rkLines[n]; }
+    };
+    new MutationObserver(rkSet).observe(rankName, { childList: true, characterData: true, subtree: true });
+    rkSet();
+  }
+
+  // ---- the front page: the first way in knows when a show is on -----------------------------------------
+  // As printed, "Talk live" says when the show is on in U.S. Eastern time, and the Liberty Politics site's
+  // whatson.js adds the visitor's own clock after it. This adds one thing from the same register (the bubble
+  // carries it as data-on, and whatson.js leaves its own arithmetic on window.LPOn): while a show is on, the
+  // door says so and carries the red dot.
+  var wayLive = $('way-live');
+  if (wayLive) {
+    var wayB = wayLive.querySelector('b'), wayWas = wayB ? wayB.textContent : '', wayNow = wayLive.getAttribute('data-way-now') || '';
+    var wayDraw = function () {
+      var on = false;
+      try {
+        var cfg = JSON.parse(calls.getAttribute('data-on'));
+        on = window.LPOn.rows(cfg.items, Date.now()).some(function (r) { return r.on; });
+      } catch (x) { on = false; }
+      wayLive.classList[on ? 'add' : 'remove']('live');
+      if (wayB && wayNow) { wayB.textContent = on ? wayNow : wayWas; }
+    };
+    if (calls && window.LPOn) { wayDraw(); setInterval(wayDraw, 30000); }
+    else if (calls) { window.addEventListener('load', function () { if (window.LPOn) { wayDraw(); setInterval(wayDraw, 30000); } }); }
+  }
+
+  // ---- the bubble steps aside for the first thing a page asks for ------------------------------------
+  // The bubble in the corner is fixed to the screen, and on a phone it came to rest on the three ways in (which
+  // say the same two things bigger) and on the button of the reader's next mission. While a part marked
+  // data-calls-wait is on screen the bubble is not drawn; it is back as soon as that part has scrolled off.
+  var waitFor = doc.querySelectorAll('[data-calls-wait]');
+  if (calls && waitFor.length && 'IntersectionObserver' in window) {
+    var seen = [];
+    var io = new IntersectionObserver(function (en) {
+      en.forEach(function (x) { var i = seen.indexOf(x.target); if (x.isIntersecting && i < 0) { seen.push(x.target); } else if (!x.isIntersecting && i >= 0) { seen.splice(i, 1); } });
+      calls.classList[seen.length ? 'add' : 'remove']('wait');
+    });
+    Array.prototype.forEach.call(waitFor, function (el) { io.observe(el); });
+  }
+
   // ---- the campaign page: play a post from X only when the reader asks for it ---------------------
   // The button and the picture with the play mark both do it. Without this script the picture is a plain
   // link to the post on X. X has no player that shows the video alone: its createVideo() draws the whole

@@ -7,9 +7,12 @@
 @font-face{font-family:"Vazirmatn";src:url(fonts/vazirmatn.woff2) format("woff2");font-weight:100 900;font-display:swap}
 @font-face{font-family:"Lalezar";src:url(fonts/lalezar.woff2) format("woff2");font-weight:400;font-display:swap}
 :root{
+  /* 14 October 2026: the ground and the text are the brand register's own (brands.json: Ground #12120E, Paper
+     #F2F1E6, Sun gold #D9B45A, the ribbon's green and red). Every other grey here is a step between Ground and
+     Paper (panel 5%, raise 9%, line 16%, dim 68% of the way), and sunk is Ground a third of the way to black. */
   --field:#D9B45A; --on-field:#14120B; --field-hi:#E8C97A; --field-lo:#8E7434;
-  --bg:#101010; --panel:#191918; --sunk:#0A0A0A; --raise:#232322;
-  --ink:#F3F1EA; --dim:#B4B2A8; --line:#34332F;
+  --bg:#12120E; --panel:#1D1D18; --sunk:#0C0C09; --raise:#262621;
+  --ink:#F2F1E6; --dim:#AAAAA1; --line:#36362F;
   --green:#239F40; --white:#F2F1E6; --red:#DA0000;
   --ga:#46CC82; --gb:#A9D84E; --gc:#E8DC82; --gd:#FF9A3D; --gf:#FF5A48; --on-grade:#16140A;
   --display:"Big Shoulders Display","Arial Narrow","Roboto Condensed",sans-serif;
@@ -18,13 +21,15 @@
   /* One spacing scale and one type scale (13 October 2026, his "simplify ... messy and chaotic, too much clutter").
      A new rule takes its space and its size from here. A card is --panel with no line round it and --r2 corners;
      a line is kept for what is typed in, what is pressed, and the two bars that stay on screen. */
-  --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:24px; --s6:32px; --s7:48px;
-  --h1:clamp(2.6rem,11vw,4.4rem); --h2:clamp(1.6rem,5.4vw,2.4rem); --h3:1.4rem;
-  --fs-1:.75rem; --fs-2:.8rem; --fs-3:.85rem; --fs-4:.9rem; --fs-5:.95rem;      /* text under the body size: five steps, where there were twelve */
+  --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:24px; --s6:32px; --s7:48px; --s8:72px;
+  /* ONE TYPE SCALE (14 October 2026). Three display sizes, the lede, the body, and three sizes under it: 15, 14
+     and 12px. --fs-1 to --fs-5 are kept as names because every older rule reads them; they hold only those three. */
+  --h1:clamp(2.5rem,11vw,5rem); --h2:clamp(1.75rem,6vw,2.75rem); --h3:1.4rem; --lede:1.125rem;
+  --fs-1:.75rem; --fs-2:.75rem; --fs-3:.875rem; --fs-4:.875rem; --fs-5:.9375rem;
   color-scheme:dark;
 }
 html[lang="fa"]{--display:"Vazirmatn",Tahoma,"Segoe UI",sans-serif;--body:"Vazirmatn",Tahoma,"Segoe UI",sans-serif;
-  --h1:clamp(1.9rem,8vw,3.2rem);--h2:clamp(1.35rem,4.8vw,1.9rem);--h3:1.2rem}
+  --h1:clamp(1.7rem,7.6vw,3.6rem);--h2:clamp(1.35rem,5vw,2.1rem);--h3:1.2rem;--lede:1.0625rem}
 *,*::before,*::after{box-sizing:border-box}
 /* A thing marked hidden is never drawn. Without this line any class that sets display (.btn, .joined, .row)
    beats the hidden mark, and the page shows what the script just put away: the Join page said "You are in"
@@ -111,7 +116,7 @@ textarea{min-height:120px;resize:vertical}
 .find input,.tools input,.tools select{min-height:52px;color:var(--ink);background:var(--panel);border:1px solid var(--field-lo)}
 .find input:focus,.tools input:focus,.tools select:focus{border-color:var(--field)}
 .find input::placeholder,.tools input::placeholder{color:var(--dim)}
-.hits{position:absolute;inset-inline:0;top:calc(100% - 44px);z-index:10;margin:4px 0 0;background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:var(--r);box-shadow:0 12px 28px -8px rgba(0,0,0,.6);max-height:60vh;overflow:auto}
+.hits{position:absolute;inset-inline:0;top:calc(100% - 44px);z-index:10;margin:4px 0 0;background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:var(--r);max-height:60vh;overflow:auto}
 .hits:empty{display:none}
 .hits a{display:flex;align-items:center;gap:10px;padding:10px 12px;min-height:48px;text-decoration:none;border-bottom:1px solid var(--line)}
 .hits a:hover,.hits a:focus-visible{background:var(--raise)}
@@ -290,26 +295,6 @@ footer li a{display:inline-flex;align-items:center;min-height:44px;line-height:1
 @media(prefers-reduced-motion:no-preference){.btn,.mrow a{transition:background-color .12s,border-color .12s}}
 
 /* ---- taking action (act/, act/trump-meet-pahlavi/, act/bloc/), added 5 October 2026 ---- */
-.acards{display:grid;gap:var(--s3)}
-@media(min-width:820px){.acards{grid-template-columns:repeat(3,1fr)}.ac-lead{grid-column:1/-1}}
-.acards a{display:grid;gap:6px;align-content:start;height:100%;padding:var(--s4);background:var(--panel);border:1px solid transparent;border-radius:var(--r2);text-decoration:none}
-.ac-lead a{padding:0;gap:0;overflow:hidden}
-.ac-lead .ac-b{display:grid;gap:8px;padding:14px 16px 12px}
-.acards .ac-lead h2,.acards .ac-lead h3{font-size:clamp(1.9rem,7.4vw,2.8rem);color:var(--field)}
-html[lang="fa"] .acards .ac-lead h2,html[lang="fa"] .acards .ac-lead h3{font-size:clamp(1.5rem,6.4vw,2.3rem)}
-.acards .ac-lead .strip{display:grid;grid-template-columns:repeat(5,1fr);gap:2px}
-.acards .ac-lead .strip img{inline-size:100%;block-size:auto;aspect-ratio:3/4;border:0;border-radius:0}
-@media(min-width:820px){.ac-lead a{grid-template-columns:minmax(0,24rem) 1fr;align-items:center}.ac-lead .ac-b{padding:24px}}
-.acards a:hover{border-color:var(--field)}
-.acards h2,.acards h3{font-size:1.5rem;line-height:1.1;color:var(--ink)}
-html[lang="fa"] .acards h2,html[lang="fa"] .acards h3{font-size:1.2rem}
-html[lang="fa"] .acards h2,html[lang="fa"] .acards h3{line-height:1.35}
-.acards .txt{color:var(--dim)}
-.acards .go{display:inline-flex;align-items:center;min-height:44px;font-weight:700;color:var(--field)}
-.acards .go::after{content:"\2192";margin-inline-start:8px}
-html[dir="rtl"] .acards .go::after{content:"\2190"}
-.acards .strip{display:flex;gap:6px}
-.acards .strip img{inline-size:72px;block-size:96px;object-fit:cover;border-radius:4px;border:1px solid var(--line)}
 .camp h1{font-size:clamp(3.2rem,15vw,6rem);font-weight:900}
 html[lang="fa"] .camp h1{font-size:clamp(2.2rem,10vw,4.2rem);font-weight:900}
 .askp{font-size:1.2rem;line-height:1.5;font-weight:600;margin-top:14px;max-width:44ch}
@@ -714,7 +699,6 @@ html[dir="rtl"] .sw input:checked::after{transform:translateX(-20px)}
 .hero h1 i{display:block}
 .hero .find{margin-top:20px}
 .dist{margin-top:20px}
-.dist .dist-h{font:700 1rem/1.5 var(--body);text-transform:none;letter-spacing:0;color:var(--ink)}
 .dist-bar{display:flex;gap:2px;block-size:14px;margin-top:10px;border-radius:7px;overflow:hidden}
 .dist-bar i{display:block;min-inline-size:4px}
 .dist-doors{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:8px}
@@ -757,15 +741,6 @@ footer .on-when{display:block;margin-block:-6px 8px;font-size:var(--fs-3);color:
 body:has(textarea:focus) .calls,body:has(input:focus) .calls,body:has(.sheet[open]) .calls{display:none}
 html.modes-on footer{padding-bottom:96px}
 @media print{.calls,.fab,.modes{display:none}}
-/* ---- 13 October 2026: the front page below its head is three things: one door to doing, what I found as one
-   strip, and the page's question. A section's head is its name and, where there is more, one link at its end. ---- */
-.sec-h{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:0 var(--s4);margin-bottom:var(--s3)}
-.sec .sec-h h2{margin:0}
-.sec-h a{display:inline-flex;align-items:center;min-height:44px;font-weight:700;color:var(--field);text-decoration:none}
-.sec-h a::after{content:"\2192";margin-inline-start:var(--s2)}
-html[dir="rtl"] .sec-h a::after{content:"\2190"}
-.sec-h a:hover{text-decoration:underline}
-.nudge-sec + .sec{padding-top:var(--s5)}
 /* the door: the campaign's own stills, its name, one line */
 .door{display:grid;overflow:hidden;background:var(--panel);border:1px solid transparent;border-radius:var(--r2);text-decoration:none}
 .door:hover{border-color:var(--field)}
@@ -776,15 +751,6 @@ html[dir="rtl"] .sec-h a::after{content:"\2190"}
 html[lang="fa"] .door h2{font-size:clamp(1.5rem,6.4vw,2.3rem)}
 .door .txt{color:var(--dim)}
 @media(min-width:820px){.door{grid-template-columns:minmax(0,24rem) 1fr;align-items:center}.door-b{padding:var(--s5)}}
-/* the two ends of the scores: the number, how many members have it, three of them */
-.ends{display:grid;grid-template-columns:1fr 1fr;gap:var(--s4);margin-top:var(--s5)}
-.end-h{display:flex;align-items:center;gap:var(--s2);font-weight:700;line-height:1.3}
-.end-f{display:flex;gap:var(--s2);margin-top:var(--s2)}
-.end-f li{flex:1 1 0;max-inline-size:56px}
-.end-f a{display:block;border-radius:var(--r)}
-.end-f .face{inline-size:100%;block-size:auto;aspect-ratio:48/58}
-.end-f a:hover .face{outline:2px solid var(--field);outline-offset:1px}
-@media(min-width:820px){.ends{gap:var(--s7)}}
 .more{display:flex;flex-wrap:wrap;align-items:center;gap:10px 20px}
 .more a:not(.btn){display:inline-flex;align-items:center;min-height:44px}
 
@@ -809,118 +775,146 @@ html[lang="fa"] .vg-en span[lang="en"],html[lang="fa"] .vg-rule span[lang="en"]{
 @media(min-width:720px){.vg-states{grid-template-columns:repeat(4,minmax(0,1fr))}}
 .vg-offer{margin-block:14px;max-width:60ch}
 
-/* ---- 14 October 2026: the mission board (act/) and the front page's way into it. Armin: the act part "needs to be
-   front and center ... like a video game. Gamified: a quest and side quests." The markup is the one the Liberty
-   Politics site prints, because the same script runs both boards (../../site/build/quests.js, the contract at its
-   top); these are this site's own styles for it: its tokens, every side written as inline-start / inline-end so
-   the Persian board mirrors by itself, and the gold where it already is: the headline, the buttons (a chip that is
-   on, "Open mission", Start) and the links. The rank's bar and the chain's dots are bone white, not gold.
+/* ---- 14 October 2026: the Missions page (missions/). The markup is the one the Liberty Politics site prints, because
+   the same script runs both (../../site/build/quests.js, the contract at its top); these are this site's own styles
+   for it: its tokens, every side written as inline-start / inline-end so the Persian page mirrors by itself, and the
+   gold where it already is: the headline, the buttons (a chip that is on, "Open mission", Start) and the links. The
+   rank's bar, its drawing and the chain's dots are bone white, not gold. A mission is a ROW on a hairline, not a box:
+   it becomes a panel only while it is open.
    Nothing here is hidden and then animated in: a part only the script can run (.q-js) is simply not drawn until
    the page's own line has said scripts are on (q-js-on on <html>, set before the chooser is printed). ---- */
 .q-js{display:none}
 html.q-js-on .q-js:not([hidden]){display:block}
 html.q-js-on p.q-chain:not([hidden]){display:flex}
-.q-head .wrap{padding-top:var(--s5);padding-bottom:var(--s5)}
-.q-head .lede{max-width:44ch;margin-top:var(--s3);font-size:1.05rem;font-weight:500;line-height:1.4}
-html[lang="fa"] .q-head .lede{line-height:1.75}
-.q-rank{margin-top:var(--s4);max-width:30rem;display:grid;grid-template-columns:1fr auto;gap:var(--s2) var(--s3);align-items:baseline}
-.q-rank-l{grid-row:1;grid-column:1;display:flex;align-items:baseline;gap:var(--s3)}
+.q-head .wrap,.field.q-head .wrap{padding-top:var(--s5);padding-bottom:var(--s3)}
+.q-head .lede{max-width:46ch;margin-top:var(--s2);font-size:1rem;font-weight:500;line-height:1.5;color:var(--dim)}
+html[lang="fa"] .q-head .lede{line-height:1.8}
+/* the chooser: who first (it decides what is safe to show), then, folded, how much time and what you can do */
+.q-pick{display:grid;gap:var(--s3);max-width:46rem}
+.q-head .q-pick{margin-top:var(--s4)}
+.q-row{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.q-lab{font-weight:700;color:var(--dim);font-size:var(--fs-4);margin-inline-end:2px}
+.q-chip{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:0 12px;border:1px solid var(--line);border-radius:999px;background:transparent;color:var(--ink);font:600 var(--fs-4)/1.2 var(--body);text-decoration:none;cursor:pointer;white-space:nowrap}
+.q-chip:hover{border-color:var(--field)}
+.q-chip[aria-pressed="true"]{background:var(--field);border-color:var(--field);color:var(--on-field)}
+.q-chip-in{border-color:var(--dim)}
+@media(prefers-reduced-motion:no-preference){.q-chip,.q-m,.way{transition:background-color .15s,border-color .15s,color .15s}}
+.q-more{margin-top:var(--s4);max-width:46rem}
+.q-more>summary{display:inline-flex;align-items:center;gap:var(--s2);min-height:44px;color:var(--dim);font-weight:600;font-size:var(--fs-4);cursor:pointer;list-style:none}
+.q-more>summary::-webkit-details-marker{display:none}
+.q-more>summary::after{content:"";width:7px;height:7px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg);margin-top:-4px}
+.q-more[open]>summary::after{transform:rotate(225deg);margin-top:4px}
+.q-more .q-pick{padding-bottom:var(--s2)}
+/* the rank: its drawing, its name, the bar. One of the six drawings is shown: the one #q-rank names (site.js keeps
+   data-rank in step with the name quests.js writes; with scripts off it is the first). */
+.q-rank{margin-top:var(--s5);max-width:30rem;display:grid;grid-template-columns:52px minmax(0,1fr);gap:var(--s3);align-items:center}
+.q-rank-m{display:grid;place-items:center;inline-size:52px;block-size:52px;color:var(--ink)}
+.q-rank-m .rk{display:none;inline-size:48px;block-size:48px}
+#q-rank[data-rank="0"] .rk-0,#q-rank[data-rank="1"] .rk-1,#q-rank[data-rank="2"] .rk-2,#q-rank[data-rank="3"] .rk-3,#q-rank[data-rank="4"] .rk-4,#q-rank[data-rank="5"] .rk-5{display:block}
+.q-rank-b{display:grid;grid-template-columns:1fr auto;gap:2px var(--s3);align-items:baseline}
+.q-rank-l{grid-column:1;display:flex;align-items:baseline;gap:var(--s3)}
 .q-rank-l b{font:800 1.5rem/1 var(--display);letter-spacing:.02em}
 html[lang="en"] .q-rank-l b{text-transform:uppercase}
 html[lang="fa"] .q-rank-l b{font-size:1.25rem;font-weight:900;line-height:1.4;letter-spacing:0}
 .q-rank-l span{font-weight:700}
-.q-rank-n{grid-row:1;grid-column:2;color:var(--dim);font-size:var(--fs-4);text-align:end}
+.q-rank-n{grid-column:2;grid-row:1;color:var(--dim);font-size:var(--fs-4);text-align:end}
+.q-rank-s{display:none;grid-column:1/-1;color:var(--dim);font-size:var(--fs-4);line-height:1.45}
+@media(min-width:560px){.q-rank-s{display:block}}
 /* the bar is a block, so it starts at the side the page starts on: from the right on a Persian page */
-.q-bar{grid-row:2;grid-column:1/-1;block-size:8px;border-radius:999px;background:var(--raise);overflow:hidden}
-.q-bar i{display:block;block-size:100%;inline-size:0;min-inline-size:8px;border-radius:999px;background:var(--ink);transition:width .5s cubic-bezier(.16,1,.3,1)}
-/* the chooser: three rows of chips */
-.q-pick{margin-top:var(--s4);display:grid;gap:var(--s3);max-width:46rem}
-.q-row{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
-.q-lab{font-weight:700;color:var(--dim);font-size:var(--fs-4);margin-inline-end:2px}
-.q-chips{display:flex;flex-wrap:wrap;gap:var(--s2)}
-.q-chip{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:0 10px;border:1px solid var(--line);border-radius:999px;background:var(--panel);color:var(--ink);font:700 var(--fs-3)/1.2 var(--body);text-decoration:none;cursor:pointer;white-space:nowrap}
-.q-chip:hover{border-color:var(--field)}
-.q-chip[aria-pressed="true"]{background:var(--field);border-color:var(--field);color:var(--on-field)}
-@media(prefers-reduced-motion:no-preference){.q-chip,.q-m{transition:background-color .15s,border-color .15s,color .15s}}
+.q-bar{grid-column:1/-1;block-size:6px;margin-top:6px;border-radius:999px;background:var(--raise);overflow:hidden}
+.q-bar i{display:block;block-size:100%;inline-size:0;min-inline-size:6px;border-radius:999px;background:var(--ink);transition:width .5s cubic-bezier(.16,1,.3,1)}
 /* a reader inside Iran: the safety card. Drawn with scripts off (nobody can choose then), and with scripts on
    only once "Inside Iran" is the chip that is on: site.js marks the page (q-inside), and a browser that knows
    :has() needs no script for it. Two rules, not one list: a browser that does not know :has() drops the whole
-   rule it is in. The rank is put away for that reader: nothing here earns XP inside Iran. */
+   rule it is in. The rank and the ranks are put away for that reader: nothing here earns XP inside Iran. */
 .q-safe{padding-top:var(--s4)}
-.q-safe-b{max-width:46rem;padding:var(--s4);background:var(--panel);border:1px solid var(--field-lo);border-radius:var(--r2)}
-.q-safe h2{font-size:1.4rem}
+.q-safe-b{max-width:46rem;padding:var(--s4);background:var(--panel);border-radius:var(--r2)}
+.q-safe h2{display:flex;align-items:center;gap:var(--s2);font-size:1.4rem}
+.q-safe h2 svg{flex:none}
 html[lang="fa"] .q-safe h2{font-size:1.15rem}
-.q-safe ul{display:grid;gap:var(--s2);margin-top:var(--s3)}
+.q-safe ul{display:grid;gap:var(--s3);margin-top:var(--s3)}
 .q-safe li{line-height:1.5;max-width:62ch}
 html[lang="fa"] .q-safe li{line-height:1.8}
+.q-safe p{margin-top:var(--s2)}
 html.q-js-on .q-safe{display:none}
 html.q-js-on.q-inside .q-safe{display:block}
 html.q-js-on:has([data-q-chip="who:inside"][aria-pressed="true"]) .q-safe{display:block}
-html.q-inside #q-rank,html.q-inside .q-goal,html.q-inside #q-how{display:none}
-html:has([data-q-chip="who:inside"][aria-pressed="true"]) :is(#q-rank,.q-goal,#q-how){display:none}
-/* the reader's own mission, and two more that fit */
-.q-yours{padding:var(--s5) 0 var(--s6)}
-.q-empty .q-best,.q-empty .q-also{display:none}
-.q-yours h2,.q-mine h2,.q-top h2,.q-read-h{font-size:clamp(1.4rem,4.8vw,1.9rem)}
-html[lang="fa"] :is(.q-yours h2,.q-mine h2,.q-top h2,.q-read-h){font-size:clamp(1.2rem,4.4vw,1.6rem)}
-.q-best{margin-top:var(--s3);max-width:46rem}
-.q-also{margin-top:var(--s3);display:grid;gap:var(--s2);max-width:46rem}
-.q-also-h{color:var(--dim);font-weight:700;font-size:var(--fs-4);margin-top:var(--s1)}
-.q-also:empty{display:none}
-/* the board */
-.q-goal{max-width:46rem;font-size:1.1rem;line-height:1.5;color:var(--dim)}
-html[lang="fa"] .q-goal{line-height:1.85}
-.q-goal b{color:var(--ink);font-weight:700}
-.q-tier{margin-top:var(--s6)}
-.q-tier h2 i{font-style:normal;color:var(--field)}
-.q-tier h2 + p{margin-top:var(--s2);color:var(--dim);max-width:56ch}
+html.q-inside #q-rank,html.q-inside #ranks,html.q-inside .q-more{display:none}
+html:has([data-q-chip="who:inside"][aria-pressed="true"]) :is(#q-rank,#ranks,.q-more){display:none}
+/* the reader's own mission: ONE, big */
+.q-yours{padding:var(--s3) 0 var(--s6)}
+.q-empty .q-best{display:none}
+.q-yours h2,.q-mine h2,.q-top h2,.q-read-h{font-size:var(--h3)}
+.q-yours h2{color:var(--dim)}
+.q-best{margin-top:var(--s3);max-width:46rem;display:grid;gap:var(--s2)}
+/* the three acts */
+.q-board{padding-top:0}
+.q-act-blk{padding-top:var(--s7)}
+.q-act-h{display:grid;grid-template-columns:48px minmax(0,1fr);gap:var(--s4);align-items:start;max-width:46rem}
+.act-n{font:900 3.4rem/.8 "Big Shoulders Display","Arial Narrow",sans-serif;color:var(--dim);text-align:center}
+html[lang="fa"] .act-n{font:900 2.6rem/1 "Vazirmatn",Tahoma,sans-serif}
+.act-n-in{display:grid;place-items:center;block-size:44px;color:var(--ink)}
+.act-n-in svg{inline-size:32px;block-size:32px}
+.q-act-h h2 + p{margin-top:var(--s2);color:var(--dim);max-width:52ch}
+.q-act-links{display:flex;flex-wrap:wrap;gap:0 var(--s5);margin-top:var(--s1)}
+.q-sub{margin-top:var(--s6)}
+.q-sub h3 + p{margin-top:var(--s1);color:var(--dim)}
 .q-chain{align-items:center;gap:var(--s3);margin-top:var(--s3);color:var(--dim);font-weight:700;font-size:var(--fs-4)}
 /* a row of dots runs the way the page reads, so on a Persian page the first stage is on the right */
 .q-dots{display:flex;gap:5px}
-.q-dots i{display:block;inline-size:22px;block-size:8px;border-radius:999px;background:var(--raise)}
+.q-dots i{display:block;inline-size:22px;block-size:6px;border-radius:999px;background:var(--raise)}
 .q-dots i.now{background:var(--dim)}
 .q-dots i.on{background:var(--ink)}
-.q-list{display:grid;gap:var(--s2);margin-top:var(--s4);max-width:46rem}
+.q-list{display:grid;margin-top:var(--s4);max-width:46rem;border-top:1px solid var(--line)}
+.q-list>li{border-bottom:1px solid var(--line)}
 @media(min-width:1000px){
-  .q-tier-side .q-list,.q-tier-quest .q-list,.q-tier-inside .q-list{grid-template-columns:repeat(2,minmax(0,1fr));max-width:none;align-items:start}
-  .q-also{grid-template-columns:repeat(2,minmax(0,1fr));max-width:none;align-items:start}
-  .q-also-h{grid-column:1/-1}
+  .q-act-blk .q-list{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:var(--s7);max-width:none;align-items:start}
 }
 /* one mission: closed, a row; open, what to do */
-.q-m{background:var(--panel);border:1px solid transparent;border-radius:var(--r2);overflow:hidden}
-.q-m:hover,.q-m[open]{border-color:var(--field-lo)}
-.q-m summary{display:grid;grid-template-columns:44px minmax(0,1fr) 16px;gap:var(--s3);align-items:center;min-height:68px;padding:var(--s3) var(--s4);cursor:pointer;list-style:none}
+.q-m{border-radius:var(--r2)}
+.q-m[open]{background:var(--panel);margin-block:var(--s2)}
+.q-m summary{display:grid;grid-template-columns:40px minmax(0,1fr) 16px;gap:var(--s3);align-items:center;min-height:64px;padding:var(--s3) var(--s1);cursor:pointer;list-style:none;border-radius:var(--r2)}
+.q-m[open] summary{padding-inline:var(--s4)}
+.q-m summary:hover .q-title{color:var(--field)}
 .q-m summary::-webkit-details-marker{display:none}
 /* the mark that says a card opens: two sides of a square, turned. Written with right and bottom on purpose: it points down in both directions of reading */
 .q-m summary::after{content:"";width:9px;height:9px;border-right:2px solid var(--dim);border-bottom:2px solid var(--dim);transform:rotate(45deg);justify-self:center;margin-top:-4px}
 .q-m[open] summary::after{transform:rotate(225deg);margin-top:4px}
-.q-ic{position:relative;display:grid;place-items:center;inline-size:44px;block-size:44px;border-radius:12px;background:var(--raise);color:var(--ink)}
-.q-stage{position:absolute;inset-inline-end:-5px;bottom:-5px;display:grid;place-items:center;min-inline-size:20px;block-size:20px;padding:0 4px;border-radius:999px;background:var(--bg);border:1px solid var(--line);color:var(--ink);font:800 var(--fs-1)/1 var(--body);font-style:normal}
-.q-t{display:grid;gap:var(--s1);min-width:0}
-.q-title{font-weight:700;font-size:1.05rem;line-height:1.3}
+.q-ic{position:relative;display:grid;place-items:center;inline-size:40px;block-size:40px;color:var(--ink)}
+.q-stage{position:absolute;inset-inline-end:-4px;bottom:-4px;display:grid;place-items:center;min-inline-size:18px;block-size:18px;padding:0 4px;border-radius:999px;background:var(--bg);border:1px solid var(--line);color:var(--ink);font:800 var(--fs-1)/1 var(--body);font-style:normal}
+.q-t{display:grid;gap:2px;min-width:0}
+.q-title{font-weight:700;font-size:1.0625rem;line-height:1.3}
 html[lang="fa"] .q-title{line-height:1.6}
-.q-meta{display:flex;flex-wrap:wrap;gap:2px var(--s3);color:var(--dim);font-size:var(--fs-4);font-weight:600}
+.q-meta{display:flex;flex-wrap:wrap;align-items:center;gap:2px var(--s3);color:var(--dim);font-size:var(--fs-4);font-weight:600}
 .q-xp{color:var(--ink);font-weight:800}
+.q-out{padding:1px 8px;border:1px solid var(--line);border-radius:999px;font-size:var(--fs-1);color:var(--ink);white-space:nowrap}
 .q-until{color:var(--gd)}
 .q-state{justify-self:start;padding:3px 9px;border-radius:999px;background:var(--raise);font-size:var(--fs-2);font-weight:700;color:var(--ink)}
 .q-state.q-s-accepted{color:var(--ga)}
 .q-state.q-s-back{color:var(--gd)}
 .q-hook-s{color:var(--dim);font-size:var(--fs-5);line-height:1.45}
 html[lang="fa"] .q-hook-s{line-height:1.75}
-.q-body{padding:2px var(--s4) var(--s4);display:grid;gap:var(--s3);border-top:1px solid var(--line)}
-.q-body>:first-child{margin-top:var(--s3)}
-.q-hook{font-size:1.08rem;line-height:1.45;font-weight:600;max-width:58ch}
+.q-body{padding:0 var(--s4) var(--s4);display:grid;gap:var(--s3)}
+.q-hook{font-size:var(--lede);line-height:1.45;font-weight:600;max-width:58ch}
 html[lang="fa"] .q-hook{line-height:1.8}
 .q-only{color:var(--dim);font-size:var(--fs-4);font-weight:700}
 .q-why{max-width:62ch;color:var(--dim);line-height:1.55}
 html[lang="fa"] .q-why{line-height:1.85}
-.q-why b,.q-proof b{color:var(--ink)}
+.q-proof b{color:var(--ink)}
 .q-why .src a{color:var(--field)}
 .q-steps{counter-reset:qs;display:grid;gap:var(--s3);max-width:62ch}
 .q-steps li{counter-increment:qs;display:grid;grid-template-columns:28px minmax(0,1fr);gap:var(--s3);line-height:1.5;overflow-wrap:anywhere}
 html[lang="fa"] .q-steps li{line-height:1.8}
 .q-steps li::before{content:counter(qs);display:grid;place-items:center;inline-size:28px;block-size:28px;border-radius:50%;background:var(--raise);color:var(--ink);font:800 var(--fs-3)/1 var(--body);font-variant-numeric:tabular-nums}
 html[lang="fa"] .q-steps li::before{content:counter(qs,persian)}
+/* the rules of a gathering, inside its card: the same lines the safety page gives the reasons for */
+.q-rules{max-width:62ch;padding:var(--s3) var(--s4);border:1px solid var(--line);border-radius:var(--r2)}
+.q-rules-h{font-weight:700}
+.q-rules ul,.g-lines{display:grid;gap:var(--s2);margin-top:var(--s2)}
+.q-rules li,.g-lines li{position:relative;padding-inline-start:18px;line-height:1.5;color:var(--dim)}
+html[lang="fa"] :is(.q-rules li,.g-lines li){line-height:1.8}
+.q-rules li::before,.g-lines li::before{content:"";position:absolute;inset-inline-start:2px;top:.62em;inline-size:6px;block-size:6px;border-radius:50%;background:var(--dim)}
+.g-lines li{color:var(--ink)}
 .q-proof{max-width:62ch;line-height:1.5}
 html[lang="fa"] .q-proof{line-height:1.8}
 .q-never{max-width:62ch;color:var(--gd);font-weight:600;font-size:var(--fs-5)}
@@ -944,24 +938,40 @@ html[lang="fa"] .q-proof{line-height:1.8}
 .q-form textarea::placeholder,.q-form input::placeholder{color:var(--dim)}
 .q-form button[disabled]{opacity:.6;cursor:default}
 .q-hint{color:var(--dim);font-size:var(--fs-4);max-width:60ch}
-/* the reader's own mission, big: the script copies the card and marks the copy */
-.q-big{border-color:var(--field-lo)}
-.q-big summary{grid-template-columns:52px minmax(0,1fr) 16px;padding:var(--s4);align-items:start}
-.q-big .q-ic{inline-size:52px;block-size:52px}
+/* the reader's own mission, big: the script copies the card and marks the copy. It is the one box on the page. */
+.q-big{background:var(--panel)}
+.q-big summary{grid-template-columns:48px minmax(0,1fr) 16px;padding:var(--s4);align-items:start}
+.q-big .q-ic{inline-size:48px;block-size:48px}
+.q-big .q-ic svg{inline-size:32px;block-size:32px}
 .q-big .q-title{font:800 1.75rem/1.02 var(--display);letter-spacing:.01em}
 html[lang="en"] .q-big .q-title{text-transform:uppercase}
 html[lang="fa"] .q-big .q-title{font-size:1.35rem;font-weight:900;line-height:1.45;letter-spacing:0}
 .q-big .q-body .q-hook,.q-small .q-body .q-hook,.q-small .q-hook-s{display:none}
 .q-big .q-meta{margin-top:2px}
-.q-big summary::before{content:attr(data-q-go);grid-column:2;grid-row:2;justify-self:start;display:inline-flex;align-items:center;min-height:44px;padding:0 18px;border-radius:var(--r);background:var(--field);color:var(--on-field);font-weight:700}
+.q-big summary::before{content:attr(data-q-go);grid-column:2;grid-row:2;justify-self:start;display:inline-flex;align-items:center;min-height:44px;margin-top:var(--s2);padding:0 18px;border-radius:var(--r);background:var(--field);color:var(--on-field);font-weight:700}
 .q-big[open] summary::before{display:none}
-/* my missions, the leaderboard, and what is folded at the foot */
+.q-small{background:var(--panel)}
+.q-small summary{padding-inline:var(--s3)}
+/* my missions, the ranks, the leaderboard, and what is folded at the foot */
 .q-mine{padding:var(--s5) 0}
-.q-minelist{display:grid;gap:var(--s2);margin-top:var(--s3);max-width:46rem}
-.q-mine-a{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px var(--s3);min-height:52px;padding:var(--s2) var(--s4);background:var(--panel);border:1px solid transparent;border-radius:var(--r2);text-decoration:none}
-.q-mine-a:hover{border-color:var(--field)}
+.q-minelist{display:grid;margin-top:var(--s3);max-width:46rem;border-top:1px solid var(--line)}
+.q-mine-a{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px var(--s3);min-height:52px;padding:var(--s2) var(--s1);border-bottom:1px solid var(--line);text-decoration:none}
+.q-mine-a:hover b{color:var(--field)}
 .q-mine-a b{font-weight:700}
-.q-mine-why{margin:6px var(--s4) 0;color:var(--dim);font-size:var(--fs-5);overflow-wrap:anywhere}
+.q-mine-why{margin:6px var(--s1) 0;color:var(--dim);font-size:var(--fs-5);overflow-wrap:anywhere}
+.rk{display:block;inline-size:48px;block-size:48px}
+.rk-list{display:grid;gap:var(--s5);margin-top:var(--s5)}
+@media(min-width:760px){.rk-list{grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s6) var(--s7)}}
+@media(min-width:1100px){.rk-list{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.rk-list li{display:grid;grid-template-columns:56px minmax(0,1fr);gap:var(--s3);align-items:start}
+.rk-box{display:grid;place-items:center;inline-size:56px;block-size:56px;color:var(--ink)}
+.rk-h{display:flex;align-items:baseline;justify-content:space-between;gap:var(--s3)}
+.rk-h b{font:800 1.4rem/1.1 var(--display);letter-spacing:.02em}
+html[lang="en"] .rk-h b{text-transform:uppercase}
+html[lang="fa"] .rk-h b{font-size:1.2rem;font-weight:900;line-height:1.4;letter-spacing:0}
+.rk-h span{color:var(--dim);font-size:var(--fs-4);font-weight:700;white-space:nowrap}
+.rk-l{margin-top:2px;color:var(--dim);line-height:1.5;max-width:40ch}
+html[lang="fa"] .rk-l{line-height:1.8}
 .q-toplist{counter-reset:qt;display:grid;margin-top:var(--s3);max-width:34rem}
 .q-toplist li{counter-increment:qt;display:grid;grid-template-columns:2rem minmax(0,1fr) auto auto;gap:var(--s3);align-items:baseline;padding:var(--s3) 0;border-bottom:1px solid var(--line)}
 .q-toplist li::before{content:counter(qt);font:800 1.2rem/1 var(--display);color:var(--dim)}
@@ -970,9 +980,8 @@ html[lang="fa"] .q-toplist li::before{content:counter(qt,persian)}
 .q-top-l{color:var(--dim);font-size:var(--fs-4)}
 .q-top-x{font-weight:800}
 .q-read .wrap>*{max-width:46rem}
-.q-read-h{margin-top:var(--s6)}
-.q-fold{border-bottom:1px solid var(--line)}
-.q-fold>summary{display:flex;align-items:center;justify-content:space-between;gap:var(--s3);min-height:56px;font-weight:700;font-size:1.08rem;cursor:pointer;list-style:none}
+.q-fold{margin-top:var(--s6);max-width:46rem;border-block:1px solid var(--line)}
+.q-fold>summary{display:flex;align-items:center;justify-content:space-between;gap:var(--s3);min-height:56px;font-weight:700;font-size:1.0625rem;cursor:pointer;list-style:none}
 .q-fold>summary::-webkit-details-marker{display:none}
 .q-fold>summary::after{content:"";flex:none;width:9px;height:9px;margin-inline-end:4px;border-right:2px solid var(--dim);border-bottom:2px solid var(--dim);transform:rotate(45deg)}
 .q-fold[open]>summary::after{transform:rotate(225deg)}
@@ -987,11 +996,253 @@ html[lang="fa"] .q-fold-b h3{font-size:1.1rem}
 .q-ladder li:last-child{border-bottom:0}
 .q-ladder b{flex:none}
 .q-guides{display:grid;margin-top:var(--s2)}
-/* the front page's head: one question, three chips that open the board with that much time chosen */
-.q-front{margin-top:var(--s5)}
-.q-front-q{font-weight:700;font-size:1.1rem}
-.q-front .q-chips{margin-top:var(--s3)}
-.q-front .q-chip{min-height:50px;padding:0 var(--s4);font-size:1rem;background:var(--field);border-color:var(--field);color:var(--on-field)}
-.q-front .q-chip:hover{background:var(--field-hi)}
-.q-front-n{margin-top:var(--s1)}
-.q-front-n a{display:inline-flex;align-items:center;min-height:44px;color:var(--field);font-weight:700}
+@media(min-width:760px){.q-guides{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:var(--s6)}}
+
+/* ---- 14 October 2026: the calmer look, on every page (projects/brand/community-strategy.md, section 7; his words:
+   "The whole website needs to become a lot more beautiful, with a cleaner design, a better user interface, and a lot
+   easier to understand what's going on"). One idea a screen, far fewer boxes inside boxes, bigger and calmer type.
+   What changed, in one place so it can be read as one decision:
+   - the ground and the text are the brand register's own, and the ribbon is a hairline;
+   - a list is rows on hairlines (the scorecard's members, the missions, the steps of a guide, the facts of the bloc
+     guide); a box is kept for what is typed in, what plays, a post, and the ONE thing a page puts first;
+   - a section breathes: 48px above and below on a phone, 72px on a computer, more above a heading than under it;
+   - the header and the footer are finished: the footer says who this is, then three short lists by what a reader
+     wants to do (do, read, talk), then the small print. ---- */
+.ribbon{height:3px}
+body{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+::-webkit-scrollbar{width:10px;height:10px}::-webkit-scrollbar-track{background:var(--sunk)}::-webkit-scrollbar-thumb{background:var(--line);border-radius:5px}
+a{text-underline-offset:.2em}
+.top{background:var(--bg)}
+.top .wrap{min-height:60px}
+.mark img{width:40px;height:40px}
+.subnav{background:var(--bg);border-bottom:1px solid var(--line);gap:0}
+.subnav a{padding:0 12px;font-size:var(--fs-4)}
+.subnav a[aria-current="page"]{color:var(--ink);box-shadow:inset 0 -2px 0 var(--field)}
+@media(min-width:820px){.top nav a[aria-current="page"]{color:var(--ink);box-shadow:inset 0 -2px 0 var(--field);border-radius:0}}
+.modes{background:var(--bg)}
+.field{background:var(--bg)}
+.field.band{background:var(--panel)}
+.field .wrap{padding-top:var(--s6);padding-bottom:var(--s6)}
+.lede{font-size:var(--lede);font-weight:500;line-height:1.45;max-width:40ch}
+.sec{padding:40px 0}
+.sec h2{margin-bottom:var(--s3)}
+.sunk{background:var(--sunk)}
+.road-h{max-width:46rem}
+.road-h h2{margin:0}
+.road-h .sub,.sec .sub{margin-top:var(--s2);color:var(--dim);max-width:52ch}
+.road-h .sub a{color:var(--field);font-weight:700;display:inline-flex;align-items:center;min-height:40px}
+@media(min-width:900px){.sec{padding:var(--s8) 0}.field .wrap{padding-top:var(--s7);padding-bottom:var(--s7)}}
+/* rows on hairlines */
+.rows{gap:0;border-top:1px solid var(--line)}
+.mrow a{background:none;border:0;border-bottom:1px solid var(--line);border-radius:0;padding:10px var(--s1);min-height:76px}
+.mrow a:hover{background:var(--panel);border-color:var(--line)}
+@media(min-width:900px){.rows.cols2{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:var(--s7)}}
+.measures{gap:var(--s5)}
+.measures li{background:none;border-radius:0;padding:var(--s4) 0 0;border-top:1px solid var(--line)}
+.asteps{gap:0}
+.asteps>li{background:none;border-radius:0;padding:var(--s5) 0;border-bottom:1px solid var(--line);grid-template-columns:40px minmax(0,1fr)}
+.asteps>li:first-child{padding-top:0}
+.asteps>li>b{display:block;inline-size:auto;block-size:auto;border-radius:0;background:none;color:var(--dim);font:900 2.6rem/.85 "Big Shoulders Display","Arial Narrow",sans-serif;text-align:center}
+html[lang="fa"] .asteps>li>b{font:900 2rem/1.2 "Vazirmatn",Tahoma,sans-serif}
+.asks li{background:var(--panel)}
+.bfacts{gap:0}
+.bfacts li,.asteps .bfacts li{background:none;border-radius:0;padding:var(--s4) 0;border-bottom:1px solid var(--line)}
+.who div{background:none;border-radius:0;padding:var(--s4) 0;border-bottom:1px solid var(--line)}
+.say-item{background:var(--panel)}
+.dist-d{background:none;padding:6px 0 4px}
+.dist-d:hover{background:none}
+.dist-d:hover b{color:var(--field)}
+.gets li::before{inline-size:8px;block-size:8px;inset-inline-start:6px;top:.65em;background:var(--dim)}
+/* the footer */
+footer{background:var(--sunk);border-top:1px solid var(--line);padding:var(--s7) 0 96px;color:var(--dim);font-size:var(--fs-4)}
+.foot-top{display:grid;gap:var(--s3);max-width:40rem}
+.foot-top .mark{color:var(--ink)}
+.foot-top p{line-height:1.6}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:var(--s5) var(--s4);margin-top:var(--s6)}
+.cols>div{grid-column:auto}
+.cols>div:last-child{grid-column:1/-1}
+@media(min-width:760px){.cols{grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--s6)}.cols>div:last-child{grid-column:auto}}
+.foot-h{font:800 1.15rem/1.2 var(--display);color:var(--ink);letter-spacing:.04em;margin-bottom:var(--s1)}
+html[lang="en"] .foot-h{text-transform:uppercase}
+html[lang="fa"] .foot-h{font-size:1rem;font-weight:800;letter-spacing:0}
+footer li a{text-decoration:none;color:var(--dim)}
+footer li a:hover{color:var(--ink);text-decoration:underline}
+.fine{margin-top:var(--s6);padding-top:var(--s4);border-top:1px solid var(--line);font-size:var(--fs-2);line-height:1.7;max-width:80ch}
+.fine + .fine{margin-top:var(--s2);padding-top:0;border-top:0}
+
+/* ---- the front page: one sentence, three ways in, one line for a reader inside Iran; then one idea a screen ---- */
+.hero .wrap{display:grid;gap:var(--s6);padding-top:var(--s3);padding-bottom:var(--s6)}
+.hero h1{font-weight:900}
+.hero h1 i{display:block;font-style:normal;color:var(--ink)}
+.hero .lede{margin-top:var(--s3);max-width:34ch;color:var(--dim)}
+.ways{display:grid;margin-top:var(--s3);border-top:1px solid var(--line)}
+.ways li{border-bottom:1px solid var(--line)}
+.way{display:grid;grid-template-columns:40px minmax(0,1fr) 14px;gap:var(--s3);align-items:center;min-height:68px;padding:var(--s3) var(--s1);text-decoration:none}
+.way-ic{position:relative;display:grid;place-items:center;inline-size:40px;block-size:40px;color:var(--ink)}
+.way-ic svg{inline-size:28px;block-size:28px}
+.way-t{display:grid;gap:2px;min-width:0}
+.way-t b{font:800 1.4rem/1.1 var(--display);letter-spacing:.02em;color:var(--field)}
+html[lang="en"] .way-t b{text-transform:uppercase}
+html[lang="fa"] .way-t b{font-size:1.15rem;font-weight:900;line-height:1.5;letter-spacing:0}
+.way-t small{color:var(--dim);font-size:var(--fs-4);line-height:1.4}
+html[lang="fa"] .way-t small{line-height:1.65}
+.way:hover .way-t b{color:var(--field-hi)}
+/* the arrow at the end of a way: two sides of a square, pointing where the page reads to */
+.way-go{inline-size:9px;block-size:9px;border-top:2px solid var(--dim);border-inline-end:2px solid var(--dim);transform:rotate(45deg)}
+html[dir="rtl"] .way-go{transform:rotate(-45deg)}
+/* while a show is on: site.js marks the first way, and its drawing carries the red dot the bubble uses */
+.way.live .way-ic::after{content:"";position:absolute;inset-inline-end:2px;top:2px;inline-size:10px;block-size:10px;border-radius:50%;background:var(--red);box-shadow:0 0 0 3px var(--bg)}
+.inside-note{display:grid;grid-template-columns:24px minmax(0,1fr);gap:var(--s3);margin-top:var(--s4);color:var(--dim);font-size:var(--fs-4);line-height:1.5}
+html[lang="fa"] .inside-note{line-height:1.75}
+.inside-note svg{color:var(--ink);margin-top:1px}
+.inside-note b{color:var(--ink)}
+.inside-note a{display:flex;align-items:center;min-height:40px;color:var(--field);font-weight:700}
+.hero-art{margin:0;display:grid;grid-template-columns:72px minmax(0,1fr);gap:var(--s4);align-items:center;color:var(--dim)}
+.derafsh{display:block;inline-size:100%;block-size:auto;color:var(--ink);opacity:.86}
+.hero-art figcaption{font-size:var(--fs-5);line-height:1.6;max-width:44ch}
+html[lang="fa"] .hero-art figcaption{line-height:1.85}
+.hero-art.has-pic{grid-template-columns:1fr}
+.art{display:block;inline-size:100%;block-size:auto;border-radius:var(--r2);background:var(--panel)}
+@media(min-width:900px){
+  .hero .wrap{grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:var(--s8);align-items:center;padding-top:var(--s7);padding-bottom:var(--s8)}
+  .hero .lede{max-width:38ch}
+  .hero-art{grid-template-columns:1fr;justify-items:center;gap:var(--s5);text-align:center}
+  .derafsh{inline-size:min(100%,15rem)}
+  .hero-art.has-pic{text-align:start;justify-items:start}
+}
+/* the three steps and the six ranks */
+.acts3{display:grid;gap:var(--s5);margin-top:var(--s5)}
+.acts3 li{display:grid;grid-template-columns:48px minmax(0,1fr);gap:var(--s4);align-items:start}
+.acts3 h3{font-size:1.6rem}
+html[lang="fa"] .acts3 h3{font-size:1.25rem}
+.acts3 p{margin-top:var(--s1);color:var(--dim);max-width:44ch}
+@media(min-width:900px){.acts3{grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--s7)}}
+.ranks-row{margin-top:var(--s6);padding-top:var(--s5);border-top:1px solid var(--line)}
+.ranks{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--s4) var(--s2)}
+.ranks li{display:grid;justify-items:center;gap:var(--s1);text-align:center;color:var(--ink)}
+.ranks b{font-size:var(--fs-4);font-weight:700;line-height:1.3}
+@media(min-width:560px){.ranks{grid-template-columns:repeat(6,minmax(0,1fr))}}
+.ranks-n{margin-top:var(--s4);color:var(--dim);max-width:52ch}
+.road .row{margin-top:var(--s5)}
+/* the record, as one door */
+.record-grid{display:grid;gap:var(--s6);margin-top:var(--s4)}
+.record-door .find{margin-top:0}
+@media(min-width:900px){.record-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:var(--s8);align-items:start}.record-grid .finds{grid-template-columns:1fr;gap:var(--s5)}}
+
+/* ---- the safety page and the host guide: short rules, each with its reason ---- */
+.s-jump{display:flex;flex-wrap:wrap;gap:var(--s2);margin-top:var(--s4)}
+.s-sec h2{margin-bottom:0}
+.s-rules{display:grid;gap:var(--s6);margin-top:var(--s5)}
+/* a rule is a sentence, often a long one: it is set as a sentence, bold, in the text face, never in capitals */
+.s-rules h3,html[lang="en"] .s-rules h3{font:700 1.125rem/1.4 var(--body);text-transform:none;letter-spacing:0;max-width:52ch}
+html[lang="fa"] .s-rules h3{font:800 1.0625rem/1.75 var(--body)}
+.s-why{margin-top:var(--s2);color:var(--dim);max-width:60ch}
+.s-fact{margin-top:var(--s3);padding:var(--s3) var(--s4);background:var(--panel);border-radius:var(--r2);font-size:var(--fs-5);line-height:1.55;max-width:60ch}
+html[lang="fa"] .s-fact{line-height:1.85}
+.sunk .s-fact{background:var(--bg)}
+.s-fact .src{margin-top:var(--s1)}
+.s-fact .src a{color:var(--field)}
+.s-sec>.wrap>.s-fact{margin-top:var(--s4)}
+.s-end{margin-top:var(--s6);padding-top:var(--s4);border-top:1px solid var(--line);font-weight:600;max-width:60ch}
+.g-steps h3{font-size:1.5rem}
+html[lang="fa"] .g-steps h3{font-size:1.2rem}
+.g-qs{display:grid;gap:var(--s2);margin-top:var(--s3)}
+.g-qs li{padding:var(--s2) var(--s3);background:var(--panel);border-radius:var(--r);font-weight:600}
+.g-steps .g-lines{margin-top:var(--s3)}
+/* while the first thing a page asks for is on screen (the three ways in, the reader's next mission) the bubble stays out of its way (site.js, data-calls-wait) */
+.calls.wait{display:none}
+@media(min-width:900px){
+  .hero .lede{font-size:1.375rem}
+  .way{min-height:84px;grid-template-columns:48px minmax(0,1fr) 14px;gap:var(--s4)}
+  .way-ic{inline-size:48px;block-size:48px}.way-ic svg{inline-size:32px;block-size:32px}
+  .way-t b{font-size:1.9rem}
+  html[lang="fa"] .way-t b{font-size:1.4rem}
+  .way-t small{font-size:1rem}
+  .inside-note{font-size:var(--fs-5);max-width:36rem}
+  .derafsh{inline-size:min(100%,19rem);stroke-width:1.6}
+  .hero-art figcaption{font-size:1rem;max-width:34ch}
+  .nudge-sec{padding-top:0}
+}
+/* ---- the painting (14 October 2026, round two). The first screen of a phone is the headline, the three ways in and the
+   line for a reader inside Iran, and nothing else: the painting stands beside the words only from 900px, and on a phone
+   a wide cut of it opens the three steps, below the first screen. ---- */
+.hero-art{display:none}
+.road-art{margin:0 0 var(--s5);display:grid;gap:var(--s3);color:var(--dim)}
+.road-art figcaption{font-size:var(--fs-5);line-height:1.6;max-width:52ch}
+html[lang="fa"] .road-art figcaption{line-height:1.85}
+.road-art .art-wide{aspect-ratio:2/1;inline-size:100%;block-size:auto;object-fit:cover}
+.road-art:not(.has-pic){grid-template-columns:64px minmax(0,1fr);align-items:center}
+@media(min-width:900px){.hero-art{display:grid}.road-art{display:none}}
+/* the first screen of a phone, 375 by 667 (round two): tighter rows, a smaller lede, the same three things */
+@media(max-width:899px){
+  .hero .wrap{padding-top:var(--s2);padding-bottom:var(--s5)}
+  .hero .lede{margin-top:var(--s2);font-size:1rem;line-height:1.45}
+  html[lang="fa"] .hero .lede{line-height:1.7}
+  .ways{margin-top:var(--s2)}
+  .way{min-height:58px;padding-block:var(--s2)}
+  .inside-note{margin-top:var(--s3)}
+  .inside-note a{min-height:40px}
+  .acts3{gap:var(--s4);margin-top:var(--s4)}
+  .ranks-row{margin-top:var(--s5);padding-top:var(--s4)}
+  .road .row{margin-top:var(--s4)}
+}
+html[lang="fa"] .hero h1{font-size:clamp(1.6rem,7vw,3.6rem)}
+@media(max-width:899px){
+  .inside-note a{display:inline-flex;vertical-align:middle;margin-inline-start:4px}
+  .hero h1{font-size:clamp(2.25rem,10vw,5rem)}
+  html[lang="fa"] .hero h1{font-size:clamp(1.55rem,6.8vw,3.6rem)}
+  .modes .wrap{padding-block:4px}
+  .top .wrap{min-height:56px}
+  .subnav a{min-height:42px}
+}
+@media(max-width:899px){.way{padding-block:6px;min-height:56px}}
+
+/* The share panel (build/share.js): what opens when a reader taps Share. ONE FILE FOR BOTH SITES. Each site's
+   render.py adds it to the end of its own site.css, so it is written with the names both stylesheets share
+   (--panel --sunk --raise --bg --ink --dim --line --field --on-field --ga --on-grade --r --r2 --body --s1..--s5)
+   and with inline-start / inline-end only, so the Persian pages mirror by themselves.
+   The panel itself is the sign-in panel's (.sheet .sheet-in .sheet-top .sheet-body): at the foot of a phone's
+   screen, in the middle of a computer's. Everything here is what goes inside it.
+   The apps are drawn in the site's own ink, not in each app's colours: six logos in six colours would be the
+   loudest thing on a site that keeps its one colour for the thing to press. The colour arrives under the
+   finger. */
+.shr [hidden]{display:none!important}
+.shr .sheet-body{gap:var(--s3);padding-block-end:var(--s4)}
+.shr-lead{font-weight:600;line-height:1.45;text-wrap:pretty}
+/* The card is not clipped (overflow:hidden would let the panel squeeze it shut on a short screen instead of
+   scrolling), so the picture rounds its own top corners. */
+.shr-card{margin:0;background:var(--sunk);border-radius:var(--r2)}
+.shr-pic{display:block;inline-size:100%;block-size:auto;aspect-ratio:1200/630;object-fit:cover;background:var(--raise);border-radius:var(--r2) var(--r2) 0 0}
+.shr-meta{display:grid;gap:2px;padding:var(--s3) var(--s4)}
+.shr-t{font-weight:700;line-height:1.35;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden;overflow-wrap:anywhere}
+.shr-h{color:var(--dim);font-size:.85rem;line-height:1.4;text-align:start;unicode-bidi:plaintext}
+.shr-copy{display:flex;align-items:stretch;gap:var(--s2)}
+.sheet .shr-url{flex:1 1 0;inline-size:auto;min-inline-size:0;color:var(--dim);font-size:.95rem;text-overflow:ellipsis;text-align:left}
+.shr-go{flex:none;min-block-size:52px;gap:8px;padding-inline:var(--s4);white-space:nowrap}
+.shr-go-i{display:grid;place-items:center;font-style:normal}
+.shr-go.ok,.shr-go.ok:hover{background:var(--ga);color:var(--on-grade)}
+.shr-say{position:absolute;inline-size:1px;block-size:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.shr-say:not(:empty).shr-say-on{position:static;inline-size:auto;block-size:auto;clip:auto;white-space:normal;font-weight:600}
+.shr-apps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(4rem,1fr));gap:var(--s2) var(--s1)}
+.shr-app{display:flex;flex-direction:column;align-items:center;gap:6px;inline-size:100%;min-block-size:78px;padding:var(--s1) 2px;background:none;border:0;border-radius:var(--r);color:var(--ink);font:600 .8rem/1.25 var(--body);text-align:center;text-decoration:none;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.shr-ic{display:grid;place-items:center;flex:none;inline-size:48px;block-size:48px;border-radius:50%;background:var(--raise);color:var(--ink);font-style:normal;transition:background-color .15s,color .15s,transform .15s cubic-bezier(.16,1,.3,1)}
+.shr-app:hover .shr-ic,.shr-app:focus-visible .shr-ic{background:var(--field);color:var(--on-field)}
+.shr-app:active .shr-ic{transform:scale(.93)}
+.shr-app:focus-visible{outline-offset:-2px}
+.shr-after{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s1) var(--s3);padding-block-start:var(--s4);border-block-start:1px solid var(--line);font-weight:600;line-height:1.45}
+.shr-after-a{display:inline-flex;align-items:center;min-block-size:44px;color:var(--field);font-weight:700}
+.shr-note{color:var(--dim);font-size:.85rem;line-height:1.5}
+/* A phone's browser leaves about 650px of height once its own bars are drawn, and the whole panel has to be
+   there without scrolling: the picture, the link and every app. So on a short screen the picture stands
+   alone (it carries the name and the site already; the title comes back when there is no picture), and it is
+   shown whole and a little smaller, never cropped. */
+@media(max-height:719px){
+  .shr-has-pic .shr-meta{display:none}
+  .shr-has-pic{background:none}
+  .shr-has-pic .shr-pic{inline-size:auto;max-inline-size:100%;block-size:clamp(120px,27vh,172px);margin-inline:auto;border-radius:var(--r2)}
+}
+@media(max-height:619px){.shr-has-pic .shr-pic{block-size:clamp(84px,17vh,120px)}}
+/* Four to a row on any phone, so eight apps are two even rows and never five and an orphan on a wider phone. */
+@media(max-width:639px){.shr-apps{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(min-width:640px){.shr .sheet-body{gap:var(--s4);padding-block-end:var(--s5)}}
+@media(prefers-reduced-motion:reduce){.shr-ic{transition:none}}

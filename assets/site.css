@@ -1341,7 +1341,8 @@ html[dir="rtl"] .q-act-h.has-pic::after{background:linear-gradient(270deg,rgba(1
 .q-why b{color:var(--field);font-weight:700}
 /* the header holds one more link since the board of public events (14 October 2026, evening): no link breaks over two lines */
 .top nav a{white-space:nowrap}
-@media(min-width:820px) and (max-width:1439px){.top nav a{padding:10px 7px}.top nav a.yt span{display:none}}
+/* 15 Oct 2026: above 1439px the menu took its wide padding back and ran into the mark (Home under "Uncensored" at 1536px, his screenshot). The bar never gets wider than its container, so the tight padding holds at every width from 820px up. */
+@media(min-width:820px){.top nav a{padding:10px 7px}.top nav a.yt span{display:none}}
 /* the Missions page asks who the reader is on its first screen: its picture is a shorter band on a phone */
 @media(max-width:699px){
   .q-head.art-head>.aip-bg,.q-head.art-head::after{block-size:min(190px,52vw)}

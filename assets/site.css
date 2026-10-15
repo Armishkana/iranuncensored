@@ -1359,6 +1359,8 @@ footer li a{min-width:44px;justify-content:center}
    1. The head ends where its words end: no dead dark band under the answers on a computer.
    2. The front question reads as four equal choices, one column on a phone and two on a computer; the first answer
       (the plan, the site's main use) is marked with a gold edge, never filled, because a filled answer is a chosen one.
+      (Since 15 October 2026 the head has one gold button only, "Join the fight"; the choice is the first question after
+      sign-up, and the answer that says a reader is inside Iran is never offered there.)
    3. The board of public events stands on its picture like the head does: the crowd seen clearly where no word is, a
       deep shade where the words are; on a phone the picture is a band over the heading. It read as dirt at half strength.
    4. One measure on the front page: from 900px each section's heading and its door share one row, so nothing is a
@@ -1368,14 +1370,9 @@ footer li a{min-width:44px;justify-content:center}
   .hero-iu{min-block-size:min(84svh,720px)}
   .hero.hero-iu .wrap{padding-top:var(--s7);padding-bottom:var(--s7)}
 }
-.hero-iu .fq-a{gap:var(--s2)}
-.m-js .hero-iu .fq-a{display:grid;grid-template-columns:minmax(0,1fr)}
-.hero-iu .fq-b{inline-size:100%;min-block-size:50px;padding:12px var(--s4);border-radius:var(--r2);background:rgba(29,29,24,.88);text-align:start;line-height:1.3}
-.hero-iu .fq-b:hover{background:var(--raise)}
-.hero-iu .fq-b:first-child:not([aria-pressed="true"]){border-color:var(--field);box-shadow:inset 0 0 0 1px var(--field);font-weight:700}
-.hero-iu .fq-b[aria-pressed="true"]{background:var(--field)}
-.hero-iu .fq-b[aria-pressed="true"]:hover{background:var(--field-hi)}
-@media(min-width:900px){.m-js .hero-iu .fq-a{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* the head's one call to action, "Join the fight" (15 October 2026): drawn in members.css for both sites; here it only
+   keeps its weight over the painting */
+.hero-iu .fq .fq-go{box-shadow:0 8px 30px rgba(0,0,0,.55)}
 
 .board-art{background:var(--bg)}
 .board-art>.aip-bg{inset:0 0 auto 0;block-size:min(250px,68vw);background:transparent;-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 24%,#000 52%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0,#000 24%,#000 52%,transparent 100%)}

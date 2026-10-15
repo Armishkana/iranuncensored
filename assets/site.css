@@ -369,6 +369,11 @@ html[lang="fa"]{--mix:"Vazirmatn",Tahoma,"Segoe UI",sans-serif}
    the account panel. */
 .acct-i{position:relative}
 .acct-c{position:absolute;inset-block-start:-5px;inset-inline-end:-8px;min-inline-size:18px;block-size:18px;padding:0 4px;border-radius:9px;background:var(--ink);color:var(--on-field);box-shadow:0 0 0 2px var(--sunk);font:800 var(--fs-1)/18px var(--body);text-align:center;font-variant-numeric:tabular-nums}
+/* the reader's own picture in the header in place of the letter (community.js paintHeader, 15 October 2026) */
+.acct-i.acct-pic{background:var(--raise);box-shadow:0 0 0 2px var(--field)}
+.acct-i.acct-pic img{display:block;width:100%;height:100%;border-radius:50%;object-fit:cover}
+/* a face that has its picture: the letter's coloured ground no longer shows */
+.av.av-pic{background:var(--raise)}
 .ry{display:grid;gap:6px;padding-block-end:14px;border-block-end:1px solid var(--line)}
 .ry h3{font-size:1.3rem}
 .ry-list{display:grid}

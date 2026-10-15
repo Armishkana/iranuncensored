@@ -585,6 +585,9 @@ html[dir="rtl"] textarea[dir="auto"]:placeholder-shown,html[dir="rtl"] input[dir
 .replies .said blockquote{margin-top:8px;font-size:1rem}
 .replies .said-bar{margin-top:6px}
 .replies .vt{min-width:52px;background:none}
+/* a reply to the signed-in reader that they have not seen yet: its own colour inside the thread (community.js ryHere) */
+.said.ry-new,.replies .said.ry-new{padding:10px 12px;background:rgba(217,180,90,.13);background:color-mix(in srgb,var(--field) 14%,transparent);border:0;border-inline-start:3px solid var(--field);border-radius:var(--r)}
+.said .meta .tag.new{color:var(--on-field);background:var(--field-hi);border-color:var(--field-hi)}
 .thread-more{display:inline-flex;align-items:center;min-height:44px;margin-block:6px 0;margin-inline:14px 0;padding:0;background:none;border:0;color:var(--field);font:700 var(--fs-4)/1 var(--body);cursor:pointer}
 .thread-more:hover{text-decoration:underline;text-underline-offset:3px}
 .reply-f{display:grid;gap:10px;margin-top:10px}

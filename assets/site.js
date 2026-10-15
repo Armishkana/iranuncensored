@@ -36,6 +36,16 @@
     inSet();
   }
 
+  // ---- the safety page: "Join the plan, safely" (15 October 2026) -----------------------------------------
+  // Opens the same sign-in panel as the header's Sign in, once community.js has made that a button. Before
+  // then, or with no script, the link goes where its href says.
+  doc.addEventListener('click', function (ev) {
+    var b = ev.target && ev.target.closest ? ev.target.closest('[data-open-acct]') : null, a = $('acct');
+    if (!b || !a || a.getAttribute('role') !== 'button') { return; }
+    ev.preventDefault();
+    a.click();
+  });
+
   // ---- the Missions page: the drawing of the reader's rank ---------------------------------------------
   // quests.js writes the NAME of the rank into [data-q="level"] and nothing else. The six drawings are all in
   // the page; this says which one is the reader's (data-rank on #q-rank, which site.css reads) and puts the

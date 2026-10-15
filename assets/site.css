@@ -1354,6 +1354,63 @@ html[dir="rtl"] .q-act-h.has-pic::after{background:linear-gradient(270deg,rgba(1
 body:has(#calls:not(.off)){padding-bottom:120px}
 footer li a{min-width:44px;justify-content:center}
 
+/* ---- THE VISUAL PASS (14 October 2026, his "significantly improve the way IranUncensored.com looks ... don't make any
+   unnecessary changes"). No new colour, font or element: the same tokens, put in order.
+   1. The head ends where its words end: no dead dark band under the answers on a computer.
+   2. The front question reads as four equal choices, one column on a phone and two on a computer; the first answer
+      (the plan, the site's main use) is marked with a gold edge, never filled, because a filled answer is a chosen one.
+   3. The board of public events stands on its picture like the head does: the crowd seen clearly where no word is, a
+      deep shade where the words are; on a phone the picture is a band over the heading. It read as dirt at half strength.
+   4. One measure on the front page: from 900px each section's heading and its door share one row, so nothing is a
+      narrow column with an empty right half, and the three acts below run the same full width.
+   5. Chapters: the record is a sunk band between hairlines, and every band's heading carries the same short gold rule. */
+@media(min-width:900px){
+  .hero-iu{min-block-size:min(84svh,720px)}
+  .hero.hero-iu .wrap{padding-top:var(--s7);padding-bottom:var(--s7)}
+}
+.hero-iu .fq-a{gap:var(--s2)}
+.m-js .hero-iu .fq-a{display:grid;grid-template-columns:minmax(0,1fr)}
+.hero-iu .fq-b{inline-size:100%;min-block-size:50px;padding:12px var(--s4);border-radius:var(--r2);background:rgba(29,29,24,.88);text-align:start;line-height:1.3}
+.hero-iu .fq-b:hover{background:var(--raise)}
+.hero-iu .fq-b:first-child:not([aria-pressed="true"]){border-color:var(--field);box-shadow:inset 0 0 0 1px var(--field);font-weight:700}
+.hero-iu .fq-b[aria-pressed="true"]{background:var(--field)}
+.hero-iu .fq-b[aria-pressed="true"]:hover{background:var(--field-hi)}
+@media(min-width:900px){.m-js .hero-iu .fq-a{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+.board-art{background:var(--bg)}
+.board-art>.aip-bg{inset:0 0 auto 0;block-size:min(250px,68vw);background:transparent;-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 24%,#000 52%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0,#000 24%,#000 52%,transparent 100%)}
+.board-art>.aip-bg img{opacity:1;object-position:42% 40%;filter:saturate(.8)}
+.board-art::after{inset:0 0 auto 0;block-size:min(250px,68vw);background:linear-gradient(180deg,rgba(10,10,8,.1) 0%,rgba(10,10,8,.4) 100%)}
+.board-art .mb-front{padding:clamp(150px,44vw,196px) 0 var(--s7)}
+.board-art .mb-front-h h2{text-shadow:0 2px 4px rgba(0,0,0,.7),0 0 24px rgba(0,0,0,.85)}
+@media(min-width:900px){
+  .board-art{display:flex;align-items:center;min-block-size:460px}
+  .board-art>.aip-bg,.board-art::after{inset:0;block-size:auto}
+  .board-art>.aip-bg{-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 16%,#000 84%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0,#000 16%,#000 84%,transparent 100%)}
+  .board-art>.aip-bg img{object-position:50% 38%}
+  .board-art::after{background:linear-gradient(90deg,rgba(10,10,8,.95) 0%,rgba(10,10,8,.88) 32%,rgba(10,10,8,.4) 58%,rgba(10,10,8,.08) 100%)}
+  html[dir="rtl"] .board-art::after{background:linear-gradient(270deg,rgba(10,10,8,.95) 0%,rgba(10,10,8,.88) 32%,rgba(10,10,8,.4) 58%,rgba(10,10,8,.08) 100%)}
+  .board-art .mb-front{flex:1;padding:var(--s8) 0}
+  .board-art .mb-front .wrap>*{max-inline-size:min(40rem,50%)}
+}
+
+@media(min-width:900px){
+  .front-acts .wrap,.record-door .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:var(--s8);align-items:end}
+  .front-acts .road-h,.record-door .road-h{grid-column:1}
+  .front-acts .you-next-w,.record-door .record-grid{grid-column:2}
+  .front-acts .acts,.front-acts .you-all{grid-column:1/-1}
+  .front-acts .you-h{margin-top:0}
+  .front-acts .you-next{max-inline-size:none}
+  .record-door .record-grid{max-inline-size:none;margin-top:0}
+}
+.record-door{background:var(--sunk);border-block:1px solid var(--line)}
+.field.band h2::before{content:"";display:block;inline-size:36px;block-size:2px;margin-bottom:var(--s3);background:var(--field)}
+/* a link inside a running line keeps its 40px tap as padding, so its line no longer stands taller than the others and a long link wraps like words */
+.road-h .sub a,.prose p>a:not([class]){display:inline;padding-block:12px}
+/* the search and the state picker are one control: 12px apart on every width, not 42px on a phone */
+.record-door .record-grid{gap:var(--s3)}
+.record-door .statepick{margin-top:0}
+
 /* The share panel (build/share.js): what opens when a reader taps Share. ONE FILE FOR BOTH SITES. Each site's
    render.py adds it to the end of its own site.css, so it is written with the names both stylesheets share
    (--panel --sunk --raise --bg --ink --dim --line --field --on-field --ga --on-grade --r --r2 --body --s1..--s5)

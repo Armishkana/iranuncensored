@@ -211,7 +211,7 @@ h1.mb-name{margin:0;font-size:clamp(2rem,8vw,3rem);line-height:1;overflow-wrap:a
 .mb-cover-art img{filter:saturate(.92) contrast(1.04)}
 .mb-day{position:absolute;inset-block-start:10px;inset-inline-start:10px;display:grid;justify-items:center;min-width:52px;padding:6px 8px 5px;
   background:rgba(12,12,11,.86);border:1px solid rgba(244,196,48,.55);border-radius:8px;color:#F3F1EA;line-height:1;box-shadow:0 2px 10px rgba(0,0,0,.45)}
-.mb-day-m{font:800 .72rem/1 var(--body);letter-spacing:.08em;text-transform:uppercase;color:#F4C430}
+.mb-day-m{font:800 .75rem/1 var(--body);letter-spacing:.08em;text-transform:uppercase;color:#F4C430}
 .mb-day b{font:800 1.55rem/1 var(--display);margin-top:3px}
 .mb-front .mb-day{inset-block-start:8px;inset-inline-start:8px;min-width:44px;padding:4px 6px}
 .mb-front .mb-day b{font-size:1.3rem}

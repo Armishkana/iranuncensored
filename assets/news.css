@@ -1,0 +1,115 @@
+/* The Newsroom (news/): news.py draws it, news.js works it. Colours, type and spacing are site.css's tokens only
+   (:root there); nothing here loads a font, a picture or anything from anyone else. Phone first: at 360px nothing is wider
+   than the screen, no text is under 12px, every control is at least 40px tall. Nothing is hidden to be animated back. */
+.nw-head .wrap{padding-bottom:var(--s5)}
+.nw-light{margin-top:var(--s3);max-width:60ch;color:var(--dim);font-size:var(--fs-3)}
+.nw{padding:var(--s4) 0 var(--s6)}
+.nw-grid{display:grid;grid-template-columns:minmax(0,1fr);grid-template-areas:"bar" "side" "main";gap:var(--s4)}
+.nw-bar{grid-area:bar;display:flex;flex-wrap:wrap;gap:var(--s2);align-items:center;justify-content:space-between}
+.nw-side{grid-area:side;display:grid;gap:var(--s4);min-width:0}
+.nw-main{grid-area:main;min-width:0}
+.nw-h{font-size:var(--h3);line-height:1.15;margin:0;color:var(--ink)}
+.nw-sub{margin-top:var(--s1);color:var(--dim);font-size:var(--fs-3)}
+.nw-block{background:var(--panel);border-radius:var(--r2);padding:var(--s3) var(--s3) var(--s4);min-width:0}
+
+/* the language filter and the two tools */
+.nw-seg{display:inline-flex;background:var(--panel);border-radius:999px;padding:3px;gap:2px}
+.nw-seg button{min-height:40px;min-width:56px;padding:0 var(--s3);border:0;border-radius:999px;background:transparent;color:var(--ink);font:600 var(--fs-3)/1 var(--body);cursor:pointer}
+.nw-seg button[aria-pressed="true"]{background:var(--field);color:var(--on-field)}
+.nw-tools{display:flex;flex-wrap:wrap;gap:var(--s2)}
+.nw-btn{min-height:44px;padding:0 var(--s4);border:1px solid var(--line);border-radius:var(--r);background:transparent;color:var(--ink);font:700 var(--fs-3)/1.2 var(--body);cursor:pointer}
+.nw-btn:hover{background:var(--raise)}
+.nw-btn-key{background:var(--field);border-color:var(--field);color:var(--on-field)}
+.nw-btn-key:hover{background:var(--field-hi)}
+.nw-btn:disabled{opacity:.6;cursor:wait}
+.nw-btn:focus-visible,.nw-seg button:focus-visible,.nw-chip:focus-visible,.nw-tile:focus-visible,.nw-pill:focus-visible,.nw-cp:focus-visible,.nw-t:focus-visible,.nw-mapd summary:focus-visible{outline:2px solid var(--field);outline-offset:2px}
+
+/* the pulse: one scrolling row on a phone, wrapped beside the list on a wide screen */
+.nw-chips{display:flex;gap:var(--s2);margin-top:var(--s3);overflow-x:auto;scrollbar-width:thin;padding-bottom:var(--s1);-webkit-overflow-scrolling:touch}
+.nw-chip{flex:0 0 auto;display:inline-flex;align-items:baseline;gap:6px;min-height:44px;padding:var(--s2) var(--s3);border:1px solid var(--line);border-radius:999px;background:var(--bg);color:var(--ink);font:600 var(--fs-3)/1.25 var(--body);cursor:pointer;white-space:nowrap}
+.nw-chip b{color:var(--field);font-size:var(--fs-5)}
+.nw-chip small{color:var(--dim);font-size:var(--fs-1);font-weight:500}
+.nw-chip[aria-pressed="true"]{background:var(--field);border-color:var(--field);color:var(--on-field)}
+.nw-chip[aria-pressed="true"] b,.nw-chip[aria-pressed="true"] small{color:var(--on-field)}
+
+/* the tile map: west on the left and north on top in both languages (dir="ltr" on the grid) */
+.nw-mapd summary{display:flex;flex-wrap:wrap;align-items:baseline;gap:var(--s1) var(--s3);min-height:44px;cursor:pointer;list-style:none}
+.nw-mapd summary::-webkit-details-marker{display:none}
+.nw-mapd summary::after{content:"+";margin-inline-start:auto;color:var(--field);font:700 1.25rem/1 var(--body)}
+.nw-mapd[open] summary::after{content:"\2212"}
+.nw-maptop{color:var(--dim);font-size:var(--fs-3)}
+.nw-maptop b{color:var(--field)}
+.nw-map{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px;margin-top:var(--s3);direction:ltr}
+.nw-tile{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;aspect-ratio:1/1;min-height:40px;min-width:0;padding:2px;border:0;border-radius:4px;background:var(--bg);color:var(--dim);cursor:pointer;overflow:hidden}
+.nw-tile-s{font:700 12px/1.1 var(--body);letter-spacing:.02em;white-space:nowrap;text-align:center}
+/* a Persian short name may take two lines at its space (خ. شمالی, چهار محال); a single word never breaks */
+html[lang="fa"] .nw-tile-s{letter-spacing:-.04em;font-size:12px;line-height:1.05;white-space:normal;overflow-wrap:normal;word-break:keep-all}
+.nw-tile b{font:700 12px/1 var(--body);color:inherit;min-height:12px}
+.nw-l1{background:rgba(217,180,90,.18);color:var(--ink)}
+.nw-l2{background:rgba(217,180,90,.36);color:var(--ink)}
+.nw-l3{background:rgba(217,180,90,.62);color:var(--on-field)}
+.nw-l4{background:var(--field);color:var(--on-field)}
+.nw-tile[aria-pressed="true"]{box-shadow:inset 0 0 0 2px var(--ink)}
+.nw-tile:hover{filter:brightness(1.15)}
+
+/* active filters, status, messages */
+.nw-status{color:var(--dim);font-size:var(--fs-3);min-height:1.6em}
+.nw-bad{color:var(--gd)}
+.nw-pills{display:flex;flex-wrap:wrap;gap:var(--s2);margin-top:var(--s2)}
+.nw-pill{display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0 var(--s3);border:1px solid var(--field);border-radius:999px;background:transparent;color:var(--ink);font:600 var(--fs-3)/1.2 var(--body);cursor:pointer}
+.nw-pill i{font-style:normal;color:var(--field);font-size:1.1rem}
+.nw-pill-all{border-color:var(--line);color:var(--dim)}
+.nw-toast{position:fixed;inset-inline:var(--gutter);bottom:var(--s4);z-index:40;max-width:32rem;margin-inline:auto;padding:var(--s3) var(--s4);border-radius:var(--r2);background:var(--raise);color:var(--ink);font-size:var(--fs-3);box-shadow:0 6px 24px rgba(0,0,0,.45);display:none}
+.nw-toast.nw-on{display:block}
+.nw-toast.nw-bad{color:var(--gd)}
+
+/* the list */
+.nw-list{display:grid;gap:var(--s2);margin-top:var(--s3)}
+.nw-i{background:var(--panel);border-radius:var(--r2);padding:var(--s3) var(--s4);min-width:0}
+.nw-m{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s1) var(--s2);color:var(--dim);font-size:var(--fs-1);line-height:1.4}
+.nw-k{display:inline-block;padding:2px 7px;border-radius:4px;background:var(--raise);color:var(--ink);font-weight:700;letter-spacing:.04em}
+html[lang="en"] .nw-k{text-transform:uppercase}
+.nw-k-x{background:#2B2B26}
+.nw-k-youtube,.nw-k-video{background:#3A1A16;color:#FFB4A8}
+.nw-o{color:var(--ink);font-weight:600;overflow-wrap:anywhere}
+.nw-t{display:block;margin-top:6px;color:var(--ink);font-size:1.0625rem;font-weight:650;line-height:1.45;text-decoration:none;overflow-wrap:anywhere}
+html[lang="fa"] .nw-t,.nw-t[lang="fa"]{font-family:"Vazirmatn",Tahoma,"Segoe UI",sans-serif;line-height:1.8}
+.nw-t[lang="en"]{font-family:var(--body)}
+a.nw-t:hover{color:var(--field-hi);text-decoration:underline}
+a.nw-t:visited{color:var(--dim)}
+.nw-w{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s1) var(--s3);margin-top:6px;color:var(--dim);font-size:var(--fs-1)}
+.nw-heat{display:inline-block;width:44px;height:4px;border-radius:2px;background:var(--raise);overflow:hidden}
+.nw-heat i{display:block;height:100%;background:var(--field)}
+.nw-also{overflow-wrap:anywhere}
+.nw-rg{background:var(--sunk);box-shadow:inset 3px 0 0 var(--gf)}
+html[dir="rtl"] .nw-rg{box-shadow:inset -3px 0 0 var(--gf)}
+.nw-rg .nw-t{color:var(--dim);font-weight:500;user-select:text}
+.nw-rgn{margin-top:6px;font-size:var(--fs-3);color:var(--dim)}
+.nw-rgn b{color:var(--gf);margin-inline-end:6px}
+.nw-cp{min-height:40px;padding:0 var(--s3);border:1px solid var(--line);border-radius:var(--r);background:transparent;color:var(--ink);font:600 var(--fs-3)/1 var(--body);cursor:pointer}
+.nw-empty{padding:var(--s4);color:var(--dim);background:var(--panel);border-radius:var(--r2)}
+.nw-more{display:block;width:100%;margin-top:var(--s3)}
+
+/* Add */
+.nw-add{display:grid;gap:var(--s2);margin-top:var(--s3);padding:var(--s4);border-radius:var(--r2);background:var(--panel);box-shadow:inset 0 0 0 1px var(--field)}
+.nw-add[hidden]{display:none}
+.nw-add label{font-weight:700;font-size:var(--fs-3);margin-top:var(--s2)}
+.nw-add input{min-height:44px;width:100%;padding:0 var(--s3);border:1px solid var(--line);border-radius:var(--r);background:var(--bg);color:var(--ink);font:400 1rem/1.4 var(--body)}
+.nw-fine{color:var(--dim);font-size:var(--fs-1);line-height:1.6}
+.nw-msg{min-height:1.4em;font-size:var(--fs-3)}
+.nw-add-act{display:flex;flex-wrap:wrap;gap:var(--s2)}
+.nw-how ul{display:grid;gap:var(--s3);margin-top:var(--s3)}
+.nw-how li{color:var(--dim);max-width:70ch;padding-inline-start:var(--s4);position:relative}
+.nw-how li::before{content:"";position:absolute;inset-inline-start:0;top:.7em;width:6px;height:6px;border-radius:50%;background:var(--field)}
+
+@media (max-width:479px){
+  .nw-mapd{padding-inline:6px}      /* every pixel to the seven columns of tiles on a phone */
+  .nw-mapd summary,.nw-mapd .nw-sub{padding-inline:6px}
+  .nw-map{gap:2px}
+}
+@media (min-width:760px){
+  .nw-chips{flex-wrap:wrap;overflow:visible}
+}
+@media (min-width:980px){
+  .nw-grid{grid-template-columns:minmax(0,1fr) 380px;grid-template-areas:"bar bar" "main side";align-items:start}
+}

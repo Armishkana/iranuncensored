@@ -451,6 +451,21 @@ html[lang="fa"] .disc-head h2{font-size:clamp(1.5rem,6vw,2.3rem)}
 .disc-all{display:inline-flex;align-items:center;gap:6px;min-height:44px;margin-top:6px;font-weight:700;color:var(--field)}
 .talk-lede{margin-top:12px;max-width:62ch;color:var(--dim)}
 .fb{margin-top:var(--s4);padding:var(--s4);background:var(--panel);border:1px solid transparent;border-radius:var(--r2)}
+.proof{margin:8px 0 0;color:var(--field);font-weight:700;font-size:var(--fs-2)}
+/* All discussions: the side starts a reader on people to answer (community.js drawJump), the box to start a thread comes last.
+   Brought over from the Liberty Politics stylesheet on 18 October 2026, in this site's tokens and in logical sides for Persian. */
+.jump{margin:0 0 var(--s4);padding-bottom:var(--s4);border-bottom:1px solid var(--line)}
+.jump-h{margin:0 0 8px;font:700 var(--fs-2)/1.4 var(--body);color:var(--dim)}
+html[lang="en"] .jump-h{letter-spacing:.08em;text-transform:uppercase}
+.jump-list{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.jump-list li{padding:10px 12px;background:var(--raise);border-radius:var(--r)}
+.jump-who{margin:0;font-size:var(--fs-2);color:var(--dim)}
+.jump-t{margin:2px 0 8px;line-height:1.6;overflow-wrap:anywhere}
+.jump-b{min-height:44px}
+.jump-live{display:block;margin:0 0 12px;padding:10px 12px;border:1px solid var(--red);border-radius:var(--r);color:var(--ink);text-decoration:none}
+.jump-live b{display:block;color:var(--field)}
+.jump-live b::before{content:'';display:inline-block;width:8px;height:8px;margin-inline-end:8px;border-radius:50%;background:var(--red);vertical-align:middle}
+.jump-live span{display:block;font-size:var(--fs-2);color:var(--dim)}
 .fb:focus-within{border-color:var(--field-lo)}
 .fbform{display:grid;gap:8px}
 .fbform fieldset{border:0;margin:0;padding:0;min-width:0}

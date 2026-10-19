@@ -1496,6 +1496,19 @@ html[lang="fa"] .hi-q{quotes:"\00AB" "\00BB"}
   .board-art .mb-front .mb-list{grid-column:1/-1;grid-row:2;margin-top:28px}
 }
 
+/* ---------------------------------------------------------------- the invitation to come on the show (19 October 2026)
+   render.py team_band(): one slim band at the end of the page's content, above the footer, linking to panel/. Static: no
+   animation, not floating, not in the corner. It asks only people outside Iran: the panel is on camera, own face. */
+.tband{margin:0;background:var(--sunk);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.tband-w{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s2) var(--s4);padding-top:var(--s3);padding-bottom:var(--s3)}
+.tband-on{display:inline-flex;align-items:center;gap:7px;margin-inline-end:6px;vertical-align:2px;font-weight:800;font-size:.8125rem;line-height:1;letter-spacing:.12em;text-transform:uppercase;color:var(--ink);padding:4px 9px;border:1px solid var(--line);border-radius:999px}
+:lang(fa) .tband-on{letter-spacing:0}
+.tband-on i{width:9px;height:9px;border-radius:50%;background:#C8102E;box-shadow:0 0 0 3px rgba(200,16,46,.25)}
+.tband-l{flex:1 1 18rem;margin:0;font-weight:600;font-size:1rem;line-height:1.5}
+@media(min-width:760px){.tband-l{font-size:1.125rem}}
+.tband-a{display:inline-flex;align-items:center;min-height:44px;padding:0 18px;border-radius:999px;border:1px solid var(--field);color:var(--field);font-weight:800;text-decoration:none}
+.tband-a:hover,.tband-a:focus-visible{background:var(--field);color:var(--on-field);text-decoration:none}
+
 /* The share panel (build/share.js): what opens when a reader taps Share. ONE FILE FOR BOTH SITES. Each site's
    render.py adds it to the end of its own site.css, so it is written with the names both stylesheets share
    (--panel --sunk --raise --bg --ink --dim --line --field --on-field --ga --on-grade --r --r2 --body --s1..--s5)

@@ -1,115 +1,68 @@
-/* The Newsroom (news/): news.py draws it, news.js works it. Colours, type and spacing are site.css's tokens only
-   (:root there); nothing here loads a font, a picture or anything from anyone else. Phone first: at 360px nothing is wider
-   than the screen, no text is under 12px, every control is at least 40px tall. Nothing is hidden to be animated back. */
-.nw-head .wrap{padding-bottom:var(--s5)}
-.nw-light{margin-top:var(--s3);max-width:60ch;color:var(--dim);font-size:var(--fs-3)}
-.nw{padding:var(--s4) 0 var(--s6)}
-.nw-grid{display:grid;grid-template-columns:minmax(0,1fr);grid-template-areas:"bar" "side" "main";gap:var(--s4)}
-.nw-bar{grid-area:bar;display:flex;flex-wrap:wrap;gap:var(--s2);align-items:center;justify-content:space-between}
-.nw-side{grid-area:side;display:grid;gap:var(--s4);min-width:0}
-.nw-main{grid-area:main;min-width:0}
-.nw-h{font-size:var(--h3);line-height:1.15;margin:0;color:var(--ink)}
-.nw-sub{margin-top:var(--s1);color:var(--dim);font-size:var(--fs-3)}
-.nw-block{background:var(--panel);border-radius:var(--r2);padding:var(--s3) var(--s3) var(--s4);min-width:0}
+/* The Intel Room for Iran (news/; build/news.py). Loaded after the Liberty Politics room's own intel.css (intel-rtl.css on
+   the Persian page: the same file with left and right swapped by news.py rtl_css), and only on this page. What it changes,
+   and nothing else: this site's tokens and gold, the Iran theme (the Derafsh Kaviani for Athena's owl, a Persepolis frieze
+   for the Greek key: Kaveh's banner and the stepped battlements of the palace, quiet, in the sun gold), Persian type, the
+   regime mark, and the pieces only this room has (pictures on a tap, the dark video box). Colours are site.css tokens or the
+   room's own darks; the only new one is the flag's red for the regime mark, as a thin line. */
+.ir,.ir-spot,.ir-add,.ir-lb{--t1:.8125rem;--t2:.9375rem;--t3:1rem;--t4:1.1875rem;--t5:1.5rem;--t6:clamp(1.9rem,6.4vw,3rem);--t7:clamp(2.7rem,12.4vw,5.6rem);
+  --mono:ui-monospace,"Cascadia Mono","SF Mono",Consolas,monospace;--seal:#E8C97A;--field-edge:#8E7434;
+  --ir-gold:217,180,90;--ir-goldh:#D9B45A;--hair:rgba(217,180,90,.22);
+  /* the Persepolis frieze: one stepped merlon of the palace's battlements a tile, as a line, in the sun gold */
+  --frieze:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='10'%3E%3Cpath d='M0 9.5h2V7.5h2.2V5.3h2.2V3h3.2v2.3h2.2v2.2H14v2H16' fill='none' stroke='%23D9B45A' stroke-opacity='.5' stroke-width='1'/%3E%3C/svg%3E");
+  --key:var(--frieze)}
+.ir .scroll{overflow-x:auto}
+.ir{padding-top:var(--s4)}
 
-/* the language filter and the two tools */
-.nw-seg{display:inline-flex;background:var(--panel);border-radius:999px;padding:3px;gap:2px}
-.nw-seg button{min-height:40px;min-width:56px;padding:0 var(--s3);border:0;border-radius:999px;background:transparent;color:var(--ink);font:600 var(--fs-3)/1 var(--body);cursor:pointer}
-.nw-seg button[aria-pressed="true"]{background:var(--field);color:var(--on-field)}
-.nw-tools{display:flex;flex-wrap:wrap;gap:var(--s2)}
-.nw-btn{min-height:44px;padding:0 var(--s4);border:1px solid var(--line);border-radius:var(--r);background:transparent;color:var(--ink);font:700 var(--fs-3)/1.2 var(--body);cursor:pointer}
-.nw-btn:hover{background:var(--raise)}
-.nw-btn-key{background:var(--field);border-color:var(--field);color:var(--on-field)}
-.nw-btn-key:hover{background:var(--field-hi)}
-.nw-btn:disabled{opacity:.6;cursor:wait}
-.nw-btn:focus-visible,.nw-seg button:focus-visible,.nw-chip:focus-visible,.nw-tile:focus-visible,.nw-pill:focus-visible,.nw-cp:focus-visible,.nw-t:focus-visible,.nw-mapd summary:focus-visible{outline:2px solid var(--field);outline-offset:2px}
+/* the emblem: Kaveh's banner, where the other room has the owl */
+.ir-drafsh{stroke-width:1.4}
+.ir-drafsh .o-p{fill:var(--field);stroke:none}
+.ir-hud .ir-drafsh{width:30px;height:30px}
 
-/* the pulse: one scrolling row on a phone, wrapped beside the list on a wide screen */
-.nw-chips{display:flex;gap:var(--s2);margin-top:var(--s3);overflow-x:auto;scrollbar-width:thin;padding-bottom:var(--s1);-webkit-overflow-scrolling:touch}
-.nw-chip{flex:0 0 auto;display:inline-flex;align-items:baseline;gap:6px;min-height:44px;padding:var(--s2) var(--s3);border:1px solid var(--line);border-radius:999px;background:var(--bg);color:var(--ink);font:600 var(--fs-3)/1.25 var(--body);cursor:pointer;white-space:nowrap}
-.nw-chip b{color:var(--field);font-size:var(--fs-5)}
-.nw-chip small{color:var(--dim);font-size:var(--fs-1);font-weight:500}
-.nw-chip[aria-pressed="true"]{background:var(--field);border-color:var(--field);color:var(--on-field)}
-.nw-chip[aria-pressed="true"] b,.nw-chip[aria-pressed="true"] small{color:var(--on-field)}
+/* the frieze runs under the command bar and over the room's own words, like the cornice of a palace wall */
+.ir-cmd{position:relative;padding-bottom:16px;margin-bottom:6px}
+.ir-cmd::after{content:"";position:absolute;inset-inline:0;bottom:0;height:10px;background:var(--frieze) left bottom/16px 10px repeat-x;opacity:.9;pointer-events:none}
+.ir-about{position:relative;padding-top:22px}
+.ir-about::before{content:"";position:absolute;inset-inline:0;top:0;height:10px;background:var(--frieze) left top/16px 10px repeat-x;pointer-events:none}
+/* the flag's three colours as a detail, never a background: one thin line under the display's name */
+.ir-hud-n b{padding-bottom:3px;background:linear-gradient(90deg,#239F40 0 33.3%,#F2F1E6 33.3% 66.6%,#DA0000 66.6%) left bottom/100% 2px no-repeat}
 
-/* the tile map: west on the left and north on top in both languages (dir="ltr" on the grid) */
-.nw-mapd summary{display:flex;flex-wrap:wrap;align-items:baseline;gap:var(--s1) var(--s3);min-height:44px;cursor:pointer;list-style:none}
-.nw-mapd summary::-webkit-details-marker{display:none}
-.nw-mapd summary::after{content:"+";margin-inline-start:auto;color:var(--field);font:700 1.25rem/1 var(--body)}
-.nw-mapd[open] summary::after{content:"\2212"}
-.nw-maptop{color:var(--dim);font-size:var(--fs-3)}
-.nw-maptop b{color:var(--field)}
-.nw-map{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px;margin-top:var(--s3);direction:ltr}
-.nw-tile{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;aspect-ratio:1/1;min-height:40px;min-width:0;padding:2px;border:0;border-radius:4px;background:var(--bg);color:var(--dim);cursor:pointer;overflow:hidden}
-.nw-tile-s{font:700 12px/1.1 var(--body);letter-spacing:.02em;white-space:nowrap;text-align:center}
-/* a Persian short name may take two lines at its space (خ. شمالی, چهار محال); a single word never breaks */
-html[lang="fa"] .nw-tile-s{letter-spacing:-.04em;font-size:12px;line-height:1.05;white-space:normal;overflow-wrap:normal;word-break:keep-all}
-.nw-tile b{font:700 12px/1 var(--body);color:inherit;min-height:12px}
-.nw-l1{background:rgba(217,180,90,.18);color:var(--ink)}
-.nw-l2{background:rgba(217,180,90,.36);color:var(--ink)}
-.nw-l3{background:rgba(217,180,90,.62);color:var(--on-field)}
-.nw-l4{background:var(--field);color:var(--on-field)}
-.nw-tile[aria-pressed="true"]{box-shadow:inset 0 0 0 2px var(--ink)}
-.nw-tile:hover{filter:brightness(1.15)}
+/* regime media: marked, never a link (the script and the first list both) */
+.ir-c-m .rg,.ir-card.ir-rg .rg{color:#FF9A88;font-weight:700}
+.ir-card.ir-rg{box-shadow:inset 3px 0 0 #DA0000}
+html[dir="rtl"] .ir-card.ir-rg{box-shadow:inset -3px 0 0 #DA0000}
+.ir-card.ir-rg .ir-c-t{color:var(--dim)}
+.ir-s-c .rgc{background:rgba(218,0,0,.16);color:#FFB3A6;border:1px solid rgba(218,0,0,.5)}
+.ir-s-rgn{padding:10px 12px;border-radius:10px;border:1px solid rgba(218,0,0,.45);background:rgba(218,0,0,.08)}
+.ir-s-rgn b{color:#FFB3A6;margin-inline-end:6px}
+button.ir-s-open{border:0;cursor:pointer;font:inherit}
 
-/* active filters, status, messages */
-.nw-status{color:var(--dim);font-size:var(--fs-3);min-height:1.6em}
-.nw-bad{color:var(--gd)}
-.nw-pills{display:flex;flex-wrap:wrap;gap:var(--s2);margin-top:var(--s2)}
-.nw-pill{display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0 var(--s3);border:1px solid var(--field);border-radius:999px;background:transparent;color:var(--ink);font:600 var(--fs-3)/1.2 var(--body);cursor:pointer}
-.nw-pill i{font-style:normal;color:var(--field);font-size:1.1rem}
-.nw-pill-all{border-color:var(--line);color:var(--dim)}
-.nw-toast{position:fixed;inset-inline:var(--gutter);bottom:var(--s4);z-index:40;max-width:32rem;margin-inline:auto;padding:var(--s3) var(--s4);border-radius:var(--r2);background:var(--raise);color:var(--ink);font-size:var(--fs-3);box-shadow:0 6px 24px rgba(0,0,0,.45);display:none}
-.nw-toast.nw-on{display:block}
-.nw-toast.nw-bad{color:var(--gd)}
+/* the first list (before the script runs): a headline keeps its own direction */
+.ir-card-s .ir-c-t[dir]{unicode-bidi:plaintext}
+.ir-light{margin-top:8px;font-size:var(--t2)}
 
-/* the list */
-.nw-list{display:grid;gap:var(--s2);margin-top:var(--s3)}
-.nw-i{background:var(--panel);border-radius:var(--r2);padding:var(--s3) var(--s4);min-width:0}
-.nw-m{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s1) var(--s2);color:var(--dim);font-size:var(--fs-1);line-height:1.4}
-.nw-k{display:inline-block;padding:2px 7px;border-radius:4px;background:var(--raise);color:var(--ink);font-weight:700;letter-spacing:.04em}
-html[lang="en"] .nw-k{text-transform:uppercase}
-.nw-k-x{background:#2B2B26}
-.nw-k-youtube,.nw-k-video{background:#3A1A16;color:#FFB4A8}
-.nw-o{color:var(--ink);font-weight:600;overflow-wrap:anywhere}
-.nw-t{display:block;margin-top:6px;color:var(--ink);font-size:1.0625rem;font-weight:650;line-height:1.45;text-decoration:none;overflow-wrap:anywhere}
-html[lang="fa"] .nw-t,.nw-t[lang="fa"]{font-family:"Vazirmatn",Tahoma,"Segoe UI",sans-serif;line-height:1.8}
-.nw-t[lang="en"]{font-family:var(--body)}
-a.nw-t:hover{color:var(--field-hi);text-decoration:underline}
-a.nw-t:visited{color:var(--dim)}
-.nw-w{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s1) var(--s3);margin-top:6px;color:var(--dim);font-size:var(--fs-1)}
-.nw-heat{display:inline-block;width:44px;height:4px;border-radius:2px;background:var(--raise);overflow:hidden}
-.nw-heat i{display:block;height:100%;background:var(--field)}
-.nw-also{overflow-wrap:anywhere}
-.nw-rg{background:var(--sunk);box-shadow:inset 3px 0 0 var(--gf)}
-html[dir="rtl"] .nw-rg{box-shadow:inset -3px 0 0 var(--gf)}
-.nw-rg .nw-t{color:var(--dim);font-weight:500;user-select:text}
-.nw-rgn{margin-top:6px;font-size:var(--fs-3);color:var(--dim)}
-.nw-rgn b{color:var(--gf);margin-inline-end:6px}
-.nw-cp{min-height:40px;padding:0 var(--s3);border:1px solid var(--line);border-radius:var(--r);background:transparent;color:var(--ink);font:600 var(--fs-3)/1 var(--body);cursor:pointer}
-.nw-empty{padding:var(--s4);color:var(--dim);background:var(--panel);border-radius:var(--r2)}
-.nw-more{display:block;width:100%;margin-top:var(--s3)}
+/* pictures only on a tap (the Persian page) */
+.ir-s-v.is-dark{background:radial-gradient(ellipse at 50% 40%,#1d1d18 0,#0c0c09 70%)}
+.ir-pics1{display:flex;margin:14px auto;min-height:48px}
+.ir-pics[aria-pressed="true"]{border-color:var(--field);color:var(--field)}
 
-/* Add */
-.nw-add{display:grid;gap:var(--s2);margin-top:var(--s3);padding:var(--s4);border-radius:var(--r2);background:var(--panel);box-shadow:inset 0 0 0 1px var(--field)}
-.nw-add[hidden]{display:none}
-.nw-add label{font-weight:700;font-size:var(--fs-3);margin-top:var(--s2)}
-.nw-add input{min-height:44px;width:100%;padding:0 var(--s3);border:1px solid var(--line);border-radius:var(--r);background:var(--bg);color:var(--ink);font:400 1rem/1.4 var(--body)}
-.nw-fine{color:var(--dim);font-size:var(--fs-1);line-height:1.6}
-.nw-msg{min-height:1.4em;font-size:var(--fs-3)}
-.nw-add-act{display:flex;flex-wrap:wrap;gap:var(--s2)}
-.nw-how ul{display:grid;gap:var(--s3);margin-top:var(--s3)}
-.nw-how li{color:var(--dim);max-width:70ch;padding-inline-start:var(--s4);position:relative}
-.nw-how li::before{content:"";position:absolute;inset-inline-start:0;top:.7em;width:6px;height:6px;border-radius:50%;background:var(--field)}
+/* THE PERSIAN PAGE. The room's layout is mirrored by intel-rtl.css; the map, the timeline and the wire keep their own
+   geometry (a longitude does not turn round), and their words run right to left. Persian letters never take letter
+   spacing (it breaks the joins) or capitals. */
+html[lang="fa"] .ir,html[lang="fa"] .ir *,html[lang="fa"] .ir-spot,html[lang="fa"] .ir-spot *,html[lang="fa"] .ir-add,html[lang="fa"] .ir-add *{letter-spacing:normal!important}
+html[lang="fa"] .ir-brand,html[lang="fa"] .ir-h,html[lang="fa"] .ir-kick,html[lang="fa"] .ir-lens button b,html[lang="fa"] .ir-hud-n b,html[lang="fa"] .ir-row-l,html[lang="fa"] .ir-wire-l,html[lang="fa"] .ir-b-k{text-transform:none}
+html[lang="fa"] .ir h1,html[lang="fa"] .ir h2{line-height:1.35}
+html[lang="fa"] .ir-mapbox{direction:ltr}
+html[lang="fa"] .ir-tip,html[lang="fa"] .ir-legend,html[lang="fa"] .ir-lt,html[lang="fa"] .ir-maphint,html[lang="fa"] .ir-nowhere,html[lang="fa"] .ir-wheel,html[lang="fa"] .ir-hud-n{direction:rtl}
+html[lang="fa"] .ir-hud-c{direction:rtl;font-family:var(--body)}
+html[lang="fa"] .ir-hist,html[lang="fa"] .ir-axis,html[lang="fa"] .ir-wire-v{direction:ltr}
+html[lang="fa"] .ir-wire .w-t,html[lang="fa"] .ir-wire .w-s{direction:rtl;unicode-bidi:plaintext}
+html[lang="fa"] .ir-c-t,html[lang="fa"] .ir-b-tt,html[lang="fa"] .ir-lt-t,html[lang="fa"] #ir-spot-t,html[lang="fa"] .ir-post-t{unicode-bidi:plaintext}
+html[lang="fa"] .ir-ask input{direction:rtl}
+html[lang="fa"] .ir-ask input::placeholder{direction:rtl}
+html[lang="fa"] .ir-a input[type="url"]{direction:ltr;text-align:left}
+html[lang="fa"] .ir-sort select,html[lang="fa"] .ir-sel select{background-position:left 10px center;padding-inline:12px 34px}
+html[lang="fa"] .num{font-variant-numeric:normal}
 
-@media (max-width:479px){
-  .nw-mapd{padding-inline:6px}      /* every pixel to the seven columns of tiles on a phone */
-  .nw-mapd summary,.nw-mapd .nw-sub{padding-inline:6px}
-  .nw-map{gap:2px}
-}
-@media (min-width:760px){
-  .nw-chips{flex-wrap:wrap;overflow:visible}
-}
-@media (min-width:980px){
-  .nw-grid{grid-template-columns:minmax(0,1fr) 380px;grid-template-areas:"bar bar" "main side";align-items:start}
-}
+/* tap targets of 40px and more, also for the two links that sit inside running text */
+.ir-livenote a{display:inline-block;padding:10px 2px;margin:-10px 0}
+.ir-grow-d{display:inline-flex;align-items:center;min-height:44px}

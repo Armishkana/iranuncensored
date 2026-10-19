@@ -1312,18 +1312,33 @@ html[lang="en"] .act-t b{text-transform:uppercase;letter-spacing:.02em}
 html[lang="fa"] .act-t b{font-size:1.4rem;line-height:1.5}
 .act-l{color:var(--ink);font-size:var(--fs-5);line-height:1.4;max-inline-size:32ch}
 .act-x{color:var(--field);font-size:var(--fs-3);font-weight:700}
-.act-gather .act-c,.act-gather .act-t{min-block-size:200px}
-.act-gather .act-c{box-shadow:inset 0 0 0 1px rgba(217,180,90,.5)}
-html[lang="en"] .act-gather .act-t b{font-size:2.5rem}
+/* THE MAIN MISSION IS THE BIGGEST DOOR: the act of the mission marked "main" (Scout since 18 October 2026) carries act-main
+   (front_acts in render.py). Until 19 October 2026 these rules named Gather, the main act of the three-act front page, and a
+   fourth act wrapped onto a line of its own. */
+.act-main .act-c,.act-main .act-t{min-block-size:200px}
+.act-main .act-c{box-shadow:inset 0 0 0 1px rgba(217,180,90,.5)}
+html[lang="en"] .act-main .act-t b{font-size:2.5rem}
 .you-all{margin-top:var(--s3)}
 .you-all a{display:inline-flex;align-items:center;min-block-size:44px;color:var(--field);font-weight:700}
-@media(min-width:820px){
-  .acts{grid-template-columns:minmax(0,1fr) minmax(0,1.45fr) minmax(0,1fr);gap:var(--s4)}
-  .act-c,.act-t{min-block-size:340px}
-  .act-gather .act-c,.act-gather .act-t{min-block-size:380px}
+/* the four acts: one under the other on a phone, two by two from 700px, ALL FOUR ON ONE LINE from 1024px (19 October 2026,
+   Armin: "the missions need to be in one line"), the main one the widest, every card the same height */
+@media(min-width:700px){
+  .acts{grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s4)}
+  .act-c,.act-t,.act-main .act-c,.act-main .act-t{min-block-size:300px}
   .act-c::after,html[dir="rtl"] .act-c::after{background:linear-gradient(180deg,rgba(10,10,8,0) 0%,rgba(10,10,8,.05) 38%,rgba(10,10,8,.8) 70%,rgba(10,10,8,.96) 100%)}
   .act-t{grid-template-columns:1fr;align-content:end;row-gap:6px;padding:var(--s5)}
-  .act-t .act-n{grid-row:auto;text-align:start;font-size:3.6rem;min-inline-size:0}
+  .act-t .act-n{grid-row:auto;text-align:start;font-size:3.4rem;min-inline-size:0}
+}
+@media(min-width:1024px){
+  .acts{grid-template-columns:minmax(0,1fr) minmax(0,1.4fr) minmax(0,1fr) minmax(0,1fr);align-items:stretch}
+  .act-li{display:flex}
+  .act-li>.act-c{flex:1}
+  .act-c,.act-t,.act-main .act-c,.act-main .act-t{min-block-size:360px}
+  .act-t{padding:var(--s4) var(--s4) var(--s5)}
+  html[lang="en"] .act-t b{font-size:1.75rem}
+  html[lang="en"] .act-main .act-t b{font-size:2.4rem}
+  html[lang="fa"] .act-t b{font-size:1.25rem}
+  .act-l{font-size:var(--fs-4)}
 }
 
 /* the record, one calm door: a search and a state, nothing else */
@@ -1455,6 +1470,31 @@ html[lang="fa"] .hi-q{quotes:"\00AB" "\00BB"}
 .hi-x:hover{background:var(--raise);color:var(--ink)}
 .hi-go:focus-visible,.hi-x:focus-visible{outline:2px solid var(--field);outline-offset:2px}
 @media print{.hi{display:none}}
+
+/* ---- 19 October 2026, Armin: "the design is not as elegant as LibertyPolitics. Especially the top of the page just looks so
+   messy. The image that you have makes the colors look so messy." What Liberty Politics does and this page did not: ONE calm
+   painting at the head with room to breathe, one palette (black and antique gold) and nothing competing with the headline.
+   So the head is Damavand at dusk (AI_PLACE in render.py), framed on its peak and its rider, under a lighter shade; the board
+   of public events lost its picture (it had a second crowd and a second set of flags right under the head) and is a plain
+   band as on Liberty Politics: the heading and its line at the start, the one button at the end. */
+.hero-iu>.aip-bg img{object-position:38% 42%}
+.hero-iu::after{background:linear-gradient(180deg,rgba(10,10,8,.05) 0%,rgba(10,10,8,0) 40%,rgba(10,10,8,.5) 78%,var(--bg) 100%)}
+.board-art{display:block;min-block-size:0;background:var(--bg);border-block-start:1px solid var(--line)}
+.board-art::after{content:none}
+.board-art .mb-front{padding:var(--s7) 0}
+.board-art .mb-front .wrap>*{max-inline-size:none}
+.board-art .mb-lede{color:var(--dim);text-shadow:none;max-inline-size:44rem}
+.board-art .mb-front-h h2{text-shadow:none}
+@media(min-width:900px){
+  .hero-iu>.aip-bg img{object-position:30% 50%}
+  .hero-iu::after{background:linear-gradient(270deg,rgba(10,10,8,.9) 0%,rgba(10,10,8,.78) 30%,rgba(10,10,8,.25) 56%,rgba(10,10,8,0) 74%),linear-gradient(180deg,transparent 82%,var(--bg) 100%)}
+  .board-art{display:block;min-block-size:0}
+  .board-art .mb-front{padding:var(--s7) 0}
+  .board-art .mb-front .wrap{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:56px;align-items:end}
+  .board-art .mb-front .mb-front-h{grid-column:1;grid-row:1}
+  .board-art .mb-front .mb-go{grid-column:2;grid-row:1;margin:0;justify-content:flex-end}
+  .board-art .mb-front .mb-list{grid-column:1/-1;grid-row:2;margin-top:28px}
+}
 
 /* The share panel (build/share.js): what opens when a reader taps Share. ONE FILE FOR BOTH SITES. Each site's
    render.py adds it to the end of its own site.css, so it is written with the names both stylesheets share

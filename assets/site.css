@@ -84,13 +84,16 @@ html[lang="fa"] .mark{font-family:"Lalezar","Vazirmatn",Tahoma,sans-serif;font-w
 .top nav a.join:hover{background:var(--field-hi)}
 /* 14 Oct 2026: the menu grew (Public events), and from 820 to about 1230px it overlapped the mark and pushed Sign in off the screen; the strip below the bar serves those widths now. */
 @media(min-width:1240px){.top nav a{display:inline-flex;align-items:center;min-height:44px}}
-.subnav{display:flex;gap:4px;overflow-x:auto;background:var(--sunk);padding:0 8px;scrollbar-width:none}
+/* 20 Oct 2026: the strip holds the "Join the panel" pill (render.py nav_go) and, beside it, the part that scrolls (.subnav-s), so the pill never slides out of sight. */
+.subnav{display:flex;align-items:center;background:var(--sunk);padding-inline-start:8px}
+.subnav-s{display:flex;gap:4px;flex:1 1 auto;min-width:0;overflow-x:auto;scrollbar-width:none}
+.subnav-s::-webkit-scrollbar{display:none}
 .subnav a{flex:none;display:inline-flex;align-items:center;padding:0 10px;min-height:44px;text-decoration:none;font-weight:600;font-size:var(--fs-4);color:var(--dim)}
 .subnav a[aria-current="page"]{color:var(--field)}
 /* the row scrolls sideways on a phone: its far edge fades, so a cut word reads as "more this way" */
-.subnav{-webkit-mask-image:linear-gradient(to left,transparent,#000 36px);mask-image:linear-gradient(to left,transparent,#000 36px)}
-html[dir="rtl"] .subnav{-webkit-mask-image:linear-gradient(to right,transparent,#000 36px);mask-image:linear-gradient(to right,transparent,#000 36px)}
-.subnav a:last-child{margin-inline-end:28px}
+.subnav-s{-webkit-mask-image:linear-gradient(to left,transparent,#000 36px);mask-image:linear-gradient(to left,transparent,#000 36px)}
+html[dir="rtl"] .subnav-s{-webkit-mask-image:linear-gradient(to right,transparent,#000 36px);mask-image:linear-gradient(to right,transparent,#000 36px)}
+.subnav-s a:last-child{margin-inline-end:28px}
 @media(min-width:1240px){.subnav{display:none}}
 
 /* The head of a page. It was a block of solid gold until 5 October 2026, when Armin called it ugly
@@ -1508,6 +1511,18 @@ html[lang="fa"] .hi-q{quotes:"\00AB" "\00BB"}
 @media(min-width:760px){.tband-l{font-size:1.125rem}}
 .tband-a{display:inline-flex;align-items:center;min-height:44px;padding:0 18px;border-radius:999px;border:1px solid var(--field);color:var(--field);font-weight:800;text-decoration:none}
 .tband-a:hover,.tband-a:focus-visible{background:var(--field);color:var(--on-field);text-decoration:none}
+/* 20 October 2026: the band moved up the page (render.py place_band). Inside the Intel Room it sits between the map and the
+   list, a box of that column; on a computer a row under both. */
+.tband-in{margin:var(--s4) 0;border:1px solid var(--line);border-radius:var(--r2,10px)}
+.tband-in .tband-w{padding:var(--s3) var(--s4)}
+.ir-main>.tband-in{margin:0}
+@media(min-width:1000px){.ir-main:has(>.tband){grid-template-rows:minmax(0,1fr) auto}.ir-main>.tband{grid-column:1/-1;grid-row:2}}
+/* THE PILL IN THE HEADER (20 October 2026, render.py nav_go): "Join the panel", on screen without scrolling. Still. */
+.subnav a.navgo,.top nav a.navgo{flex:none;display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0 13px;margin-inline-end:6px;border:1px solid var(--field);border-radius:999px;background:rgba(217,180,90,.12);color:var(--ink);font-weight:700;white-space:nowrap;text-decoration:none}
+.subnav a.navgo:hover,.top nav a.navgo:hover,.subnav a.navgo[aria-current="page"],.top nav a.navgo[aria-current="page"]{background:var(--field);color:var(--on-field)}
+.top nav a.navgo{display:none}
+/* In the bar the pill is a little tighter, and the bar itself may run to 80rem (the column stays 72rem): with the pill the bar measured 1,122px of links and mark in a 1,120px bar, so it ran over by 2px (20 Oct 2026, measured at 1280 and 1920). */
+@media(min-width:1240px){.top nav a.navgo{display:inline-flex;margin-inline-end:2px;padding:0 10px;gap:4px}.top .wrap{max-width:80rem}}
 
 /* The share panel (build/share.js): what opens when a reader taps Share. ONE FILE FOR BOTH SITES. Each site's
    render.py adds it to the end of its own site.css, so it is written with the names both stylesheets share

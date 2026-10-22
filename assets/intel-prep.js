@@ -448,9 +448,15 @@
     if (P.descs.length < 2) {
       var live0 = st.kind === 'live', V0 = A.kinds.video || 0, N0 = A.n, src0 = A.O.slice(0, 3), more0 = A.O.length - src0.length;
       var from0 = src0.length ? ' from ' + listOf(src0.concat(more0 > 0 ? [more0 + ' more'] : [])) : '';
-      var what0 = N0 + (N0 === 1 ? ' source' : ' sources') + from0 + (V0 ? (V0 === N0 ? (N0 === 1 ? ', on video' : ', all on video') : ', ' + V0 + ' of them on video') : '');
+      var onV0 = V0 ? (V0 === N0 ? (N0 === 1 ? ', on video' : ', all on video') : ', ' + V0 + ' of them on video') : '';
+      var what0 = N0 + (N0 === 1 ? ' source' : ' sources') + from0 + onV0;
+      // 21 Oct 2026: an outlet named after a place ("from Iran International") can itself be refused by fits(), so the
+      // last two name no outlet at all and always fit
+      var bare0 = N0 + (N0 === 1 ? ' source' : ' sources') + onV0;
       [{ t: 'What happened, who said what, and what it means: ' + what0 + '. ' + (live0 ? 'On this live show we go through every one of them, in order, each one linked below.' : 'This video goes through every one of them, in order, each one linked below.'), tone: 'plain', id: 'd-safe1' },
-       { t: 'Here is what the ' + (V0 ? 'clips' : 'sources') + ' actually show, and what the coverage leaves out: ' + what0 + '. Every source is linked below, so check it yourself.', tone: 'mid', id: 'd-safe2' }]
+       { t: 'Here is what the ' + (V0 ? 'clips' : 'sources') + ' actually show, and what the coverage leaves out: ' + what0 + '. Every source is linked below, so check it yourself.', tone: 'mid', id: 'd-safe2' },
+       { t: 'What happened, who said what, and what it means: ' + bare0 + '. ' + (live0 ? 'On this live show we go through every one of them, in order, each one linked below.' : 'This video goes through every one of them, in order, each one linked below.'), tone: 'plain', id: 'd-safe3' },
+       { t: 'Here is what the ' + (V0 ? 'clips' : 'sources') + ' actually show, and what the coverage leaves out: ' + bare0 + '. Every source is linked below, so check it yourself.', tone: 'mid', id: 'd-safe4' }]
         .forEach(function (x) { x.t = noDash(x.t).replace(/\s+/g, ' '); if (P.descs.length < 2 && lint(x.t, 'descs') && fits(A, x.t) && !P.descs.some(function (y) { return y.t.toLowerCase() === x.t.toLowerCase(); })) P.descs.push(x); });
     }
     P.dropped = dropped;
@@ -1243,7 +1249,7 @@
     var rpOn = false, rbAt = -1, rpCur = null;          // the replies panel (stays on across items), the reply on the screen alone, the item's replies
     var CARD_RX2 = /^https:\/\/pbs\.twimg\.com\/card_img\/\d+\/[A-Za-z0-9_-]+\?format=(?:jpg|png|webp)$/;
     function full(x) { return R.fullText ? R.fullText(x) : x.t; }
-    function paras(t) { return String(t || '').split(/\n\s*\n+/).map(function (p) { return '<span class="ir-sh-pp">' + esc(p.trim()) + '</span>'; }).join(''); }
+    function paras(t) { return String(t || '').split(/\n\s*\n+/).map(function (p) { return '<span class="ir-sh-pp">' + esc(p.trim()) + '</span>'; }).join(' '); }   // the space: a copy or a screen reader read "partnership.We" (22 Oct 2026)
     // the rare post whose end even the room could not get (X's 280 and the mirror both failed): say so, never pretend
     function more(x) { var w = full(x); return w.length >= 270 && /…$/.test(w) ? '<a class="ir-sh-more" href="' + esc(x.u) + '" target="_blank" rel="noopener">' + esc(T('The post goes on: read the rest on X')) + '</a>' : ''; }
     function initial(x) { return String(x.nm || x.h || '?').replace(/^@/, '').slice(0, 1).toUpperCase() || '?'; }

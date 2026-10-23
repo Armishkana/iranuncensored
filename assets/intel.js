@@ -11,7 +11,7 @@
    16 October 2026 (Armin: "It needs to look like a CIA-like intelligence hub but without violating the theme and brand ...
    Significantly improve the map ... data point in different shapes and maybe colors based on what they are ... screen
    based on social media ... how many likes each one of these has ... sort and screen them based on how hot they are, how
-   viral they are, the time, location, topic"): the map is a globe (d3-geo, assets/intel-geo.js?v=3f64b9f417) that also lays flat, with
+   viral they are, the time, location, topic"): the map is a globe (d3-geo, assets/intel-geo.js?v=5d4f5c3507) that also lays flat, with
    the real night side; a mark's SHAPE says what it is (video, post, article, document) and its COLOUR where it was posted
    (PF below); places with few items show every item, crowded ones a count with a ring split by platform. Platform, heat,
    viral and the hours of the last 24 are filters; viral, likes and views are orders. VIRAL is measured, never guessed:
@@ -504,7 +504,7 @@
       h.ids = {}; h.all.forEach(function (it) { h.ids[it.id] = 1; }); h.its.forEach(function (it) { STORY_OF[it.id] = h; });
     });
     list.sort(function (a, b) { return b.score - a.score; });
-    list.filter(function (h) { return h.hot >= HOT_MIN; }).forEach(function (h) { h.all.forEach(function (it) { HOTALL[it.id] = 1; }); });
+    list.filter(function (h) { return h.hot >= HOT_MIN; }).forEach(function (h) { h.its.forEach(function (it) { HOTALL[it.id] = 1; }); });          // the hours' own items: All hot stays inside Everything
     HOTS = list;
   }
   function hotTop() { return HOTS.filter(function (h) { return h.hot >= HOT_MIN && (!DEEP_FRESH || h.all.length >= SHOW_MIN); }).slice(0, HOT_TOP); }
@@ -808,7 +808,7 @@
   }
 
   /* ------------------------------------------------------------ the map: a globe that also lays flat
-     One canvas draws the Earth with d3-geo (assets/intel-geo.js?v=3f64b9f417): the globe is orthographic, the flat map Natural Earth,
+     One canvas draws the Earth with d3-geo (assets/intel-geo.js?v=5d4f5c3507): the globe is orthographic, the flat map Natural Earth,
      and both come from the same view, V: the longitude and latitude at the middle and a zoom. One SVG over it carries the
      marks, so each stays a real button with a name. The night side is the real one, from where the sun is now. */
   var G = window.d3 && window.d3.geoOrthographic ? window.d3 : null;
@@ -3104,7 +3104,7 @@
       if (document.getElementById('ir-addon-' + i)) return;
       var as = document.createElement('script'); as.id = 'ir-addon-' + i; as.src = src; document.body.appendChild(as);
     });
-    if (!document.getElementById('ir-prep-js') && CFG.prep !== false) { var ps = document.createElement('script'); ps.id = 'ir-prep-js'; ps.src = root.getAttribute('data-prep') || '../assets/intel-prep.js?v=3f64b9f417'; document.body.appendChild(ps); }
+    if (!document.getElementById('ir-prep-js') && CFG.prep !== false) { var ps = document.createElement('script'); ps.id = 'ir-prep-js'; ps.src = root.getAttribute('data-prep') || '../assets/intel-prep.js?v=5d4f5c3507'; document.body.appendChild(ps); }
     root.setAttribute('data-ready', '1');
     loadReaders();
     setupSuggest();

@@ -1590,3 +1590,6 @@ a.irf-nw .irf-it-t::after{content:" \2197";color:var(--dim);font-weight:500}
 .ir-th.ir-th-logo{background:#F4F1EA}
 .ir-th.ir-th-logo .ir-th-i{position:absolute;inset:22% 30%;background:center/contain no-repeat;filter:none}
 html.irt-on #calls{visibility:hidden}          /* the show reminder sits in the top layer: out of the way while the tour talks */
+/* a first visit: the Tour button is lit; on a phone the nudge line stays away, so the map stays on the first screen (phone-test) */
+.ir-cb.ir-cb-tour.is-new{border-color:var(--field);color:var(--field);background:rgba(var(--ir-gold,244,196,48),.12)}
+@media(max-width:700px){.irt-nudge{display:none}}

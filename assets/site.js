@@ -24,6 +24,20 @@
     callsX.addEventListener('click', function () { calls.className += ' off'; try { sessionStorage.setItem('iu-calls', 'off'); } catch (x) { } });
   }
 
+  // ---- the front page's question of the day (23 October 2026) ----------------------------------------------
+  // The Iran version of the Liberty Politics block of the same name (data/front-questions.json, whose "_where" says when
+  // the front page carries it). The build prints the question of the day it was built; this shows today's, picked by the
+  // date alone (days since 1 January 1970, UTC, over the length of the list: render.py front_ask() does the same sum), so
+  // every reader sees the same question on the same day and the page changes without a publish. The band carries the list
+  // in the page's language, Persian on fa/ and English on en/. Never set on the box: All discussions starts on people.
+  (function () {
+    var src = doc.querySelector('[data-asks]'), list = [];
+    try { list = JSON.parse((src && src.getAttribute('data-asks')) || '[]'); } catch (x) { list = []; }
+    if (!list.length) { return; }
+    var q = list[Math.floor(Date.now() / 86400000) % list.length], h = doc.querySelector('#band h2');
+    if (typeof q === 'string' && q && h) { h.textContent = q; }
+  })();
+
   // ---- the mission board (act/): a reader who says they are inside Iran ----------------------------
   // The chooser is run by quests.js (the Liberty Politics site's file, shipped from here as it is): it hides
   // every mission that is not for the reader and marks the chip that is on with aria-pressed. This only

@@ -62,6 +62,12 @@ html[lang="fa"] .ir-ask input::placeholder{direction:rtl}
 html[lang="fa"] .ir-a input[type="url"]{direction:ltr;text-align:left}
 html[lang="fa"] .ir-sort select,html[lang="fa"] .ir-sel select{background-position:left 10px center;padding-inline:12px 34px}
 html[lang="fa"] .num{font-variant-numeric:normal}
+/* the forces layer (../../site/build/intel-forces.js): its chip sits in the map's left-to-right box but speaks Persian; the
+   ship's stripe stands on the reading side; the room's own sides of HOW EACH SIDE FRAMED IT (CFG.sides) get their colours */
+html[lang="fa"] .irf-chip>span{direction:rtl;text-align:right}
+html[dir="rtl"] .irf-now{box-shadow:inset -3px 0 0 var(--c)}
+html[dir="rtl"] .irf-now.old{box-shadow:inset -3px 0 0 #E5814E}
+.irf-fc.sF{--lc:#8CC79C}.irf-fc.sW{--lc:#6E9BE8}.irf-fc.sG{--lc:#E4574B}
 
 /* tap targets of 40px and more, also for the two links that sit inside running text */
 .ir-livenote a{display:inline-block;padding:10px 2px;margin:-10px 0}

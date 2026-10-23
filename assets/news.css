@@ -72,3 +72,43 @@ html[dir="rtl"] .irf-now.old{box-shadow:inset -3px 0 0 #E5814E}
 /* tap targets of 40px and more, also for the two links that sit inside running text */
 .ir-livenote a{display:inline-block;padding:10px 2px;margin:-10px 0}
 .ir-grow-d{display:inline-flex;align-items:center;min-height:44px}
+
+/* WHO IS SPEAKING (news-camps.js, 23 Oct 2026): the camp of every source, the story's bar, what X says, the Media tab */
+.iuc{display:inline-block;padding:1px 7px;border-radius:999px;border:1px solid var(--cc,#6B6B6B);color:var(--ink);background:color-mix(in srgb,var(--cc,#6B6B6B) 16%,transparent);font:700 var(--t1)/1.5 var(--body);white-space:nowrap}
+.iuc.iuc-rg{background:var(--cc);border-color:var(--cc);color:#fff}
+.iuc.iuc-only{background:#7B0E0E;border-color:#7B0E0E;color:#fff}
+.iuc-s,.iuc-x{margin:14px 0;padding:12px 14px;border:1px solid var(--line);border-radius:var(--r,10px);background:var(--sunk)}
+.iuc-s h3,.iuc-x h3{margin:0 0 8px;font:700 var(--t2)/1.3 var(--body);color:var(--ink)}
+.iuc-bar{display:flex;height:12px;border-radius:6px;overflow:hidden;margin:4px 0 10px;background:var(--line)}
+.iuc-bar i{display:block;min-width:4px}
+.iuc-g,.iuc-g ul,.iuc-os,.iuc-x ul,.iuc-grp>ul{list-style:none;margin:0;padding:0}
+.iuc-g>li{margin:0 0 8px}.iuc-g>li>b{display:block;font:700 var(--t1)/1.4 var(--body);margin-bottom:4px}
+.iuc-g ul li{margin:0 0 6px;font:var(--t1)/1.5 var(--body);color:var(--ink)}
+.iuc-why{display:block;color:var(--dim);font:var(--t1)/1.45 var(--body);margin-top:2px}
+.iuc-why em,.iuc-os em{font-style:normal;color:var(--dim);opacity:.85}
+.iuc-warn{margin:8px 0 0;padding:8px 10px;border-radius:8px;background:color-mix(in srgb,#C0392B 18%,transparent);border-inline-start:3px solid #C0392B;color:var(--ink);font:600 var(--t1)/1.45 var(--body)}
+.iuc-x li{margin:0 0 6px}
+.iuc-x-i{display:block;padding:8px 10px;min-height:44px;border-radius:8px;background:var(--panel);color:var(--ink);text-decoration:none;border:1px solid var(--line)}
+a.iuc-x-i:hover{border-color:var(--field)}
+.iuc-x-i b{font:700 var(--t1)/1.3 var(--body)}.iuc-x-i small{color:var(--dim)}
+.iuc-x-t{display:block;margin-top:4px;font:var(--t1)/1.5 var(--body);unicode-bidi:plaintext;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+.iuc-x-m{display:block;margin-top:4px;color:var(--dim);font:var(--t1)/1.2 var(--body)}
+.ir-ltab.iuc-4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.ir-ltab.iuc-4 button{font-size:var(--t1);gap:4px;padding:0 2px}
+@media (max-width:420px){.ir-ltab.iuc-4{grid-template-columns:1fr 1fr}}
+.iuc-tab{padding:12px}
+.iuc-tab-h h3{margin:0 0 6px;font:700 var(--t2)/1.3 var(--body);color:var(--ink)}
+.iuc-tab-h p{margin:0 0 10px;color:var(--dim);font:var(--t1)/1.5 var(--body)}
+.iuc-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.iuc-chip{display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0 12px;border:1px solid var(--line);border-radius:999px;background:var(--panel);color:var(--ink);font:600 var(--t1)/1 var(--body);cursor:pointer}
+.iuc-chip i{width:10px;height:10px;border-radius:50%;display:inline-block}
+.iuc-chip[aria-pressed="true"]{border-color:var(--field);box-shadow:inset 0 0 0 1px var(--field)}
+.iuc-chip.iuc-free{border-color:#2E9E8F}
+.iuc-grp{border-top:1px solid var(--line);padding:8px 0}
+.iuc-grp summary{display:flex;align-items:center;gap:8px;min-height:44px;cursor:pointer;color:var(--ink);font:700 var(--t2)/1.2 var(--body)}
+.iuc-grp summary i{width:12px;height:12px;border-radius:3px;display:inline-block}
+.iuc-grp summary small{color:var(--dim);font-weight:400}
+.iuc-camp{margin:8px 0 14px}
+.iuc-camp-h{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.iuc-os li{margin:6px 0 0;color:var(--dim);font:var(--t1)/1.5 var(--body)}.iuc-os b{color:var(--ink)}
+.iuc-foot{color:var(--dim);font:var(--t1)/1.5 var(--body);margin:12px 0 0}

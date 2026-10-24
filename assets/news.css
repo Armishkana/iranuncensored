@@ -112,3 +112,47 @@ a.iuc-x-i:hover{border-color:var(--field)}
 .iuc-camp-h{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
 .iuc-os li{margin:6px 0 0;color:var(--dim);font:var(--t1)/1.5 var(--body)}.iuc-os b{color:var(--ink)}
 .iuc-foot{color:var(--dim);font:var(--t1)/1.5 var(--body);margin:12px 0 0}
+/* GROUND NEWS FOR IRAN (24 Oct 2026, news-camps.js): the Who is speaking door and its picker, the coverage bar on every
+   story card, the blind-spot chips. Logical sides only (inline-start/end), so the Persian page needs no swap. */
+.ir-cmd-b .iuc-cb svg{fill:none}
+.iuc-cov{display:block;margin-top:6px;max-width:240px}
+.iuc-bar.iuc-bar-s{height:6px;margin:0;border-radius:3px}
+.iuc-bar.iuc-bar-s i{min-width:3px}
+.iuc.iuc-hid{background:#1F6F64;border-color:#1F6F64;color:#fff}
+.iuc-hc-rg{color:#F2B4A6}.iuc-hc-hid{color:#8FD8CB}
+.iuc-hc[aria-pressed="true"]{color:var(--on-field)}
+.iuc-pick{position:fixed;inset:0 0 0 auto;margin:0;width:min(520px,100vw);max-width:100vw;height:100dvh;max-height:100dvh;padding:0;border:0;border-inline-start:1px solid #2c2a25;background:var(--bg,#101010);color:var(--ink);box-shadow:-30px 0 60px -20px #000}
+.iuc-pick[dir="rtl"]{inset:0 auto 0 0}
+.iuc-pick[open]{display:flex;flex-direction:column}
+.iuc-pick::backdrop{background:rgba(0,0,0,.55)}
+.iuc-pk-top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px;padding-inline-start:20px;border-bottom:1px solid var(--line)}
+.iuc-pk-top h2{margin:0;font:800 var(--t4,1.2rem)/1.1 var(--display,var(--body))}
+.iuc-pk-x{min-width:44px;min-height:44px;border:1px solid var(--line);border-radius:999px;background:none;color:var(--ink);font:400 26px/1 var(--body);cursor:pointer}
+.iuc-pk-p{margin:10px 20px 0;color:var(--dim);font:var(--t1)/1.5 var(--body)}
+.iuc-pk-b{flex:1;overflow-y:auto;padding:10px 20px 16px;overscroll-behavior:contain}
+.iuc-pk-quick{display:flex;flex-wrap:wrap;gap:6px;padding-bottom:10px;border-bottom:1px solid var(--line)}
+.iuc-pk-g{border-bottom:1px solid var(--line)}
+.iuc-pk-g summary{display:flex;align-items:center;gap:8px;min-height:48px;cursor:pointer;color:var(--ink);font:700 var(--t2)/1.2 var(--body)}
+.iuc-pk-g summary i{width:12px;height:12px;border-radius:3px;flex:none}
+.iuc-pk-g summary small{color:var(--dim);font-weight:600}
+.iuc-pk-g summary em{margin-inline-start:auto;font:700 var(--t1)/1 var(--body);font-style:normal;color:var(--field)}
+.iuc-pk-cs{display:flex;flex-wrap:wrap;gap:6px;padding:0 0 12px}
+.iuc-pick .iuc-chip{white-space:normal;text-align:start;line-height:1.25;padding-block:6px}
+.iuc-chip b.num{font-weight:800;color:var(--dim)}
+.iuc-chip[aria-pressed="true"] b.num{color:var(--field)}
+.iuc-chip.is-zero{opacity:.45;cursor:default}
+.iuc-chip.iuc-all{border-style:dashed}
+.iuc-chip.iuc-q-rg{border-color:#7B0E0E}.iuc-chip.iuc-q-hid{border-color:#1F6F64}.iuc-chip.iuc-q-pa{border-color:var(--ir-goldh,#D9B45A)}
+.iuc-pk-more{margin:12px 0 0}
+.iuc-link{min-height:44px;padding:0;border:0;background:none;color:var(--field);font:700 var(--t2)/1.3 var(--body);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.iuc-pk-foot{display:flex;gap:10px;padding:12px 20px;padding-bottom:max(12px,env(safe-area-inset-bottom));border-top:1px solid var(--line);background:var(--sunk)}
+.iuc-pk-clr{min-height:48px;padding:0 18px;border-radius:999px;border:1px solid var(--line);background:none;color:var(--dim);font:650 var(--t2) var(--body);cursor:pointer}
+.iuc-pk-go{flex:1;min-height:48px;border-radius:999px;border:0;background:var(--field);color:var(--on-field);font:800 var(--t3)/1 var(--body);cursor:pointer}
+.iuc-ev,.iuc-also{margin:8px 0 0;font:var(--t1)/1.5 var(--body);color:var(--ink)}
+.iuc-ev q{quotes:"«" "»"}
+.iuc-hidnote{margin:8px 0 0;padding:8px 10px;border-radius:8px;background:color-mix(in srgb,#1F6F64 22%,transparent);border-inline-start:3px solid #2E9E8F;color:var(--ink);font:600 var(--t1)/1.45 var(--body)}
+@media(max-width:620px){
+  .iuc-pick,.iuc-pick[dir="rtl"]{inset:auto 0 0 0;width:100%;height:auto;max-height:88dvh;border-inline-start:0;border-top:1px solid #2c2a25;border-radius:18px 18px 0 0;box-shadow:0 -30px 60px -20px #000}
+}
+.ir-cmd-b .iuc-cb span{min-width:0;overflow:hidden;text-overflow:ellipsis}
+@media(max-width:420px){.ir-cmd-b .iuc-cb.on svg{display:none}}

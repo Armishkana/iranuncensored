@@ -41,7 +41,8 @@
   var $ = function (id) { return document.getElementById(id); };
   var TT = CFG.t && typeof CFG.t === 'object' ? CFG.t : null, FA = CFG.lang === 'fa';
   function T(s, v) { var r = TT && typeof TT[s] === 'string' ? TT[s] : s; if (v) Object.keys(v).forEach(function (k) { r = r.split('{' + k + '}').join(String(v[k])); }); return r; }
-  function N(n) { var s = String(n); return FA ? s.replace(/\d/g, function (d) { return '۰۱۲۳۴۵۶۷۸۹'.charAt(+d); }) : s; }
+  function N(n) { var s = String(n); return FA ? s.replace(/\d/g, function (d) { return '۰۱۲۳۴۵۶۷۸۹'.charAt(+d); }).replace(/,/g, '٬') : s; }          // a thousands comma in Persian too
+  function safeU(u) { u = String(u || '').trim(); return /^https?:\/\//i.test(u) ? u : '#'; }          // a feed's link: only http and https
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
   function unent(t) { return String(t || '').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'"); }          // X sends some text already escaped
   function bd(h) { return '<bdi>' + h + '</bdi>'; }
@@ -61,7 +62,7 @@
   /* ---------------------------------------------------------------- who told it: one test for the filter and the counts */
   function told(it, tok) {
     if (!it) return false;
-    if (tok === 'free') return groupOf(it) !== 'rg';
+    if (tok === 'free') return groupOf(it) !== 'rg' && !(R.regime && R.regime(it));          // the room's own regime test too: an item of a regime host with no camp yet is not free
     if (tok.indexOf('c:') === 0) {
       var k = tok.slice(2);
       return it.cb === k || (it.ca || []).indexOf(k) >= 0 || !!(it.sbn && it.sbn[k]);
@@ -203,7 +204,7 @@
       }
     });
     d.addEventListener('toggle', function (ev) { var g = ev.target.getAttribute && ev.target.getAttribute('data-g'); if (g) OPEN[g] = ev.target.open; }, true);
-    d.addEventListener('close', function () { var b = $('iuc-cb'); if (b) b.focus(); });
+    d.addEventListener('close', function () { var b = $('iuc-cb'); if (b) { try { b.focus({ preventScroll: true }); } catch (e) { b.focus(); } } });          // back to the door without scrolling the page to it
     return d;
   }
   function openPick() {
@@ -275,7 +276,7 @@
       var words = '<span class="iuc-x-t" dir="auto">' + esc(unent((R.fullText && R.fullText(p)) || p.t)) + '</span>';
       var meta = '<span class="iuc-x-m">' + esc(lk) + '</span>';
       return '<li>' + (rg ? '<div class="iuc-x-i">' + who + words + meta + '</div>'
-        : '<a class="iuc-x-i" href="' + esc(p.u) + '" target="_blank" rel="noopener noreferrer">' + who + words + meta + '</a>') + '</li>';
+        : '<a class="iuc-x-i" href="' + esc(safeU(p.u)) + '" target="_blank" rel="noopener noreferrer">' + who + words + meta + '</a>') + '</li>';
     }).join('') + '</ul></section>';
   }
   R.addSpot(function (it) {
@@ -301,12 +302,17 @@
     return h + xPosts(it);
   });
 
-  /* ---------------------------------------------------------------- 6. the Media tab */
+  /* ---------------------------------------------------------------- 6. the Media tab
+     Its numbers are counted with told(), the filter's own test (24 Oct 2026): they once counted only an item's own camp
+     (cb) while "Show its N" also finds the stories a camp is among the tellers of (ca, sbn, sb), so the button said 14
+     for the IRGC and showed 25, and a camp that only co-tells stories had no button at all. */
   function counts() {
     var n = {};
-    R.items().forEach(function (it) { if (it.cb) n[it.cb] = (n[it.cb] || 0) + 1; });
+    CAMPS.forEach(function (k) { n['c:' + k] = count('c:' + k); });
+    GROUPS.forEach(function (g) { n[g[0]] = count(g[0]); });
     return n;
   }
+  var TOPEN = {};          // which groups the reader opened or closed in the Media tab, kept through every redraw
   function tabEl() {
     var el = $('iuc-tab');
     if (!el) {
@@ -314,6 +320,8 @@
       var links = $('ir-links'); if (!links) return null;
       links.parentNode.insertBefore(el, links.nextSibling);
       el.addEventListener('click', function (ev) {
+        var s = ev.target.closest('details[data-g] > summary');
+        if (s) { TOPEN[s.parentNode.getAttribute('data-g')] = !s.parentNode.open; return; }          // the click comes before the toggle
         var b = ev.target.closest('[data-side]'); if (!b) return;
         var v = b.getAttribute('data-side');
         R.filter('side', R.filterOn('side') === v ? '' : v);
@@ -336,17 +344,17 @@
     var tchip = function (v, txt, cls) { return '<button type="button" class="iuc-chip' + (cls ? ' ' + cls : '') + '" data-side="' + esc(v) + '" aria-pressed="' + (on === v ? 'true' : 'false') + '">' + txt + '</button>'; };
     var html = '<div class="iuc-tab-h"><h3>' + esc(T('Who runs the media')) + '</h3><p>' + esc(T('Every outlet, channel and account in this room carries the camp behind it: who owns it, runs it or pays for it. Tap one to see only what it says.')) + '</p>' +
       '<div class="iuc-chips">' + tchip('free', esc(T('Without the regime\'s media')), 'iuc-free') + GROUPS.map(function (g) {
-        var c = 0; Object.keys(n).forEach(function (k) { if (camp(k)[1] === g[0]) c += n[k]; });
-        return c ? tchip(g[0], '<i style="background:' + esc(g[2]) + '"></i>' + esc(g[1]) + ' <b class="num">' + N(c) + '</b>') : '';
+        var c = n[g[0]] || 0;
+        return c || on === g[0] ? tchip(g[0], '<i style="background:' + esc(g[2]) + '"></i>' + esc(g[1]) + ' <b class="num">' + N(c) + '</b>') : '';
       }).join('') + '</div></div>';
     GROUPS.forEach(function (g) {
       var ks = CAMPS.filter(function (k) { return camp(k)[1] === g[0]; });
       if (!ks.length) return;
-      var gn = 0; ks.forEach(function (k) { gn += n[k] || 0; });
-      html += '<details class="iuc-grp"' + (g[0] === 'rg' ? ' open' : '') + '><summary><i style="background:' + esc(g[2]) + '"></i><b>' + esc(g[1]) + '</b> <small>' + esc(T('{n} in the room now', { n: N(gn) })) + '</small></summary><ul>' +
+      var gn = n[g[0]] || 0, op = TOPEN[g[0]] != null ? TOPEN[g[0]] : g[0] === 'rg';
+      html += '<details class="iuc-grp" data-g="' + esc(g[0]) + '"' + (op ? ' open' : '') + '><summary><i style="background:' + esc(g[2]) + '"></i><b>' + esc(g[1]) + '</b> <small>' + esc(T('{n} in the room now', { n: N(gn) })) + '</small></summary><ul>' +
         ks.map(function (k) {
-          var c = camp(k), os = (C.outlets || []).filter(function (o) { return o[1] === k; });
-          return '<li class="iuc-camp"><div class="iuc-camp-h">' + pill(k) + (n[k] ? ' <button type="button" class="iuc-chip" data-side="c:' + esc(k) + '" aria-pressed="' + (on === 'c:' + k ? 'true' : 'false') + '">' + esc(T('Show its {n}', { n: N(n[k]) })) + '</button>' : '') + '</div>' +
+          var c = camp(k), os = (C.outlets || []).filter(function (o) { return o[1] === k; }), ck = n['c:' + k] || 0;
+          return '<li class="iuc-camp"><div class="iuc-camp-h">' + pill(k) + (ck || on === 'c:' + k ? ' <button type="button" class="iuc-chip" data-side="c:' + esc(k) + '" aria-pressed="' + (on === 'c:' + k ? 'true' : 'false') + '">' + esc(T('Show its {n}', { n: N(ck) })) + '</button>' : '') + '</div>' +
             (c[3] ? '<p class="iuc-why">' + esc(c[3]) + '</p>' : '') +
             (PEOPLE.test(k) ? '<p class="iuc-why">' + esc(T('Labels on people come from their own posts. The room never lists private people.')) + '</p>' : '') +
             (os.length ? '<ul class="iuc-os">' + os.map(function (o) { return '<li><b>' + bd(esc(o[0])) + '</b> ' + esc(o[2]) + ' <em>(' + esc(sure(o[3])) + ')</em></li>'; }).join('') + '</ul>' : '') + '</li>';
@@ -357,7 +365,8 @@
   }
   R.addTab('media', { el: 'iuc-tab', draw: drawTab });
   R.onRender(function () {
-    var t = $('iuc-tab'); if (t && !t.hidden) drawTab();
+    // the Media tab is drawn by the room itself (drawLinkList calls its draw) on every render it is open: drawing it here
+    // as well drew it twice per render
     var d = $('iuc-pick'); if (d && d.open) drawPick();
     door(); doorCount(); hotChips(); decorate();
   });

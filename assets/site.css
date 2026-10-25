@@ -1013,6 +1013,8 @@ html[lang="fa"] .q-toplist li::before{content:counter(qt,persian)}
 .q-top-l{color:var(--dim);font-size:var(--fs-4)}
 .q-top-x{font-weight:800}
 .q-read .wrap>*{max-width:46rem}
+.q-give p{margin-top:var(--s2);line-height:1.5}.q-give .inl{display:inline-flex;align-items:center;min-height:44px;font-weight:700}
+.q-give-w{padding:12px 14px;border:1px solid var(--field);border-radius:var(--r,8px);background:var(--panel)}
 .q-fold{margin-top:var(--s6);max-width:46rem;border-block:1px solid var(--line)}
 .q-fold>summary{display:flex;align-items:center;justify-content:space-between;gap:var(--s3);min-height:56px;font-weight:700;font-size:1.0625rem;cursor:pointer;list-style:none}
 .q-fold>summary::-webkit-details-marker{display:none}

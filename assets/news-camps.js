@@ -122,6 +122,9 @@
       if (b.querySelector('.iuc-cov')) return;
       var it = sh[+b.getAttribute('data-i')];
       if (!it || it.src !== 'News' || !it.sb) return;
+      // a card bar from one or two outlets is that outlet's own badge again, drawn as if it were a spread (25 Oct 2026,
+      // the same floor as Liberty Politics' SPLIT_MIN in intel.js and intel_live.py LC_SOME); the spotlight still names them
+      var tot = 0; GROUPS.forEach(function (g) { tot += it.sb[g[0]] || 0; }); if (tot < 3) return;
       var host = b.querySelector('.ir-c-m'); if (!host) return;
       var s = document.createElement('span'); s.className = 'iuc-cov'; s.innerHTML = bar(it.sb, 'iuc-bar-s');
       host.parentNode.insertBefore(s, host.nextSibling);

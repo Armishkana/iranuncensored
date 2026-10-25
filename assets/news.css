@@ -48,7 +48,7 @@ button.ir-s-open{border:0;cursor:pointer;font:inherit}
 /* THE PERSIAN PAGE. The room's layout is mirrored by intel-rtl.css; the map, the timeline and the wire keep their own
    geometry (a longitude does not turn round), and their words run right to left. Persian letters never take letter
    spacing (it breaks the joins) or capitals. */
-html[lang="fa"] .ir,html[lang="fa"] .ir *,html[lang="fa"] .ir-spot,html[lang="fa"] .ir-spot *,html[lang="fa"] .ir-add,html[lang="fa"] .ir-add *{letter-spacing:normal!important}
+html[lang="fa"] .ir,html[lang="fa"] .ir *,html[lang="fa"] .ir-spot,html[lang="fa"] .ir-spot *,html[lang="fa"] .ir-add,html[lang="fa"] .ir-add *,html[lang="fa"] .ir-sh,html[lang="fa"] .ir-sh *,html[lang="fa"] .ir-lb *{letter-spacing:normal!important}          /* .ir-sh (25 Oct 2026): the show screen's labels were spaced out, so their Persian letters came apart */
 html[lang="fa"] .ir-brand,html[lang="fa"] .ir-h,html[lang="fa"] .ir-kick,html[lang="fa"] .ir-lens button b,html[lang="fa"] .ir-hud-n b,html[lang="fa"] .ir-row-l,html[lang="fa"] .ir-wire-l,html[lang="fa"] .ir-b-k{text-transform:none}
 html[lang="fa"] .ir h1,html[lang="fa"] .ir h2{line-height:1.35}
 html[lang="fa"] .ir-mapbox{direction:ltr}
@@ -56,6 +56,12 @@ html[lang="fa"] .ir-tip,html[lang="fa"] .ir-legend,html[lang="fa"] .ir-lt,html[l
 html[lang="fa"] .ir-hud-c{direction:rtl;font-family:var(--body)}
 html[lang="fa"] .ir-hist,html[lang="fa"] .ir-axis,html[lang="fa"] .ir-wire-v{direction:ltr}
 html[lang="fa"] .ir-wire .w-t,html[lang="fa"] .ir-wire .w-s{direction:rtl;unicode-bidi:plaintext}
+/* THE WIRE, RIGHT TO LEFT (24 Oct 2026). intel-rtl.css flips the strip's translateX(-50%) to +50%, which carried it off to
+   the right and left the wire EMPTY nearly all the time (measured on /fa/news/ at 360px: the first headline at 363px, 538px
+   two seconds later, the window 16 to 237px). For a right-to-left reader it runs from -50% back to 0: headlines come in from
+   the left, and the second copy of the set fills in as the first leaves, so the loop never shows a gap. */
+html[lang="fa"] .ir-wire-t{animation-name:irwire-rtl}
+@keyframes irwire-rtl{from{transform:translateX(-50%)}to{transform:translateX(0)}}
 html[lang="fa"] .ir-c-t,html[lang="fa"] .ir-b-tt,html[lang="fa"] .ir-lt-t,html[lang="fa"] #ir-spot-t,html[lang="fa"] .ir-post-t{unicode-bidi:plaintext}
 html[lang="fa"] .ir-ask input{direction:rtl}
 html[lang="fa"] .ir-ask input::placeholder{direction:rtl}

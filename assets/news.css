@@ -163,3 +163,6 @@ a.iuc-x-i:hover{border-color:var(--field)}
 }
 .ir-cmd-b .iuc-cb span{min-width:0;overflow:hidden;text-overflow:ellipsis}
 @media(max-width:420px){.ir-cmd-b .iuc-cb.on svg{display:none}}
+
+/* the link to the terms beside every box that takes something (build/consent.py, 26 October 2026): a 40px tap target */
+.consent-note a{display:inline-flex;align-items:center;min-height:40px}

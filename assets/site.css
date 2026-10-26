@@ -1526,6 +1526,9 @@ html[lang="fa"] .hi-q{quotes:"\00AB" "\00BB"}
 /* In the bar the pill is a little tighter, and the bar itself may run to 80rem (the column stays 72rem): with the pill the bar measured 1,122px of links and mark in a 1,120px bar, so it ran over by 2px (20 Oct 2026, measured at 1280 and 1920). */
 @media(min-width:1240px){.top nav a.navgo{display:inline-flex;margin-inline-end:2px;padding:0 10px;gap:4px}.top .wrap{max-width:80rem}}
 
+/* the link to the terms beside every box that takes something (build/consent.py, 26 October 2026): a 40px tap target */
+.consent-note a{display:inline-flex;align-items:center;min-height:40px}
+
 /* The share panel (build/share.js): what opens when a reader taps Share. ONE FILE FOR BOTH SITES. Each site's
    render.py adds it to the end of its own site.css, so it is written with the names both stylesheets share
    (--panel --sunk --raise --bg --ink --dim --line --field --on-field --ga --on-grade --r --r2 --body --s1..--s5)

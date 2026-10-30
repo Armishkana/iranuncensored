@@ -232,7 +232,7 @@
     var pOn = pahl.every(function (x) { return on.indexOf(x) >= 0; });
     var h = '<div class="iuc-pk-quick">' + chip('free', esc(T('Without the regime\'s media')), count('free'), 'iuc-free') +
       bzChip('rg', T('Regime only'), 'iuc-q-rg') + bzChip('hid', T('What the regime hides'), 'iuc-q-hid') +
-      '<button type="button" class="iuc-chip iuc-q-pa' + (!pn && !pOn ? ' is-zero' : '') + '" data-tok="' + pahl.join('+') + '" aria-pressed="' + pOn + '"' + (!pn && !pOn ? ' disabled' : '') + '>' + esc(T('Everyone for Pahlavi')) + ' <b class="num">' + N(pn) + '</b></button></div>';
+      '<button type="button" class="iuc-chip iuc-q-pa' + (!pn && !pOn ? ' is-zero' : '') + '" data-tok="' + pahl.join('+') + '" aria-pressed="' + pOn + '"' + (!pn && !pOn ? ' disabled' : '') + '>' + esc(T('Everyone for the Prince')) + ' <b class="num">' + N(pn) + '</b></button></div>';
     GROUPS.forEach(function (g) {
       var ks = CAMPS.filter(function (k) { return camp(k)[1] === g[0]; });
       if (!ks.length) return;

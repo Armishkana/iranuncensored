@@ -94,8 +94,8 @@
     ['us', T('United States'), '#6E9BE8', ['US']],
     ['il', T('Israel'), '#7FD0EE', ['IL']],
     ['ally', T('US allies in NATO and Asia'), '#A9BCDD', ['UK', 'FR', 'NATO', 'DE', 'IT', 'ES', 'GR', 'AU', 'JP', 'KR', 'TW', 'PH']],
-    ['arab', T('Gulf Arab states, Egypt, Jordan and Turkey'), '#8CC79C', ['SA', 'AE', 'QA', 'EG', 'JO', 'TR', 'BH', 'KW', 'OM']],
-    ['ir', T('Iran and its network'), '#E4574B', ['IR', 'HZ', 'HT', 'IQM']],          // Iran Uncensored names the regime here, never the country
+    ['arab', T('Persian Gulf Arab states, Egypt, Jordan and Turkey'), '#8CC79C', ['SA', 'AE', 'QA', 'EG', 'JO', 'TR', 'BH', 'KW', 'OM']],
+    ['ir', T('The Islamic Republic and its proxies'), '#E4574B', ['IR', 'HZ', 'HT', 'IQM']],          // Iran Uncensored names the regime here, never the country
     ['ru', T('Russia'), '#E59A4E', ['RU']],
     ['cn', T('China'), '#E37FAE', ['CN']],
     ['kp', T('North Korea'), '#B892E6', ['KP']],
@@ -108,7 +108,7 @@
   // IR: Iran Uncensored always separates Iranians from the Islamic Republic, so a site the regime runs says so (its own key:
   // the table's "Iran" is the country)
   var OPN = { US: T('United States'), IL: T('Israel'), UK: T('United Kingdom'), FR: T('France'), NATO: T('NATO'), DE: T('Germany'), IT: T('Italy'), ES: T('Spain'), GR: T('Greece'), AU: T('Australia'), JP: T('Japan'), KR: T('South Korea'), TW: T('Taiwan'), PH: T('Philippines'),
-    SA: T('Saudi Arabia'), AE: T('United Arab Emirates'), QA: T('Qatar'), EG: T('Egypt'), JO: T('Jordan'), TR: T('Turkey'), BH: T('Bahrain'), KW: T('Kuwait'), OM: T('Oman'), IR: IU ? T('The Islamic Republic') : 'Iran', HZ: T('Hezbollah'), HT: T('The Houthis'), IQM: T('Iran-backed Iraqi militias'),
+    SA: T('Saudi Arabia'), AE: T('United Arab Emirates'), QA: T('Qatar'), EG: T('Egypt'), JO: T('Jordan'), TR: T('Turkey'), BH: T('Bahrain'), KW: T('Kuwait'), OM: T('Oman'), IR: T('The Islamic Republic'), HZ: T('Hezbollah'), HT: T('The Houthis'), IQM: T('Islamic Republic-backed Iraqi militias'),
     RU: T('Russia'), CN: T('China'), KP: T('North Korea'), IN: T('India'), PK: T('Pakistan') };
   function blocOf(a) { return BLOC_BY[BLOC_OF[a.o] || 'sa']; }
   function colOf(a) { return blocOf(a)[2]; }
@@ -202,7 +202,7 @@
     D = d;
     var thn = d.th || {}, thf = FA && d.th_fa && typeof d.th_fa === 'object' ? d.th_fa : {};
     ['gulf', 'levant', 'redsea', 'europe', 'pacific', 'southasia', 'americas'].forEach(function (k, i) {
-      TH[k] = thf[k] || thn[k] || [T('Iran war'), T('Israel, Gaza and Lebanon'), T('Houthis and the Red Sea'), T('Russia and Ukraine'), T('China, Taiwan and Korea'), T('India and Pakistan'), T('Venezuela and the Americas')][i];
+      TH[k] = thf[k] || thn[k] || [T('War with the Islamic Republic'), T('Israel, Gaza and Lebanon'), T('Houthis and the Red Sea'), T('Russia and Ukraine'), T('China, Taiwan and Korea'), T('India and Pakistan'), T('Venezuela and the Americas')][i];
     });
     AGE = fleetAge();
     d.assets.forEach(function (a) {
@@ -284,7 +284,7 @@
   }
   var NEAR_KM = 60;
   /* GROUPS (23 Oct 2026). Measured that day: of 442 items only 3 headlines named one site, because the war's news names
-     sites as a GROUP ("Iran threatens to attack US military bases", "plans to target Iranian nuclear sites"). Such a story
+     sites as a GROUP ("The Islamic Republic threatens to attack US military bases", "plans to target the Islamic Republic's nuclear sites"). Such a story
      is connected to the group, never counted on one site's mark (that would put the same gold count on thirty bases): the
      profile of each member lists it as "about US bases in the region", the Forces tab lists the group, and ?mil=g:<key>
      shows its stories. [key, name, pattern, context pattern or null, which sites are members] */
@@ -294,9 +294,9 @@
       function (a) { return a._t === 'site' && a.o === 'US' && ['gulf', 'levant', 'redsea'].indexOf(a.th) >= 0; }],
     ['usfleet', T('US warships near Iran'), /\b(aircraft carriers?|carrier strike groups?|warships?|destroyers?|naval blockade|blockade)\b/i, GULFCTX,
       function (a) { return a._t === 'ship' && ['gulf', 'redsea', 'levant'].indexOf(a.th) >= 0; }],
-    ['irnuke', T('Iran\'s nuclear sites'), /\bnuclear\s+(sites?|facilit\w+|program\w*|plants?)\b|\benrichment\b|\b(enriched\s+)?uranium\b/i, /\biran\w*\b|\btehran\b/i,
+    ['irnuke', T('The Islamic Republic\'s nuclear sites'), /\bnuclear\s+(sites?|facilit\w+|program\w*|plants?)\b|\benrichment\b|\b(enriched\s+)?uranium\b/i, /\biran\w*\b|\btehran\b/i,
       function (a) { return a.o === 'IR' && a.k === 'nuclear'; }],
-    ['irnavy', T('Iran\'s navy and IRGC Navy'), /\birgc[- ]?n(avy)?\b|\biranian navy\b|\birgc naval\b|\biran's navy\b|\bfast boats?\b/i, null,
+    ['irnavy', T('The Islamic Republic\'s navy and IRGC Navy'), /\birgc[- ]?n(avy)?\b|\biranian navy\b|\birgc naval\b|\biran's navy\b|\bfast boats?\b/i, null,
       function (a) { return a.o === 'IR' && a.k === 'naval'; }],
     ['iroil', T('Iran\'s oil and gas'), /\boil (exports?|terminals?|fields?|facilit\w+|tankers?)\b|\bshadow fleet\b|\btankers?\b|\brefiner\w+\b/i, /\biran\w*\b|\bkharg\b|\bhormuz\b/i,
       function (a) { return a.o === 'IR' && a.k === 'oil'; }],
@@ -304,7 +304,7 @@
       function (a) { return a.o === 'IL' && a.k === 'air'; }],
     ['hz', T('Hezbollah'), /\bhezbollah\b|\bhizbullah\b/i, null, function (a) { return a.o === 'HZ'; }],
     ['ht', T('The Houthis'), /\bhouthis?\b|\bansar ?allah\b/i, null, function (a) { return a.o === 'HT'; }],
-    ['iqm', T('Iran-backed Iraqi militias'), /\biraqi militias?\b|\bkata'?ib hezbollah\b|\bpopular mobili[sz]ation\b|\bislamic resistance in iraq\b/i, null, function (a) { return a.o === 'IQM'; }]
+    ['iqm', T('Islamic Republic-backed Iraqi militias'), /\biraqi militias?\b|\bkata'?ib hezbollah\b|\bpopular mobili[sz]ation\b|\bislamic resistance in iraq\b/i, null, function (a) { return a.o === 'IQM'; }]
   ];
   var GBY = {}, GNEWS = {}, GOF = {};          // GBY: key -> group; GNEWS: key -> stories; GOF: site id -> its group keys
   GROUPS.forEach(function (g) { GBY[g[0]] = g; });
@@ -582,7 +582,7 @@
         c.x = m.x + dx / d * need; c.y = m.y + dy / d * need; c.moved = true;
       });
       if (!inside(c.x, c.y)) return;
-      // circles that touch can box a site in (measured 23 Oct 2026: Al Udeid between Doha's and the Gulf's): step out
+      // circles that touch can box a site in (measured 23 Oct 2026: Al Udeid between Doha's and the Persian Gulf's): step out
       // from the middle of the circles it is in, along one line, until it is clear of every one
       var hit = ms.filter(function (m) { return Math.hypot(c.x0 - m.x, c.y0 - m.y) < m.r + 40; });
       var mx = 0, my = 0; hit.forEach(function (m) { mx += m.x; my += m.y; }); mx /= hit.length || 1; my /= hit.length || 1;
@@ -967,7 +967,7 @@
     // back from the spotlight: the card opens where the reader left it
     if (back && SCROLL[a.id]) { var d0 = dlg, s0 = SCROLL[a.id]; d0.scrollTop = s0[0]; var i0 = d0.querySelector('.irf-in'); if (i0) i0.scrollTop = s0[1]; }
   }
-  // the stories about a group this site belongs to (US bases in the region, Iran's nuclear sites ...): connected, not counted on its mark
+  // the stories about a group this site belongs to (US bases in the region, the Islamic Republic's nuclear sites ...): connected, not counted on its mark
   function groupSecs(a) {
     return groupsOf(a).filter(function (k) { return (GNEWS[k] || []).length; }).map(function (k) {
       var LL = GNEWS[k], g = GBY[k];

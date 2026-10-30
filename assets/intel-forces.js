@@ -16,7 +16,7 @@
    - CFG.sides: [[key, name in the page's language], ...]: the outlets' sides for HOW EACH SIDE FRAMED IT (Iran: free
      Persian media, the press in English, the regime's media) instead of Left, Centre and Right. "Your balance" is a US
      lean, so it is not kept or shown there.
-   - CFG.forcesWars: the conflicts picked when the address names none (Iran: the Iran war, the Houthis, Israel's fronts).
+   - CFG.forcesWars: the conflicts picked when the address names none (Iran Uncensored: the war with the Islamic Republic, the Houthis, Israel's fronts).
    - CFG.light: this layer loads nothing from another site (no picture; every outside thing is a link the reader taps), and
      regime media (window.IRoom.regime) is never a link.
    Liberty Politics hands no config, so T() and N() give back what they are handed and every line reads as before.
@@ -38,7 +38,7 @@
       betting markets say for its theatre. "Show its news" is a filter in the address (?mil=<site>), with a pill.
    4. The Forces tab beside Stories and Connections: the sites in the news now, the fleet, the markets, and every site
       by conflict, all following the conflicts picked.
-   6. CONFLICTS (23 Oct 2026): the chip on the map is the one door. Tick the Iran war, the Houthis, Ukraine ... one or
+   6. CONFLICTS (23 Oct 2026): the chip on the map is the one door. Tick the war with the Islamic Republic, the Houthis, Ukraine ... one or
       several (?war=gulf,redsea); the stories, the sites, the odds and the map follow. War pressure per conflict
       (DeltaSweep's Pulse, MEASURED from the feed) is shown in that picker.
    7. Every asset's own newest news (data/intel-forces-news.json, its own search, every headline names it) heads its
@@ -262,7 +262,7 @@
   function faRx(r) { if (!r) return null; try { return new RegExp(nozw(r), 'i'); } catch (e) { return null; } }
   /* A ship's theatre from where it is (24 Oct 2026). A ship in its home waters is in no conflict (''): USS Ronald Reagan in
      port at San Diego, Bremerton or Everett had fallen into "Russia and Ukraine", and Norfolk into "Venezuela". The Gulf
-     of Aden is the Houthis' sea (Red Sea theatre), not the Iran war's. */
+     of Aden is the Houthis' sea (Red Sea theatre), not the war with the Islamic Republic. */
   function thOfSea(ll) {
     var la = ll[0], lo = ll[1];
     if (lo > 30 && lo < 44 && la > 10 && la < 30) return 'redsea';
@@ -284,7 +284,7 @@
   }
   var NEAR_KM = 60;
   /* GROUPS (23 Oct 2026). Measured that day: of 442 items only 3 headlines named one site, because the war's news names
-     sites as a GROUP ("The Islamic Republic threatens to attack US military bases", "plans to target the Islamic Republic's nuclear sites"). Such a story
+     sites as a GROUP (headlines such as “Iran threatens to attack US military bases”, “plans to target Iranian nuclear sites”). Such a story
      is connected to the group, never counted on one site's mark (that would put the same gold count on thirty bases): the
      profile of each member lists it as "about US bases in the region", the Forces tab lists the group, and ?mil=g:<key>
      shows its stories. [key, name, pattern, context pattern or null, which sites are members] */

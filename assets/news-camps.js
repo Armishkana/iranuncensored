@@ -17,7 +17,7 @@
    1. WHO IS SPEAKING, a door on the room's bar beside Topic and Region. It opens a picker: Without the regime's media, the
       two blind spots, then every group (the Islamic Republic, the opposition, foreign-funded, independent, world press,
       people on X) with its count, each opening to its camps (IRGC, the Leader's office, Paydari, Ghalibaf's circle ...,
-      backs Pahlavi, against Pahlavi; world press by its left, centre or right lean). Tap one or several: they add up (OR).
+      backs Prince Reza Pahlavi, against him; world press by its left, centre or right lean). Tap one or several: they add up (OR).
       The choice is ?side= in the address (free | <group> | c:<camp>, comma between several), so a view can be shared.
       A camp finds what its outlets say AND every story they are among the tellers of (media-camps.json _rules).
    2. On every story card in the list: a thin bar of who told it, by group, like Ground News, read aloud by its label.
@@ -199,7 +199,7 @@
       if (b.hasAttribute('data-bz')) { var v = b.getAttribute('data-bz'); R.filter('bz', R.filterOn('bz') === v ? '' : v); return; }
       if (b.hasAttribute('data-tok')) {
         var tk = b.getAttribute('data-tok');
-        if (tk.indexOf('+') >= 0) {          // a shortcut that is several camps at once (all of the Pahlavi camp)
+        if (tk.indexOf('+') >= 0) {          // a shortcut that is several camps at once (all of Prince Reza Pahlavi's camp)
           var ts = tk.split('+'), all = ts.every(function (x) { return sideOn().indexOf(x) >= 0; });
           var cur = sideOn().filter(function (x) { return x !== 'free' && ts.indexOf(x) < 0; });
           R.filter('side', (all ? cur : cur.concat(ts)).join(','));

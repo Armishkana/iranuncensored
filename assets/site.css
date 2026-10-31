@@ -529,12 +529,24 @@ html[dir="rtl"] textarea[dir="auto"]:placeholder-shown,html[dir="rtl"] input[dir
 }
 .chips-gap{flex:none;inline-size:1px;margin:8px 4px;background:var(--line)}
 .talk-ctl .chips + .chips{margin-top:8px}
-.busy{margin:0 0 14px}
-.busy-h{font:800 var(--fs-2)/1.4 var(--body);color:var(--dim)}
-.busy-l{margin:8px 0 0;display:flex;flex-wrap:wrap;gap:8px}
-.busy-a{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 14px;border:1px solid var(--line);border-radius:999px;background:var(--panel);font-weight:600;text-decoration:none;max-width:100%}
-.busy-a span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.busy-a b{flex:none;color:var(--field)}
+/* All discussions, one card a discussion (community.js groupCard, 31 October 2026; the same as libertypolitics.com). */
+.dg{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;scroll-margin-top:180px}
+.dg-on{border-color:var(--field)}
+.dg-h{display:flex;flex-wrap:wrap;align-items:center;gap:0 12px}
+.dg-t{flex:1 1 12rem;min-width:0;display:inline-block;padding:10px 0;font:700 var(--fs-3, 1.15rem)/1.4 var(--body);color:var(--ink);text-decoration:none;overflow-wrap:anywhere}
+a.dg-t:hover{color:var(--field);text-decoration:underline}
+.dg-x{flex:none;min-height:44px;padding:0 16px;border:1px solid var(--line);border-radius:999px;background:transparent;color:var(--ink);font:700 var(--fs-2, .95rem)/1 var(--body);cursor:pointer}
+.dg-x:hover{border-color:var(--field)}
+.dg-m{flex:1 0 100%;margin:0;color:var(--dim);font-size:var(--fs-2, .9rem)}
+.dg-p{display:grid;gap:8px;inline-size:100%;margin-top:12px;padding:12px 14px;text-align:start;background:var(--bg);border:1px solid var(--line);border-radius:var(--r);color:var(--dim);font:inherit;line-height:1.6;cursor:pointer}
+.dg-p:hover{border-color:var(--field)}
+.dg-q{overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.dg-q b{color:var(--ink);font-weight:700}
+.dg-go{font-weight:700;color:var(--field)}
+.dg-l{margin-top:12px}
+.dg-l>.vote{background:var(--bg)}
+.dg-sum{margin:0 0 12px;color:var(--dim);font-weight:600}
+.dg-more{display:flex;justify-content:center;padding:4px 0}
 .votes{display:grid;gap:10px;margin:16px 0 0}
 .talk-list{max-width:48rem}
 .vote{background:var(--panel);border:1px solid transparent;border-radius:var(--r2);padding:var(--s4)}
@@ -1579,3 +1591,39 @@ html[lang="fa"] .hi-q{quotes:"\00AB" "\00BB"}
 @media(max-width:639px){.shr-apps{grid-template-columns:repeat(4,minmax(0,1fr))}}
 @media(min-width:640px){.shr .sheet-body{gap:var(--s4);padding-block-end:var(--s5)}}
 @media(prefers-reduced-motion:reduce){.shr-ic{transition:none}}
+
+/* THE PICTURE TO POST (build/shareimg.js, 30 October 2026). Its own sheet (.shot, the share panel's look), the row at
+   the top of the share panel (.shr-shot) when the page has a picture, and the "Make a picture" button a tool puts
+   beside its Share button (.shot-make). The picture keeps its place while it is being drawn: the box is the picture's
+   own shape from the first frame, so nothing jumps when it arrives. */
+.shot .sheet-body{gap:var(--s3)}
+.shot-fig{position:relative;margin:0 auto;inline-size:auto;block-size:clamp(220px,44vh,560px);aspect-ratio:1080/1350;max-inline-size:100%;background:var(--sunk);border-radius:var(--r2);overflow:hidden}
+.shot-fig.is-story{aspect-ratio:1080/1920}
+.shot-img{display:block;inline-size:100%;block-size:100%;object-fit:contain}
+.shot-fig.is-busy .shot-img,.shot-fig.is-bad .shot-img{visibility:hidden}
+.shot-wait{display:none;position:absolute;inset:0;place-items:center;padding:var(--s3);color:var(--dim);font-weight:600;text-align:center}
+.shot-fig.is-busy .shot-wait,.shot-fig.is-bad .shot-wait{display:grid}
+.shot-sizes{display:flex;gap:var(--s2);justify-content:center}
+.shot-size{min-block-size:44px;padding:0 var(--s4);background:none;border:1.5px solid var(--line);border-radius:999px;color:var(--ink);font:600 .95rem/1 var(--body);cursor:pointer}
+.shot-size[aria-pressed="true"]{border-color:var(--field);color:var(--field)}
+.shot-acts{display:flex;flex-wrap:wrap;gap:var(--s2)}
+.shot-acts .btn{flex:1 1 9rem;gap:8px;min-block-size:52px}
+.shot-i{display:grid;place-items:center;font-style:normal}
+.shot .shr-go{flex:none}
+.shot-tip{color:var(--dim);font-size:.92rem;line-height:1.45}
+.shot-say{font-weight:600;color:var(--field)}
+.shot-say:empty{display:none}
+.shr-shot{display:flex;align-items:center;gap:var(--s3);padding:var(--s2);background:var(--sunk);border-radius:var(--r2)}
+.shr-shot-pic{flex:none;inline-size:84px;aspect-ratio:1080/1350;padding:0;background:var(--raise);border:0;border-radius:var(--r);overflow:hidden;cursor:zoom-in}
+.shr-shot-pic img{display:block;inline-size:100%;block-size:100%;object-fit:cover}
+.shr-shot-t{display:grid;gap:var(--s2);min-inline-size:0;justify-items:start}
+.shr-shot-l{font-weight:700;line-height:1.35}
+.shr-shot-save{min-block-size:48px}
+/* on a phone the picture to post takes the place of the link's own picture, so the whole panel still fits */
+@media(max-width:639px),(max-height:719px){
+  .shr.shr-has-shot .shr-card .shr-pic{display:none}
+  .shr.shr-has-shot .shr-card .shr-meta{display:grid}
+  .shr.shr-has-shot .shr-card{background:var(--sunk)}
+}
+.shot-make{gap:8px}
+.shot-make svg{flex:none}

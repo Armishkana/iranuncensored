@@ -1542,6 +1542,27 @@ html[lang="fa"] .hi-q{quotes:"\00AB" "\00BB"}
 /* the link to the terms beside every box that takes something (build/consent.py, 26 October 2026): a 40px tap target */
 .consent-note a{display:inline-flex;align-items:center;min-height:40px}
 
+/* THE PHONE MENU (31 October 2026, the Liberty Politics change of the same day; Armin, with a picture of his phone: "the
+   "Join the Panel" button is taking up so much room, and it's really hard to maneuver the menu"). Measured on the live site:
+   at 360 and 390px the pill left the seven links a window where one of them was whole, in both languages. Now under 760px
+   the strip is the pill and one Menu button (render.py nav_menu) that opens all seven pages at once as tiles; from 760px the
+   links slide beside the pill as before and the button stays for the ones that do not fit, until the bar holds them all.
+   phone-test.html measures it. Still: no animation. */
+.subnav .nav-menu{position:static;flex:none;margin-inline-start:auto}
+.nav-menu>summary{display:inline-flex;align-items:center;gap:8px;min-height:40px;margin:5px 0;padding:0 16px;border:1px solid var(--line);border-radius:999px;color:var(--ink);font-weight:700;cursor:pointer;list-style:none;white-space:nowrap}
+.nav-menu>summary::-webkit-details-marker{display:none}
+.nav-menu[open]>summary{background:var(--ink);border-color:var(--ink);color:var(--sunk)}
+.nav-menu-l{position:absolute;inset-inline:8px;top:100%;z-index:30;display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:2px;padding:8px;background:var(--panel);border:1px solid var(--line);border-radius:var(--r2);box-shadow:0 18px 40px -12px rgba(0,0,0,.8);max-height:calc(100dvh - 140px);overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain}
+.nav-menu-l a{display:flex;align-items:center;min-height:52px;padding:0 14px;border:1px solid var(--line);border-radius:var(--r);background:rgba(242,241,230,.04);color:var(--ink);font-weight:700;text-decoration:none}
+.nav-menu-l a:last-child:nth-child(odd){grid-column:1/-1}
+.nav-menu-l a[aria-current="page"]{border-color:var(--field);background:rgba(217,180,90,.12)}
+.nav-menu-l a:hover{background:var(--raise)}
+.subnav{position:relative}
+@media(max-width:759px){.subnav{padding-inline:var(--gutter);gap:8px}.subnav .subnav-s{display:none}.subnav a.navgo{margin-inline-end:0;min-width:0;overflow:hidden;text-overflow:ellipsis}}
+@media(min-width:760px){.nav-menu>summary{border-color:transparent;padding:0 12px;color:var(--dim)}}
+/* At 1240 to 1299px the bar ran 6px past the screen with all seven links and the pill (measured 31 October 2026): tighter there. */
+@media(min-width:1240px) and (max-width:1299px){.top nav a:not(.navgo):not(.yt):not(.lang):not(.acct){padding-left:7px;padding-right:7px}}
+
 /* The share panel (build/share.js): what opens when a reader taps Share. ONE FILE FOR BOTH SITES. Each site's
    render.py adds it to the end of its own site.css, so it is written with the names both stylesheets share
    (--panel --sunk --raise --bg --ink --dim --line --field --on-field --ga --on-grade --r --r2 --body --s1..--s5)

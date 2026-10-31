@@ -308,4 +308,12 @@
     });
     paintFair();
   }
+  /* The phone Menu (31 October 2026, render.py nav_menu): a native <details>, so it opens with this file missing. Here it
+     only closes again, on a tap anywhere else and on Escape, the same as More on Liberty Politics. */
+  var menus = document.querySelectorAll('details.nav-menu');
+  if (menus.length) {
+    var shutMenus = function (but) { Array.prototype.forEach.call(menus, function (m) { if (m !== but && m.open) m.open = false; }); };
+    document.addEventListener('click', function (ev) { shutMenus(ev.target.closest ? ev.target.closest('details.nav-menu') : null); });
+    document.addEventListener('keydown', function (ev) { if (ev.key === 'Escape') shutMenus(null); });
+  }
 })();

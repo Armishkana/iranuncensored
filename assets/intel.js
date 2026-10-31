@@ -11,7 +11,7 @@
    16 October 2026 (Armin: "It needs to look like a CIA-like intelligence hub but without violating the theme and brand ...
    Significantly improve the map ... data point in different shapes and maybe colors based on what they are ... screen
    based on social media ... how many likes each one of these has ... sort and screen them based on how hot they are, how
-   viral they are, the time, location, topic"): the map is a globe (d3-geo, assets/intel-geo.js?v=ac9e2009a1) that also lays flat, with
+   viral they are, the time, location, topic"): the map is a globe (d3-geo, assets/intel-geo.js?v=5d2fae3d48) that also lays flat, with
    the real night side; a mark's SHAPE says what it is (video, post, article, document) and its COLOUR where it was posted
    (PF below); places with few items show every item, crowded ones a count with a ring split by platform. Platform, heat,
    viral and the hours of the last 24 are filters; viral, likes and views are orders. VIRAL is measured, never guessed:
@@ -792,9 +792,14 @@
   // a Blindspot item: its own story says so, or the topic it belongs to does (who covered it, above)
   function isBlind(it) { var o = spreadOf(it); return !!(o && o.bs); }
   function hotById(id) { return HOTS.filter(function (h) { return h.id === id; })[0] || null; }
+  // A FOUND ITEM LIVES INSIDE ITS STORY: an item intel_deep.py found for a story (_deep) is listed only while that story
+  // (or All hot) is picked. pass() asks this, and so does every add-on that counts items for a list (IRoom.canList): until
+  // 31 Oct 2026 the Forces layer counted found items too, so Al Udeid's one mention, a found item, gave it a "Show its
+  // news" that listed nothing (LP phone test).
+  function canList(it) { return !it._deep || !!(S.lens === 'live' && S.hot && S.hot !== 'blind' && (S.hot === 'all' ? HOTALL[it.id] : (hotById(S.hot) || { ids: {} }).ids[it.id])); }
   function pass(it, skip) {
     if (skip !== 'link' && LSET && !LSET[it.id]) return false;
-    if (it._deep && skip !== 'hot' && !(S.lens === 'live' && S.hot && S.hot !== 'blind' && (S.hot === 'all' ? HOTALL[it.id] : (hotById(S.hot) || { ids: {} }).ids[it.id]))) return false;          // a found item lives inside its story
+    if (skip !== 'hot' && !canList(it)) return false;
     if (S.who && whoKey(it) !== S.who) return false;          // one account's posts (WHO POSTED IT)
     if (skip !== 'hot' && S.hot && S.lens === 'live') {
       if (S.hot === 'all') { if (!HOTALL[it.id]) return false; }
@@ -1401,7 +1406,7 @@
   }
 
   /* ------------------------------------------------------------ the map: a globe that also lays flat
-     One canvas draws the Earth with d3-geo (assets/intel-geo.js?v=ac9e2009a1): the globe is orthographic, the flat map Natural Earth,
+     One canvas draws the Earth with d3-geo (assets/intel-geo.js?v=5d2fae3d48): the globe is orthographic, the flat map Natural Earth,
      and both come from the same view, V: the longitude and latitude at the middle and a zoom. One SVG over it carries the
      marks, so each stays a real button with a name. The night side is the real one, from where the sun is now. */
   var G = window.d3 && window.d3.geoOrthographic ? window.d3 : null;
@@ -3105,7 +3110,7 @@
   /* THE PLAYER (24 October 2026). Armin: "I just tried playing a video, and it played a few seconds and then it paused. The
      rest of it was playing in a glitchy way". Measured that day: every video played as ONE fixed mp4 (720p, up to 2.4
      Mbps), which cannot get lighter when the line slows, so a slower line stalls and then stutters. Now, in this order:
-     1. X's own stream ("hl", HLS: the stream X's own player plays, in many sizes), through hls.js (assets/hls.min.js?v=ac9e2009a1,
+     1. X's own stream ("hl", HLS: the stream X's own player plays, in many sizes), through hls.js (assets/hls.min.js?v=5d2fae3d48,
         loaded inside the frame only when a video is played; Safari on an iPhone plays the stream itself). It starts at
         the size the line can carry, moves between sizes as it plays and never asks for more than the player's size.
      2. Else, or when the stream fails or has not started in 12 seconds: the mp4, from where the stream got to. It starts
@@ -4149,7 +4154,7 @@
         // an add-on's marks can stand clear of them and never hide a count (23 Oct 2026, Armin: "The military stuff is
         // blocking the number in the middle of that circle")
         marks: function () { return pinData.map(function (m) { return { x: m.x, y: m.y, r: m.exp ? footR(m.m) + 3 : pinR(m.n) + 7 }; }); } },
-      items: function () { return items.slice(); }, place: function (k) { return P[k] ? { name: P[k][0], country: P[k][1], lat: P[k][2], lon: P[k][3] } : null }, keys: keysOf,
+      items: function () { return items.slice(); }, canList: canList, listKey: function () { return S.lens + "|" + S.hot; }, place: function (k) { return P[k] ? { name: P[k][0], country: P[k][1], lat: P[k][2], lon: P[k][3] } : null }, keys: keysOf,
       open: function (it) { var i = shown.indexOf(it); if (i < 0) return false; openSpot(i); return true; },
       // an add-on's own list in the spotlight, stepping through it, with "Back to <label>" calling back (24 Oct 2026, SPOTL)
       openList: function (list, i, o) {
@@ -4188,7 +4193,7 @@
       if (document.getElementById('ir-addon-' + i)) return;
       var as = document.createElement('script'); as.id = 'ir-addon-' + i; as.src = src; document.body.appendChild(as);
     });
-    if (!document.getElementById('ir-prep-js') && CFG.prep !== false) { var ps = document.createElement('script'); ps.id = 'ir-prep-js'; ps.src = root.getAttribute('data-prep') || '../assets/intel-prep.js?v=ac9e2009a1'; document.body.appendChild(ps); }
+    if (!document.getElementById('ir-prep-js') && CFG.prep !== false) { var ps = document.createElement('script'); ps.id = 'ir-prep-js'; ps.src = root.getAttribute('data-prep') || '../assets/intel-prep.js?v=5d2fae3d48'; document.body.appendChild(ps); }
     root.setAttribute('data-ready', '1');
     loadReaders();
     setupSuggest();

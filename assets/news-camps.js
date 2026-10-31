@@ -93,8 +93,10 @@
     }
     R.filter('side', ts.join(','));
   }
-  function count(tok) { var n = 0; R.items().forEach(function (it) { if (told(it, tok)) n++; }); return n; }
-  function countBz(v) { var n = 0; R.items().forEach(function (it) { if (it.bz === v) n++; }); return n; }
+  // a chip's count is what its list can show: a found item lives inside its story (IRoom.canList, the rule intel.js pass() uses)
+  function listed() { return R.canList ? R.items().filter(R.canList) : R.items(); }
+  function count(tok) { var n = 0; listed().forEach(function (it) { if (told(it, tok)) n++; }); return n; }
+  function countBz(v) { var n = 0; listed().forEach(function (it) { if (it.bz === v) n++; }); return n; }
 
   /* ---------------------------------------------------------------- 4. the mark on every card, 2. its coverage bar */
   R.addBadge(function (it) {
@@ -228,7 +230,7 @@
       return '<button type="button" class="iuc-chip ' + cls + (!n && !act ? ' is-zero' : '') + '" data-bz="' + v + '" aria-pressed="' + act + '"' + (!n && !act ? ' disabled' : '') + '>' + esc(label) + ' <b class="num">' + N(n) + '</b></button>';
     };
     var pahl = ['c:pahlavi', 'c:x_pahlavi'], pn = 0;
-    R.items().forEach(function (it) { if (told(it, pahl[0]) || told(it, pahl[1])) pn++; });
+    listed().forEach(function (it) { if (told(it, pahl[0]) || told(it, pahl[1])) pn++; });
     var pOn = pahl.every(function (x) { return on.indexOf(x) >= 0; });
     var h = '<div class="iuc-pk-quick">' + chip('free', esc(T('Without the regime\'s media')), count('free'), 'iuc-free') +
       bzChip('rg', T('Regime only'), 'iuc-q-rg') + bzChip('hid', T('What the regime hides'), 'iuc-q-hid') +

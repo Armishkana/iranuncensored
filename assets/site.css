@@ -11,6 +11,7 @@
      #F2F1E6, Sun gold #D9B45A, the ribbon's green and red). Every other grey here is a step between Ground and
      Paper (panel 5%, raise 9%, line 16%, dim 68% of the way), and sunk is Ground a third of the way to black. */
   --field:#D9B45A; --on-field:#14120B; --field-hi:#E8C97A; --field-lo:#8E7434;
+  --field-edge:#8E7434;      /* 31 Oct 2026: the shared Liberty Politics parts (room.py's backing bars, tools.css) paint with it; undefined here their gold drew as nothing */
   --bg:#12120E; --panel:#1D1D18; --sunk:#0C0C09; --raise:#262621;
   --ink:#F2F1E6; --dim:#AAAAA1; --line:#36362F;
   --green:#239F40; --white:#F2F1E6; --red:#DA0000;
@@ -136,14 +137,19 @@ textarea{min-height:120px;resize:vertical}
 .tools input{grid-column:1/-1}
 .tools select{min-height:48px;padding-inline:10px 8px;font-size:var(--fs-5);text-overflow:ellipsis}
 @media(min-width:760px){.tools{grid-template-columns:repeat(3,1fr)}}
-@media(min-width:1100px){.tools{grid-template-columns:1.5fr repeat(6,1fr)}.tools input{grid-column:auto}}
+/* 31 Oct 2026: seven columns of 143px cut the words of the filters ("Senate and ..."); four wide columns, the name box two of them, two rows */
+@media(min-width:1100px){.tools{grid-template-columns:repeat(4,minmax(0,1fr))}.tools input{grid-column:span 2}}
 
 /* sections */
 .sec{padding:var(--s6) 0}
 .sunk{background:var(--sunk)}
 .sec h2{margin-bottom:var(--s4)}
 .more{margin-top:var(--s4)}
-.more a,.how a{display:inline-flex;align-items:center;min-height:44px;font-weight:700;color:var(--field)}
+.more a{display:inline-flex;align-items:center;min-height:44px;font-weight:700;color:var(--field)}
+.how a{font-weight:700;color:var(--field)}
+/* 31 Oct 2026: a link inside a sentence stays inline, so its line is as tall as the others; its padding (which never
+   moves a line) makes the tap about 44px. A link that stands alone keeps its own 44px box (.more a, .alinks a, .btn). */
+.how a,.src a,.prose a:not(.btn),a.inl{display:inline;min-height:0;padding-block:max(11px,calc(22px - .59em))}
 .measures{display:grid;gap:var(--s3);counter-reset:m}
 @media(min-width:760px){.measures{grid-template-columns:1fr 1fr}}
 .measures li{background:var(--panel);border-radius:var(--r2);padding:var(--s4)}
@@ -220,14 +226,13 @@ html[lang="fa"] .big{font-family:var(--display);font-weight:900}
 .blurb{color:var(--dim);margin-top:8px}
 .clean{margin-top:14px}
 .askbox{margin-top:14px;padding:16px;background:var(--panel);border:1px solid var(--field-lo);border-radius:var(--r2);display:grid;gap:12px;justify-items:start}
-.acts,.acts-plain{display:grid;gap:14px;margin-top:18px}
-.act{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start}
+.recs,.acts-plain{display:grid;gap:14px;margin-top:18px}
+.rec{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start}
 .mk{display:inline-grid;place-items:center;min-inline-size:64px;padding:5px 8px;border-radius:3px;font-size:var(--fs-1);font-weight:800;line-height:1.2;text-align:center}
 .mk-ok{background:#173D28;color:#8FE8B4}.mk-no{background:#4A1712;color:#FFB0A6}.mk-un{background:var(--raise);color:var(--dim)}
 .what{line-height:1.45}
 .why{color:var(--dim);font-size:var(--fs-4);margin-top:4px}
 .src{font-size:var(--fs-3);color:var(--dim);margin-top:4px}
-.src a,.act a{display:inline-flex;align-items:center;min-height:40px}
 .key{display:inline-block;font-size:var(--fs-1);font-weight:700;padding:2px 6px;border:1px solid var(--field);color:var(--field);border-radius:3px;white-space:nowrap}
 blockquote{margin:var(--s2) 0 0;padding:var(--s3);border-radius:var(--r);background:var(--panel);font-size:var(--fs-5);font-family:"Public Sans","Segoe UI",sans-serif;line-height:1.5;text-align:left}
 .acts-plain li{padding-bottom:14px;border-bottom:1px solid var(--line)}
@@ -275,7 +280,7 @@ html[lang="fa"] .rules li::before{content:counter(r,persian)}
 .prose h2{margin-top:var(--s6)}
 .prose h2:first-child{margin-top:0}
 .prose p{margin-top:12px;max-width:65ch}
-.prose a{color:var(--field);font-weight:700;display:inline-flex;align-items:center;min-height:40px}
+.prose a{color:var(--field);font-weight:700}
 .says{display:grid;gap:12px;margin-top:14px}
 .discuss{margin-top:16px;display:flex;flex-wrap:wrap;gap:10px;align-items:center}
 .discuss .btn{min-height:44px;font-size:var(--fs-5)}
@@ -334,13 +339,14 @@ html[lang="fa"] .asteps h3{line-height:1.4}
 .asks{display:grid;gap:8px;margin-top:12px;counter-reset:q}
 .asks li{counter-increment:q;padding:10px 12px;border-radius:var(--r);background:var(--raise);font-weight:600}
 .alinks{margin-top:8px}
-.alinks a,a.inl{display:inline-flex;align-items:center;min-height:44px;color:var(--field);font-weight:700}
+.alinks a{display:inline-flex;align-items:center;min-height:44px}
+.alinks a,a.inl{color:var(--field);font-weight:700}
 .bfacts{display:grid;gap:18px;margin-top:8px}
 .bfacts li{padding:var(--s4);background:var(--panel);border-radius:var(--r2);line-height:1.6}
 .asteps .bfacts li{background:var(--bg)}
 html[lang="fa"] .bfacts li{line-height:1.9}
 .src{display:block;margin-top:6px;font-size:var(--fs-4);color:var(--dim)}
-.src a{display:inline-flex;align-items:center;min-height:40px;overflow-wrap:anywhere}
+.src a{overflow-wrap:anywhere}      /* inline, its tap height from padding: the shared rule under .how a (31 Oct 2026) */
 .asteps .bfacts{margin-top:14px}
 .who{display:grid;gap:10px;margin-top:16px}
 .who div{padding:var(--s4);background:var(--panel);border-radius:var(--r2)}
@@ -422,10 +428,15 @@ html.modes-on{scroll-padding-top:128px}
 .nudge-sec{padding:var(--s4) 0 0}
 .nudge{display:grid;gap:var(--s3);max-width:46rem;padding:var(--s4);background:var(--panel);border:1px solid var(--field-lo);border-radius:var(--r2);text-decoration:none;color:var(--ink)}
 .nudge:hover{border-color:var(--field)}
-.nudge-q{display:flex;align-items:flex-start;gap:8px;font-size:1.1rem;line-height:1.4}
-.nudge-q svg{flex:none;margin-top:3px;color:var(--field)}
+/* Right above the ON AIR band the prompt takes the full width of the page, so its right edge lines up with the band's
+   button, and it keeps a gap instead of sitting on the band's top line. The count chip sits on its own line under the
+   question, so it never squeezes the question to a word a line (31 October 2026, as on the Liberty Politics site). */
+.nudge-sec:has(+ .tband){padding-bottom:var(--s5)}
+.nudge-sec:has(+ .tband) .nudge,.nudge:has(+ .tband){max-width:none}
+.nudge-q{display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:8px;row-gap:6px;align-items:start;font-size:1.1rem;line-height:1.4}
+.nudge-q svg{margin-top:3px;color:var(--field)}
 .nudge-q b{font-weight:700}
-.nudge-n{flex:none;margin-inline-start:auto;padding:3px 9px;background:var(--raise);border-radius:999px;font-size:var(--fs-2);font-weight:700;color:var(--field);white-space:nowrap}
+.nudge-n{grid-column:2;justify-self:start;padding:3px 9px;background:var(--raise);border-radius:999px;font-size:var(--fs-2);font-weight:700;color:var(--field);white-space:nowrap}
 .nudge-n[hidden],.nudge-top[hidden]{display:none}
 .nudge-top{display:block;padding:8px 12px;background:var(--bg);border-radius:var(--r);color:var(--dim);font-size:var(--fs-5);line-height:1.5;overflow-wrap:anywhere;text-align:start}
 .nudge-top b{color:var(--ink);font-weight:600}
@@ -1240,6 +1251,7 @@ html[lang="fa"] .hero h1{font-size:clamp(1.6rem,7vw,3.6rem)}
   html[lang="fa"] .hero h1{font-size:clamp(1.55rem,6.8vw,3.6rem)}
   .modes .wrap{padding-block:4px}
   .top .wrap{min-height:56px}
+  .modes{top:57px}      /* 31 Oct 2026: the header is 57px here; at 61px the page showed through a 4px gap under it */
   .subnav a{min-height:42px}
 }
 @media(max-width:899px){.way{padding-block:6px;min-height:56px}}
@@ -1356,7 +1368,7 @@ html[lang="en"] .act-main .act-t b{font-size:2.5rem}
   html[lang="en"] .act-t b{font-size:1.75rem}
   html[lang="en"] .act-main .act-t b{font-size:2.4rem}
   html[lang="fa"] .act-t b{font-size:1.25rem}
-  .act-l{font-size:var(--fs-4)}
+  .act-l{font-size:var(--fs-4);min-block-size:4.2em}      /* three lines kept for every act's line, so the four names sit on one line (1 Nov 2026) */
 }
 
 /* the record, one calm door: a search and a state, nothing else */
@@ -1393,6 +1405,7 @@ html[dir="rtl"] .q-act-h.has-pic::after{background:linear-gradient(270deg,rgba(1
 /* a mission that ticks itself: the tick appears on its drawing once done (quests.js sets data-q-tick-on) */
 .q-ic{position:relative}
 .q-tick{position:absolute;inset-inline-end:-4px;bottom:-4px;inline-size:18px;block-size:18px;border-radius:50%;background:var(--panel);box-shadow:0 0 0 2px var(--line)}
+.q-tick:not([data-q-tick-on]){display:none}      /* 31 Oct 2026: empty, the ring sat on the drawing as a stray circle; it shows once done */
 .q-tick[data-q-tick-on]{background:var(--field);box-shadow:none}
 .q-tick[data-q-tick-on]::after{content:"";position:absolute;inset-inline-start:6px;top:3px;inline-size:4px;block-size:8px;border:solid var(--on-field);border-width:0 2px 2px 0;transform:rotate(45deg)}
 .q-auto{color:var(--dim)}
@@ -1409,7 +1422,9 @@ html[dir="rtl"] .q-act-h.has-pic::after{background:linear-gradient(270deg,rgba(1
 
 /* Bug sweep, 14 Oct 2026: the floating bubble covered the last lines of every page on a phone, and the
    Safety link was 34px wide. Room at the foot while the bubble is up, and every footer link a full tap. */
-body:has(#calls:not(.off)){padding-bottom:120px}
+/* 31 Oct 2026: the room is the footer's own, so it is the footer's colour (on the body it was a strip of another shade) */
+body:has(#calls:not(.off)):not(:has(footer)){padding-bottom:120px}
+body:has(#calls:not(.off)) footer{padding-bottom:136px}      /* the bottom bar's room, in the footer's colour; 216 made the phone front page 5470px (limit 5400) */
 footer li a{min-width:44px;justify-content:center}
 
 /* ---- THE VISUAL PASS (14 October 2026, his "significantly improve the way IranUncensored.com looks ... don't make any
@@ -1524,7 +1539,7 @@ html[lang="fa"] .hi-q{quotes:"\00AB" "\00BB"}
 .tband-on i{width:9px;height:9px;border-radius:50%;background:#C8102E;box-shadow:0 0 0 3px rgba(200,16,46,.25)}
 .tband-l{flex:1 1 18rem;margin:0;font-weight:600;font-size:1rem;line-height:1.5}
 @media(min-width:760px){.tband-l{font-size:1.125rem}}
-.tband-a{display:inline-flex;align-items:center;min-height:44px;padding:0 18px;border-radius:999px;border:1px solid var(--field);color:var(--field);font-weight:800;text-decoration:none}
+.tband-a{display:inline-flex;align-items:center;gap:.3em;min-height:44px;padding:0 18px;border-radius:999px;border:1px solid var(--field);color:var(--field);font-weight:800;text-decoration:none}
 .tband-a:hover,.tband-a:focus-visible{background:var(--field);color:var(--on-field);text-decoration:none}
 /* 20 October 2026: the band moved up the page (render.py place_band). Inside the Intel Room it sits between the map and the
    list, a box of that column; on a computer a row under both. */
@@ -1562,6 +1577,34 @@ html[lang="fa"] .hi-q{quotes:"\00AB" "\00BB"}
 @media(min-width:760px){.nav-menu>summary{border-color:transparent;padding:0 12px;color:var(--dim)}}
 /* At 1240 to 1299px the bar ran 6px past the screen with all seven links and the pill (measured 31 October 2026): tighter there. */
 @media(min-width:1240px) and (max-width:1299px){.top nav a:not(.navgo):not(.yt):not(.lang):not(.acct){padding-left:7px;padding-right:7px}}
+/* 1 November 2026: on a computer the menu (1,072px measured) left the name 10px from Join the panel at 1440 and ran 6px off
+   a 1240 screen. The name never shrinks; from 1240 to 1439 the menu's links are a touch smaller and closer (about 110px
+   saved, measured need 1,306px at 1280 before). */
+.top .mark{flex:none;margin-inline-end:14px}
+@media(min-width:1240px) and (max-width:1439px){
+  header.top nav{gap:2px}
+  header.top nav a:not(.navgo):not(.yt):not(.lang):not(.acct){padding-inline:8px !important;font-size:.875rem}
+}
+@media(min-width:1240px) and (max-width:1299px){header.top nav a:not(.navgo):not(.yt):not(.lang):not(.acct){padding-inline:5px !important}.top .mark{margin-inline-end:8px}}
+/* 31 October 2026, the same as Liberty Politics (look.css): a tool's How it works and Stream view doors (their look is
+   build/tour.js's, shared) are the height and the size of words of the 44px buttons they stand with. The band's arrow
+   keeps its space (gap on .tband-a: the space inside its span is dropped at the start of a flex item). */
+.lpt-doors .lpt-how,.lpt-doors .lps-go{min-height:44px;padding:0 16px 0 13px;font-size:.9375rem;font-weight:700}
+
+/* ---- 31 October 2026, visual defects from the audit of the live site ---- */
+/* Tools: the ranked list of ideas (and its grey bars while it loads) is as wide as the grid of tools under it, not a 48rem column */
+.tk-board .talk-list{max-width:none}
+/* Public events: the ready-made kits fill the row they are in, so two kits are never two thirds of a row and a blank third */
+@media(min-width:1000px){
+  .mb-kit-list:has(>li:only-child){grid-template-columns:minmax(0,1fr)}
+  .mb-kit-list:has(>li:nth-child(2):last-child),.mb-kit-list:has(>li:nth-child(4):last-child){grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+/* Regime Board: a row of chips that scrolls sideways fades at its end, so it reads as more to the side rather than cut off.
+   The fade is tied to the row's own scroll: it is there only when the row can scroll, and it goes as the row reaches its end. */
+@property --rg-fade{syntax:"<length>";inherits:false;initial-value:0px}
+@keyframes rg-fade{0%,88%{--rg-fade:36px}100%{--rg-fade:0px}}
+.rg-fil,.rg-camps,.rg-wars{-webkit-mask-image:linear-gradient(to right,#000 calc(100% - var(--rg-fade)),transparent);mask-image:linear-gradient(to right,#000 calc(100% - var(--rg-fade)),transparent);animation:rg-fade linear both;animation-timeline:scroll(self inline)}
+html[dir="rtl"] .rg-fil,html[dir="rtl"] .rg-camps,html[dir="rtl"] .rg-wars{-webkit-mask-image:linear-gradient(to left,#000 calc(100% - var(--rg-fade)),transparent);mask-image:linear-gradient(to left,#000 calc(100% - var(--rg-fade)),transparent)}
 
 /* The share panel (build/share.js): what opens when a reader taps Share. ONE FILE FOR BOTH SITES. Each site's
    render.py adds it to the end of its own site.css, so it is written with the names both stylesheets share

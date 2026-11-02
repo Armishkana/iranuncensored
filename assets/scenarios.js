@@ -82,15 +82,9 @@
     return P;
   }
   function marketParams() {
-    // The base estimates, moved where a betting market prices the same thing (a market tagged with a game number).
-    var P = avgOf([]);
-    (R.markets || []).forEach(function (m) {
-      if (!m.param || !PM[m.param] || !m.o || !m.o.length) return;
-      var y = m.o[0][1]; if (typeof y !== 'number') return;
-      var p = PM[m.param];
-      if (p.max <= 1 && p.min >= 0) P[m.param] = clamp(y, p.min, p.max);
-    });
-    return P;
+    // The base estimates, moved where a betting market prices the same thing as a game number; how is the model's own rule
+    // (marketKnobs, in the models block, so the backtests check it)
+    return Object.assign(avgOf([]), marketKnobs(MODELS[TID], R.markets || [], R.params || []));
   }
   var S = { room: [], lens: 'room', mine: null, lv: {}, date: null, speed: 1, tab: 'next' };
   function params() {
@@ -179,6 +173,33 @@
     return c;
   }
   function jit(r, a) { return 1 - a + 2 * a * r(); }
+  // THE MARKETS AS NUMBERS (2 November 2026; the fact audit of 1 November, Ukraine (b) 15 and the Taiwan markets row). A betting
+  // market moves a game number only where the model says how: M.mk[number] = { hz: the chance per step one unit of the number
+  // adds, by: { <market id>: 'YYYY-MM-DD' } for a market whose outcome is a plain Yes }. Each dated price p (an outcome named like
+  // "By Dec 31, 2026", or Yes by the date in by) becomes the steady chance per step that gives p by that date, -ln(1 - p) / steps
+  // counted from the day the price was read; the number is their average over hz, kept inside its range. Until then the last
+  // market tagged with a number wrote its first price straight in: a nuclear-deal price into Iran's ceasefire pressure, "Hormuz
+  // back to normal" (11.5%) into the chance it closes Hormuz (the wrong way round), and Ukraine's ceasefire markets, which price
+  // a ceasefire likelier than the base, pulled its number below the base. A market no model maps moves no number.
+  function marketKnobs(M, markets, params) {
+    var out = {}, mk = (M && M.mk) || {}, per = M && M.unit === 'week' ? 7 : 1;
+    (params || []).forEach(function (p) {
+      var rule = mk[p.id]; if (!rule) return;
+      var hs = [];
+      (markets || []).forEach(function (m) {
+        if (m.param !== p.id || !m.o) return;
+        var t0 = Date.parse(String(m.readUtc || m.at || '').slice(0, 10) + 'T00:00:00Z');      // the register says readUtc, the page's feed at if (!isFinite(t0)) return;
+        m.o.forEach(function (o) {
+          var y = o[1], lab = String(o[0]); if (typeof y !== 'number' || y <= 0 || y >= 1) return;
+          var t = /^yes$/i.test(lab) ? Date.parse(((rule.by || {})[m.id] || '') + 'T00:00:00Z') : /\d{4}/.test(lab) ? Date.parse(lab.replace(/^by\s+/i, '') + ' UTC') : NaN;
+          var steps = (t - t0) / 864e5 / per; if (!isFinite(steps) || steps < 1) return;
+          hs.push(-Math.log(1 - y) / steps);
+        });
+      });
+      if (hs.length) out[p.id] = clamp(hs.reduce(function (a, b) { return a + b; }, 0) / hs.length / rule.hz, p.min, p.max);
+    });
+    return out;
+  }
 
   // ---------------------------------------------------------------- the Islamic Republic vs the US and Israel (one step a day)
   MODELS.iran = {
@@ -349,7 +370,11 @@
     end: function (s, r) {
       var P = s.P, lv = s.lv, w = s.w;
       var gap = s.Pr - 0.85 * s.R;
-      if (r() < 0.0008 * (1 + 0.1 * Math.min(10, s.leaders)) * (s.R0 / Math.max(0.15, s.R))) return 'fall';
+      // the background chance of a collapse (a coup, a sudden rising) needs people in the street: squared share of the street a
+      // war with no call starts with (0.12). Until 2 November 2026 it grew with the bombing alone, and a campaign on the leaders
+      // or the repression organs with nobody out toppled the regime in 11% to 25% of runs; in 2026 it toppled nothing (audit (b) 2)
+      var st0 = Math.min(1, s.Pr / 0.12);
+      if (r() < 0.0008 * (1 + 0.1 * Math.min(10, s.leaders)) * (s.R0 / Math.max(0.15, s.R)) * st0 * st0) return 'fall';
       if (gap > 0 && r() < 0.15 * Math.pow(gap, 1.5) * (1 + 4 * s.split)) return 'fall';
       var L = lv.len === 'open' ? 0 : +lv.len || 7, h;
       if (L && !s.over) h = s.d < L ? 0.004 + P.cease * 0.01 : 0.35;
@@ -397,6 +422,7 @@
   var SECW = { kostiantynivka: 0.26, zaporizhzhia: 0.24, kupiansk: 0.14, lyman: 0.14, pokrovsk: 0.12, kharkiv: 0.08, kherson: 0.02 };
   MODELS.ukraine = {
     unit: 'week', max: 52,
+    mk: { cease: { hz: 0.012, by: { 'pm-ceasefire-dec': '2026-12-31' } } },      // the markets as numbers (marketKnobs): end() adds P.cease x 0.012 a week
     role: function (f) { return { patriot: 'patriot', iris_t_sys: 'sam', nasams: 'sam', f16: 'jets', mirage2000: 'jets', su24: 'su24', storm_shadow: 'storm', atacms: 'atacms', flamingo: 'missiles', neptune: 'missiles', fp1: 'drones' }[f.type] || null; },
     presets: [['all', tr('Everything Ukraine has'), ''], ['nodeep', tr('No long-range strikes'), function (f) { return /^(su24|storm_shadow|atacms|flamingo|neptune|fp1)$/.test(f.type); }], ['noad', tr('No Western air defence'), function (f) { return /^(patriot|iris_t_sys|nasams)$/.test(f.type); }]],
     targets: [
@@ -434,7 +460,7 @@
     how: [
       tr('One step a week. Russia takes ground at today’s pace, made bigger or smaller by every choice, and every choice is measured against today, so “as today” gives today’s pace (DeepState: about 93 km² a month net in 2026). Summer and November take the most ground, late winter the least.'),
       tr('Ukraine’s strength is its soldiers, its weapons and its power grid (which makes its drones). US and European money add weapons; a cut makes each Russian push go further.'),
-      tr('Russia’s strength is its recruits against its losses (about 35,000 to 40,000 recruits a month, close to its losses) and the money for sign-up bonuses. A mobilisation adds men after about ten weeks.'),
+      tr('Russia’s strength is its recruits against its losses (about 35,000 to 40,000 recruits a month, close to its losses) and the money for sign-up bonuses. Its losses grow with Ukraine’s drones and men: the stronger the defence, the more each km² costs. A mobilisation adds men after about ten weeks.'),
       tr('Each week Russia sends about 1,800 drones, 35 ballistic missiles and cruise missiles. Only Patriot stops ballistic missiles, and its PAC-3 rounds run out: about 12 a month arrive from the US (more with full aid; European-funded ones are assumed to start after three months). What gets through hits the grid or the cities, worse in winter, and repairs come back slowly.'),
       tr('Ukraine’s long-range strikes follow your target list: ports cut Russia’s oil money, refineries its fuel, air bases the glide bombs on the front, Shahed sites the drones. Without US intelligence they hit less.'),
       tr('Russia’s war money moves with oil revenue: export ports hit, refineries down and sanctions. On its own it wears down by only a few points a year.'),
@@ -471,7 +497,10 @@
       if (s.ini && s.men > 0.4) g -= s.ini / 4.33 * Math.min(1.3, uaF) * (lv.post === 'counter' ? 1.4 : 1) * jit(r, 0.5);
       s.gain += g;
       for (var k in SECW) s.sec[k] = (s.sec[k] || 0) + g * SECW[k] * jit(r, 0.3);
-      var lossW = P.ru_cas * 7 * pushF * jit(r, 0.15); s.cas += lossW;
+      // Russia's losses are its assault times what each assault costs, and the cost rises with Ukraine's drones and men (uaF, 1 as
+      // today): in 2025 about 415,000 casualties bought 4,327 km2 (about 100 a km2), in 2026 the same rate bought about 1,100 km2
+      // a year (about 350). Until 2 November 2026 losses moved with the push alone (the fact audit of 1 November, Ukraine (b) 10)
+      var lossW = P.ru_cas * 7 * pushF * Math.sqrt(uaF) * jit(r, 0.15); s.cas += lossW;
       var recW = P.ru_cas * 7 * econF * (lv.ru === 'mob' && d > 10 ? 1.25 : 1);
       s.pool = clamp(s.pool + (recW - lossW) / 700000 * 3, 0.5, 1.4);
       // the air war: drones, ballistic missiles, the grid
@@ -584,7 +613,7 @@
       var usDay = lv.us === 'now' ? 1 : lv.us === 'late' ? 14 : lv.us === 'maybe' ? Math.max(3, Math.round(P.us_days * 2 + 2)) : 999;
       if (lv.us === 'maybe' && r() >= P.us_in) usDay = 999;
       var jp = { fight: 1, bases: 0.5, out: 0 }[lv.jp];
-      if (lv.bases === 'yes' && lv.open === 'inv') jp = 1;
+      if (lv.bases === 'yes' && lv.open === 'inv' && lv.us !== 'out') jp = 1;      // the strike on US bases that brings Japan in (step) only comes when the US is in it
       var vis = lv.warn === 'visible';
       return { d: 0, P: P, lv: lv, c: c, w: w, usDay: usDay, usIn: false, jp: jp, vis: vis, twAir: 1, mis: P.pla_missiles * (1 - 0.15 * w.rf * (vis ? 1 : 0.5)), lift: 1 - 0.15 * w.ports * (vis ? 1 : 0.3),
         asm: c.asm ? (lv.jassm === 'no' ? 450 : P.us_asm) : 0, carriers: c.carrier ? (vis ? 2 : 1) : 0, cHit: 0, usAir: 0, ashore: 0, landed: 0, sunk: 0, port: 0, prog: 0, cities: 0,
@@ -636,7 +665,9 @@
         var dD = 0.015 * s.ashore * (1 + 0.01 * d) * jit(r, 0.3); s.defend = Math.max(0, s.defend - dD); s.kTW += dD * 300;
         if (s.ashore > D * will * 0.9) { s.prog += 0.045 * Math.min(2, s.ashore / Math.max(1, D * will)); var nc = Math.floor(s.prog); if (nc > s.cities) { s.cities = nc; emit({ t: 'ground', side: 'CN', to: pick(s.rv, function (p) { return p.o === 'TW' && (p.k === 'city' || p.k === 'capital'); }), w: [tr('Tainan and Kaohsiung fall.'), tr('Taichung falls.'), tr('Taipei falls.')][Math.min(2, nc - 1)], big: 1 }); } }
         s.will = clamp(s.will - (s.ashore > D * 0.8 ? 0.006 : 0.001) + (s.usIn ? 0.003 : 0), 0, 1);
-        if (s.usIn && d <= 16 && s.carriers > s.cHit && r() < 0.05 * (s.carriers - s.cHit) * (s.mis > 0 ? 1 : 0.5)) { s.cHit++; s.usLoss += 2500; emit({ t: 'missile', side: 'CN', from: pick(s.rv, ofTeam('red', ['missile'])), to: pick(s.rv, ofSide('US', ['naval'])), n: 30, stop: 24, res: 'hit', w: tr('A US carrier is hit.'), why: tr('DF-21D and DF-26 missiles hunt carriers inside about 2,000 km. CSIS lost two in every base run.'), big: 1 }); }
+        // a carrier in reach is hit about one day in eight (2 November 2026; was one in twenty, 0.9 hit a run against CSIS's two lost in every
+        // base run); 1,800 dead each puts the CSIS base case near CSIS's 3,200 US killed in three weeks
+        if (s.usIn && d <= 16 && s.carriers > s.cHit && r() < 0.12 * (s.carriers - s.cHit) * (s.mis > 0 ? 1 : 0.5)) { s.cHit++; s.usLoss += 1800; emit({ t: 'missile', side: 'CN', from: pick(s.rv, ofTeam('red', ['missile'])), to: pick(s.rv, ofSide('US', ['naval'])), n: 30, stop: 24, res: 'hit', w: tr('A US carrier is hit.'), why: tr('DF-21D and DF-26 missiles hunt carriers inside about 2,000 km. CSIS lost two in every base run.'), big: 1 }); }
         if (s.usIn) { s.usLoss += 30 * r(); if (r() < 0.2) s.usAir += Math.round(3 * r()); }
       } else if (s.plan === 'block') {
         var coal = P.energy_days * (lv.tw === 'stock' ? 1.5 : 1), lng = 11 * (lv.tw === 'stock' ? 1.5 : 1);

@@ -655,6 +655,14 @@
     var bankW = V.sorts.bank ? Math.min(1, R.peek(R.blank('bank')) / 200) : 0;
     var ev = EVID.test(p.raw), so = SOCIAL.test(p.raw), W = [0.6, 0.25, 0.15], best = null, aw = p.allq.split(' ').filter(Boolean);
     var wt = aw.map(function (w) { return R.qw ? R.qw(w, p.allq) : 1; }), wsum = wt.reduce(function (a, b) { return a + b; }, 0) || 1;
+    // A CLAIM IS ONE THING, WHICHEVER OF ITS WORDS WAS ASKED (2 Nov 2026, LP ask gate: "is israel starving gaza" was read as
+    // the famine claim and found its 69 items in Gaza, then said "Nothing here has all of" over them, because the yardstick
+    // asked each headline for the word typed, "starving", and a headline saying "famine" counted only as a word of the same
+    // meaning, 0.6, so every item on the claim fell under half). The word the reader used for the claim also counts by the
+    // claim's own word (the bank tag's, which the item's tags and headline carry), whichever is more; every other word
+    // counts as before. relW is the one measure the readings, the whole-headline rule and the answer line all use.
+    var relW = function (it, w) { var r = R.rel(it, w); return p.claim && p.claim.said === w && p.claim.w !== w ? Math.max(r, R.rel(it, p.claim.w)) : r; };
+    var relQ = function (it) { if (!p.claim || p.claim.said === p.claim.w || aw.indexOf(p.claim.said) < 0) return R.rel(it, p.allq); var s = 0; aw.forEach(function (w, i) { s += wt[i] * relW(it, w); }); return s / wsum; };
     // how much of the question an item answers: each word by its weight inside the question (a place beside other words
     // weighs less, intel.js qWeights); a word a filter of this reading stands for ("Harvard" read as the campus place)
     // counts for every item the filter lets through: a place or region read from a name, Harvard or the Islamic Republic,
@@ -665,7 +673,7 @@
     var placeW = function (w) { return (V.places || []).some(function (pw) { return pw[0].test(' ' + w + ' '); }); };
     var relC = function (it, c) {
       var inQ = ' ' + (c.ns.q || '') + ' ', pf = c.ns.place || (c.ns.fx || []).length, facet = pf || (c.ns.tp || []).length || c.ns.kind, s0 = 0;
-      aw.forEach(function (w, i) { var r = R.rel(it, w); if (facet && inQ.indexOf(' ' + w + ' ') < 0) r = Math.max(r, pf && placeW(w) ? 0.6 : c.tpIdle ? 0 : pf ? 0.6 : 0.45); s0 += wt[i] * r; });
+      aw.forEach(function (w, i) { var r = relW(it, w); if (facet && inQ.indexOf(' ' + w + ' ') < 0) r = Math.max(r, pf && placeW(w) ? 0.6 : c.tpIdle ? 0 : pf ? 0.6 : 0.45); s0 += wt[i] * r; });
       return s0 / wsum;
     };
     cands.forEach(function (c) {
@@ -685,7 +693,7 @@
     // for four words or more, nearly every one by weight (a headline cut mid-word still finds itself). When a reading with
     // fewer filters (the words, then no facet at all) shows such an item and the chosen one does not, that reading wins;
     // the filters it read stay one tap away, below.
-    var says = function (it) { var r = R.rel(it, p.allq); return r >= 0.999 || (aw.length >= 4 && r >= 0.85); };
+    var says = function (it) { var r = relQ(it); return r >= 0.999 || (aw.length >= 4 && r >= 0.85); };
     var shown = {}, lvl = best ? best.words || 0 : -1;
     if (best) R.peek(best.ns, true).forEach(function (it) { shown[it.id] = 1; });
     var whole = null;
@@ -723,14 +731,15 @@
     // does not show, in its first ten, an item whose headline is exactly what was asked (three words or more, the question's
     // own lead-in such as "show me" before it allowed), the best reading that does wins.
     var nz = function (s) { return String(s || '').toLowerCase().replace(/[^\p{L}\p{N}]+/gu, ' ').trim(); }, rawN = nz(p.raw);
-    // NEAR ENOUGH COUNTS (2 Nov 2026): a question of six words or more is that headline when nearly every one of its words is
+    // NEAR ENOUGH COUNTS (2 Nov 2026): a question of eight words or more (a pasted headline; at six, "what happened in syria
+    // this week" was taken for a bank headline that says most of it) is that headline when nearly every one of its words is
     // in it (a typo, a word left out) and it covers at least half of the headline (a long post asked by its first sentences)
     var rawW = rawN.split(' '), rawSet = {};
     rawW.forEach(function (w) { rawSet[w] = 1; });
     var exact = function (it) {
       var t = nz(it && it.t), tw = t.split(' ');
       if (tw.length >= 3 && (rawN === t || rawN.slice(-t.length - 1) === ' ' + t)) return true;
-      if (rawW.length < 6) return false;
+      if (rawW.length < 8) return false;
       var ts = {}, hit = 0, back = 0;
       tw.forEach(function (w) { ts[w] = 1; });
       rawW.forEach(function (w) { if (ts[w]) hit++; });
@@ -751,7 +760,7 @@
     // (29 Oct 2026: a stricter line, "the top item lacks a word carrying 40% of the question", was tried and taken out: it
     // put the note on three answers a person judged right, "tunnels under hospitals" among them)
     var top0 = R.peek(best.ns, true)[0];
-    if (top0 && R.rel(top0, p.allq) < 0.5) { o.note = T('Nothing here has all of "{q}".', { q: p.allq.replace(/_/g, ' ') }); o.from = T('The closest:'); }
+    if (top0 && relQ(top0) < 0.5) { o.note = T('Nothing here has all of "{q}".', { q: p.allq.replace(/_/g, ' ') }); o.from = T('The closest:'); }
     return best.ns;
   }
   /* What a question becomes, without putting it on the screen: askIt shows it, and build/ask-test.html runs every question

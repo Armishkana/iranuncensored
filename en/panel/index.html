@@ -2,7 +2,7 @@
 <html lang="en" dir="ltr" data-root="../../" data-lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://apis.google.com https://platform.twitter.com https://cdn.syndication.twimg.com https://telegram.org; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; frame-src 'self' https:; worker-src 'self' blob:; connect-src 'self' https: wss: http://127.0.0.1:* ws://127.0.0.1:* http://localhost:* ws://localhost:*; object-src 'none'; base-uri 'self'; form-action 'self' https://docs.google.com">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://apis.google.com https://www.googletagmanager.com https://platform.twitter.com https://cdn.syndication.twimg.com https://telegram.org; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; frame-src 'self' https:; worker-src 'self' blob:; connect-src 'self' https: wss: http://127.0.0.1:* ws://127.0.0.1:* http://localhost:* ws://localhost:*; object-src 'none'; base-uri 'self'; form-action 'self' https://docs.google.com">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <script type="importmap" id="fb-sri">{"imports":{},"integrity":{"https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js":"sha384-RJIsoe0CFvPanuqLw3NPVreeQfBNBS6DotHoCTfrxasRhbZXK3oIK/kWJLO/hCaU","https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js":"sha384-AgtBGZZ/u/7uqnj2oxrSf5J+QuQXF4sEG1w/6PUzbyR3RIG7mkXR2z8Tpdeqay0t","https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js":"sha384-sHPqHH0juNEgAdc08GltxAO7hXh1m6l79EG3kVc04m9yh0n7gPu0bciliVhHtIlL"}}</script>
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -27,8 +27,9 @@
 <link rel="icon" href="../../assets/mark.png?v=6d768b6e" type="image/png">
 <link rel="apple-touch-icon" href="../../assets/mark-180.png?v=749a497a">
 <link rel="preload" href="../../assets/fonts/publicsans.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../../assets/site.css?v=7e1d563f80">
-
+<link rel="stylesheet" href="../../assets/site.css?v=4e48e54245">
+<script id="iu-ga" data-id="G-ZP2LNQ0EFG">if(/(^|\.)iranuncensored\.com$/.test(location.hostname)){window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments);};gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied'});gtag('consent','default',{analytics_storage:'denied',region:["IR","AT","BE","BG","HR","CY","CZ","DK","EE","FI","FR","DE","GR","HU","IE","IT","LV","LT","LU","MT","NL","PL","PT","RO","SK","SI","ES","SE","IS","LI","NO","GB","CH"]});var c={},r='';try{r=sessionStorage.getItem('iu-ref')||'';sessionStorage.removeItem('iu-ref')}catch(e){}if(r){c.page_referrer=r}gtag('js',new Date());gtag('config','G-ZP2LNQ0EFG',c);(function(s){s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-ZP2LNQ0EFG';document.head.appendChild(s)})(document.createElement('script'));}</script>
+<script id="iu-track">if(window.gtag){(function(){var O=[["youtube","^https://(?:www\\.|m\\.)?youtube\\.com/(?:@Liberty-Politics|@Iran-Uncensored)(?:[/?#]|$)"],["skool","^https://(?:www\\.)?skool\\.com/libertypolitics(?:[/?#]|$)"],["skool","^https://(?:www\\.)?libertypolitics\\.com/join/"],["newsletter","^https://(?!www\\.|help\\.|app\\.)[a-z0-9-]+\\.(?:kit\\.com|ck\\.page)(?:[/?#]|$)"],["discord","^https://discord\\.(?:gg|com)/"]],n=0;for(var i=0;i<O.length;i++)O[i][1]=new RegExp(O[i][1],"i");window.lpTrack=function(e,p){try{gtag("event",e,p||{})}catch(x){}};document.addEventListener("click",function(ev){var a=ev.target&&ev.target.closest?ev.target.closest("a[href]"):null;if(!a)return;var h=a.href||"",k="";for(var i=0;i<O.length;i++){if(O[i][1].test(h)){k=O[i][0];break}}if(!k)return;lpTrack("go_"+k,{link_url:h.split("?")[0].slice(0,100),link_text:(a.textContent||"").replace(/\s+/g," ").trim().slice(0,60)})},true);document.addEventListener("securitypolicyviolation",function(e){if(n++<3)lpTrack("csp_block",{directive:e.effectiveDirective||"",blocked:String(e.blockedURI||"").slice(0,90)})});})()}</script>
 </head>
 <body>
 <a class="vh" href="#main">Skip to the content</a>
@@ -44,14 +45,17 @@
 <h1>Come on the show. Say it live.</h1>
 <p class="lede">Two live shows have seats open. My sister, Liberty Politics, runs a live panel show on YouTube every day, in English. My own show is live on YouTube every day too, in Persian.</p>
 <p class="pv-safe" id="tj-safe"><b>Inside Iran?</b> Never show your face, never give your real name and never say where you are, not on air and not in this form. The English panel is on camera, so it is not for you. On the Persian show you can come on with your voice only, camera off, under a made-up name, and your real name is never published. Use an email that does not carry your name, and leave the time zone box empty. Your voice can still be recognised: if that is a risk for you or your family, watch the show live instead. Wherever you live, if showing your face isn't safe for you, pick the Persian show and come on by voice. Your safety comes first.</p>
-<figure class="pv-box"><a class="pv" data-yt="uNpitSNIBGo" data-start="7480" data-end="7522" href="https://www.youtube.com/watch?v=uNpitSNIBGo&amp;t=7480s" target="_blank" rel="noopener noreferrer" aria-label="Play the video: Armin invites you onto the panel"><img src="https://i.ytimg.com/vi/uNpitSNIBGo/hqdefault.jpg" alt="" width="480" height="360" decoding="async"><span class="pv-play"><svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor"/></svg></span><span class="pv-len num" dir="ltr">0:42</span></a><figcaption>Armin, live on the morning panel on 24 October 2026: the door is open, and he wants people with different opinions up there. <a href="https://www.youtube.com/watch?v=uNpitSNIBGo&amp;t=7480s" target="_blank" rel="noopener noreferrer">Watch it on YouTube</a></figcaption></figure>
+<figure class="pv-box"><a class="pv" data-yt="uNpitSNIBGo" data-start="7480" data-end="7522" href="https://www.youtube.com/watch?v=uNpitSNIBGo&amp;t=7480s" target="_blank" rel="noopener noreferrer" aria-label="Play the video: Armin invites you onto the panel"><img src="../../img/panel/invite.jpg" alt="" width="480" height="360" decoding="async"><span class="pv-play"><svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor"/></svg></span><span class="pv-len num" dir="ltr">0:42</span></a><figcaption>Armin, live on the morning panel on 24 October 2026: the door is open, and he wants people with different opinions up there. <a href="https://www.youtube.com/watch?v=uNpitSNIBGo&amp;t=7480s" target="_blank" rel="noopener noreferrer">Watch it on YouTube</a></figcaption></figure>
 <div class="row mt"><a class="btn btn-key" href="#join">Apply with a video</a></div>
 <p class="sub">Free to apply, no account needed, and the seats are unpaid. One form for both shows, here, in your language.</p>
 <p class="sub">English panels every day from 11am to 11:30pm, and the Persian show every day at 10am, U.S. Eastern time. <span data-et="11:00-23:30" data-tpl="On your clock: {a} to {b}." hidden></span></p>
 </div></section>
 <section class="sec"><div class="wrap narrow"><h2>See a panel</h2>
 <p class="sub">The discussions cover U.S. politics, Israel and Iran, the rest of the Middle East, and world affairs like Ukraine, Europe and China. Three to watch, each opening where the whole panel is talking.</p>
-<ul class="pv-ex"><li><a class="pv-ex-a" href="https://www.youtube.com/watch?v=fxPU8q-MZPA&amp;t=110s" target="_blank" rel="noopener noreferrer"><span class="pv-thumb"><img src="https://i.ytimg.com/vi/fxPU8q-MZPA/hqdefault.jpg" alt="" width="480" height="360" loading="lazy" decoding="async"><span class="pv-play sm"><svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor"/></svg></span></span><span class="pv-ex-t"><b>The panel on Abdul El-Sayed and the Muslim Brotherhood.</b><small>16 October 2026. Opens on YouTube</small></span></a></li><li><a class="pv-ex-a" href="https://www.youtube.com/watch?v=Jsdjye7NcYE&amp;t=3s" target="_blank" rel="noopener noreferrer"><span class="pv-thumb"><img src="https://i.ytimg.com/vi/Jsdjye7NcYE/hqdefault.jpg" alt="" width="480" height="360" loading="lazy" decoding="async"><span class="pv-play sm"><svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor"/></svg></span></span><span class="pv-ex-t"><b>The evening panel opens, then takes apart a collapse prediction with seven million views.</b><small>18 September 2026. Opens on YouTube</small></span></a></li><li><a class="pv-ex-a" href="https://www.youtube.com/watch?v=pzEbYAlkLlI&amp;t=2750s" target="_blank" rel="noopener noreferrer"><span class="pv-thumb"><img src="https://i.ytimg.com/vi/pzEbYAlkLlI/hqdefault.jpg" alt="" width="480" height="360" loading="lazy" decoding="async"><span class="pv-play sm"><svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor"/></svg></span></span><span class="pv-ex-t"><b>The U.S. halts strikes on the Islamic Republic, and the chat welcomes a new face on the team.</b><small>26 August 2026. Opens on YouTube</small></span></a></li></ul></div></section>
+<ul class="pv-ex"><li><a class="pv-ex-a" href="https://www.youtube.com/watch?v=OuD3yZEWIGk&amp;t=3166s" target="_blank" rel="noopener noreferrer"><span class="pv-thumb"><img src="../../img/panel/ex1.jpg" alt="" width="480" height="360" loading="lazy" decoding="async"><span class="pv-play sm"><svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor"/></svg></span></span><span class="pv-ex-t"><b>The panel, in Halloween costumes, reads the Super Chats and the room cracks up.</b><small>31 October 2026. Opens on YouTube</small></span></a></li><li><a class="pv-ex-a" href="https://www.youtube.com/watch?v=xjUmCl19W6w&amp;t=2688s" target="_blank" rel="noopener noreferrer"><span class="pv-thumb"><img src="../../img/panel/ex2.jpg" alt="" width="480" height="360" loading="lazy" decoding="async"><span class="pv-play sm"><svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor"/></svg></span></span><span class="pv-ex-t"><b>After Dark plays its brand new intro song for the first time, and the panel loses it.</b><small>30 October 2026. Opens on YouTube</small></span></a></li><li><a class="pv-ex-a" href="https://www.youtube.com/watch?v=yfud3ygWb0g&amp;t=3446s" target="_blank" rel="noopener noreferrer"><span class="pv-thumb"><img src="../../img/panel/ex3.jpg" alt="" width="480" height="360" loading="lazy" decoding="async"><span class="pv-play sm"><svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor"/></svg></span></span><span class="pv-ex-t"><b>Israel and the jihadists: a take the rest of the panel calls beautifully said.</b><small>29 October 2026. Opens on YouTube</small></span></a></li></ul></div></section>
+<section class="sec"><div class="wrap narrow"><h2>The English panels</h2>
+<p class="sub">Two run every day. Two more open once enough people want them.</p>
+<ul class="pv-pans"><li class="pv-pan"><img src="../../img/panel/morning.jpg" alt="The morning panel" width="480" height="360" loading="lazy" decoding="async"><div><b dir="ltr">Liberty High Noon</b><span class="pv-pan-p">The morning panel · every day</span><span class="num">11am to 2pm U.S. Eastern</span><small class="num tj-local" data-et="11:00-14:00" data-tpl="Your clock: {a} to {b}" hidden></small></div></li><li class="pv-pan"><img src="../../img/panel/evening.jpg" alt="The evening panel" width="480" height="360" loading="lazy" decoding="async"><div><b dir="ltr">Liberty After Dark</b><span class="pv-pan-p">The evening panel · every day</span><span class="num">8:30pm to 11:30pm U.S. Eastern</span><small class="num tj-local" data-et="20:30-23:30" data-tpl="Your clock: {a} to {b}" hidden></small></div></li><li class="pv-pan pv-soon"><div><b dir="ltr">Liberty First Light</b><span class="pv-pan-p">The early panel, before High Noon · opens once enough people want it</span><a class="pv-want" href="#join" data-pick-slot="early">I&#x27;d join this one</a></div></li><li class="pv-pan pv-soon"><div><b dir="ltr">Liberty Night Owl</b><span class="pv-pan-p">The late panel, after After Dark · opens once enough people want it</span><a class="pv-want" href="#join" data-pick-slot="late">I&#x27;d join this one</a></div></li></ul><script>document.addEventListener("click",function(ev){var a=ev.target.closest&&ev.target.closest("[data-pick-slot]");if(!a)return;var c=document.querySelector('input[name="tj-slot"][value="'+a.getAttribute("data-pick-slot")+'"]');if(c&&!c.checked){c.checked=true;c.dispatchEvent(new Event("change",{bubbles:true}))}});</script></div></section>
 <section class="sec sunk"><div class="wrap narrow"><h2>What you get</h2>
 <ul class="gets mt"><li>A seat on a live show, in front of a live audience.</li><li>Your own channel plugged on air.</li><li>As much or as little as suits you: one show now and then, or several a week.</li></ul>
 <h2 class="mt">What it asks of you</h2>
@@ -77,7 +81,7 @@
 <li>Copy the link and paste it in the box below.</li></ol></details>
 <input id="tj-video" type="url" inputmode="url" maxlength="300" placeholder="youtube.com/watch?v=..." required aria-describedby="tj-vhint" dir="ltr">
 <p class="tj-hint tj-later">No video yet? Fill in the rest now. What you type stays on this device, so you can come back with the link.</p>
-<fieldset class="tj-kinds" id="tj-slots"><legend class="tj-l">Which shows could you come on? Pick any.</legend><label class="tj-kind tj-slot"><input type="checkbox" name="tj-slot" value="morning"><span>Morning panel<small class="num">11am to 2pm ET</small><small class="num tj-local" data-et="11:00-14:00" data-tpl="{a} to {b} your time" hidden></small></span></label><label class="tj-kind tj-slot"><input type="checkbox" name="tj-slot" value="evening"><span>Evening panel<small class="num">8:30pm to 11:30pm ET</small><small class="num tj-local" data-et="20:30-23:30" data-tpl="{a} to {b} your time" hidden></small></span></label><label class="tj-kind tj-slot"><input type="checkbox" name="tj-slot" value="persian"><span>Persian show, in Persian<small class="num">10am to 10:45am ET</small><small class="num tj-local" data-et="10:00-10:45" data-tpl="{a} to {b} your time" hidden></small></span></label><label class="tj-kind tj-slot"><input type="checkbox" name="tj-slot" value="other"><span>Other times</span></label></fieldset>
+<fieldset class="tj-kinds" id="tj-slots"><legend class="tj-l">Which shows could you come on? Pick any.</legend><label class="tj-kind tj-slot"><input type="checkbox" name="tj-slot" value="morning"><span><b dir="ltr">Liberty High Noon</b><small class="num">11am to 2pm ET</small><small class="num tj-local" data-et="11:00-14:00" data-tpl="{a} to {b} your time" hidden></small></span></label><label class="tj-kind tj-slot"><input type="checkbox" name="tj-slot" value="evening"><span><b dir="ltr">Liberty After Dark</b><small class="num">8:30pm to 11:30pm ET</small><small class="num tj-local" data-et="20:30-23:30" data-tpl="{a} to {b} your time" hidden></small></span></label><label class="tj-kind tj-slot"><input type="checkbox" name="tj-slot" value="early"><span><b dir="ltr">Liberty First Light</b><small>Not running yet. Tick it to help it start</small></span></label><label class="tj-kind tj-slot"><input type="checkbox" name="tj-slot" value="late"><span><b dir="ltr">Liberty Night Owl</b><small>Not running yet. Tick it to help it start</small></span></label><label class="tj-kind tj-slot"><input type="checkbox" name="tj-slot" value="persian"><span>Persian show, in Persian<small class="num">10am to 10:45am ET</small><small class="num tj-local" data-et="10:00-10:45" data-tpl="{a} to {b} your time" hidden></small></span></label><label class="tj-kind tj-slot"><input type="checkbox" name="tj-slot" value="other"><span>Other times</span></label></fieldset>
 <fieldset class="tj-opt"><legend class="tj-l">Optional, and it helps Armin decide</legend>
 <label class="tj-l" for="tj-ch1">Your channel or page</label>
 <p class="tj-hint" id="tj-chhint">YouTube, X, TikTok, Substack, anywhere people find you. This is what gets plugged on air.</p>
@@ -113,7 +117,7 @@
 <style>
 .pv-box{margin:20px 0 0;max-width:46rem}
 .pv,.pv-f{position:relative;display:block;width:100%;aspect-ratio:16/9;border-radius:var(--r2,10px);overflow:hidden;background:var(--sunk,#0A0A0A);border:0}
-.pv img{width:100%;height:100%;object-fit:cover}
+.pv img{width:100%;height:100%;object-fit:contain}
 .pv-play{position:absolute;left:50%;top:50%;width:72px;height:72px;margin:-36px 0 0 -36px;display:grid;place-items:center;border-radius:50%;background:var(--field);color:var(--on-field);box-shadow:0 0 0 6px rgba(0,0,0,.35)}
 .pv-play.sm{width:48px;height:48px;margin:-24px 0 0 -24px}
 .pv:hover .pv-play,.pv:focus-visible .pv-play{filter:brightness(1.1)}
@@ -124,7 +128,7 @@
 @media(min-width:760px){.pv-ex{grid-template-columns:repeat(3,minmax(0,1fr))}}
 .pv-ex-a{display:flex;flex-direction:column;gap:10px;height:100%;color:var(--ink);text-decoration:none;background:var(--panel);border:1px solid var(--line);border-radius:var(--r2,10px);overflow:hidden;transition:border-color .15s}
 .pv-ex-a:hover,.pv-ex-a:focus-visible{border-color:var(--field)}
-.pv-thumb{position:relative;display:block;aspect-ratio:16/9;background:var(--sunk,#0A0A0A)}
+.pv-thumb{position:relative;display:block;aspect-ratio:4/3;background:var(--sunk,#0A0A0A)}
 .pv-thumb img{width:100%;height:100%;object-fit:cover}
 .pv-ex-t{display:flex;flex-direction:column;gap:4px;padding:0 14px 14px}
 .pv-ex-t b{font-weight:700;line-height:1.35}
@@ -162,6 +166,7 @@
 .tj-done h3{margin:0 0 6px}
 .tj-done .row{margin-top:12px}
 .tj-after{margin-top:28px}
+.tj-after a{display:inline-flex;align-items:center;min-height:40px}
 .tj input[readonly]{color:var(--dim);background:var(--panel)}
 .tj-later{margin-top:2px}
 .tj-opt{border:1px solid var(--line);border-radius:var(--r,8px);padding:4px 14px 16px;margin:16px 0 0;display:flex;flex-direction:column;gap:8px;min-width:0}
@@ -174,9 +179,27 @@
 .pv-panels li{padding:10px 14px;border:1px solid var(--line);border-radius:var(--r,8px);background:var(--panel);line-height:1.45}
 .pv-panels small{display:block;color:var(--dim);font-size:.875rem}
 .tj-get li+li{margin-top:6px}
+.pv-reel-box{margin:22px 0 0;max-width:34rem}
+.pv-reel{display:block;width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;border-radius:var(--r2,10px);background:var(--sunk,#0A0A0A)}
+.pv-proof{margin:10px 0 0;color:var(--dim);font-size:.9375rem;line-height:1.45;max-width:52rem}
+.pv-proof:empty{display:none}
+.pv-pans{list-style:none;margin:16px 0 0;padding:0;display:grid;gap:14px;max-width:52rem}
+@media(min-width:760px){.pv-pans{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.pv-pan{display:flex;flex-direction:column;background:var(--panel);border:1px solid var(--line);border-radius:var(--r2,10px);overflow:hidden;min-width:0}
+.pv-pan img{width:100%;aspect-ratio:4/3;height:auto;object-fit:cover;display:block}
+.pv-pan>div{display:flex;flex-direction:column;gap:3px;padding:12px 16px 14px;line-height:1.4}
+.pv-pan b{font-family:var(--display);font-weight:800;font-size:1.35rem;line-height:1.1;text-transform:uppercase;color:var(--field)}
+.pv-pan-p{color:var(--ink)}
+.pv-pan .num{color:var(--dim)}
+.pv-pan small{color:var(--dim);font-size:.875rem}
+.pv-soon{border-style:dashed;background:transparent}
+.pv-soon b{color:var(--ink)}
+.pv-want{display:inline-flex;align-items:center;align-self:flex-start;min-height:44px;margin-top:6px;padding:0 16px;border:1px solid var(--field);border-radius:999px;color:var(--field);font-weight:700;text-decoration:none}
+.pv-want:hover,.pv-want:focus-visible{background:var(--field);color:var(--on-field)}
+.tj-slot b{font-weight:700}
 #crew .mb-go{display:none}
 </style>
-<script type="module" src="../../assets/teamjoin.js?v=7e1d563f80"></script>
+<script type="module" src="../../assets/teamjoin.js?v=4e48e54245"></script>
 </main>
 <div class="calls" id="calls" data-on="{&quot;items&quot;:[{&quot;id&quot;:&quot;show&quot;,&quot;row&quot;:&quot;show&quot;,&quot;start&quot;:&quot;10:00&quot;,&quot;end&quot;:&quot;10:45&quot;,&quot;tz&quot;:&quot;America/New_York&quot;,&quot;days&quot;:[0,1,2,3,4,5,6],&quot;name&quot;:&quot;Persian live show on YouTube&quot;,&quot;short&quot;:&quot;Live show&quot;,&quot;now&quot;:&quot;Live now: the show&quot;},{&quot;id&quot;:&quot;second&quot;,&quot;row&quot;:&quot;show&quot;,&quot;start&quot;:&quot;12:00&quot;,&quot;end&quot;:&quot;14:30&quot;,&quot;tz&quot;:&quot;America/New_York&quot;,&quot;days&quot;:[0,2,3,4,5,6],&quot;name&quot;:&quot;Second live show on YouTube&quot;,&quot;short&quot;:&quot;Second show&quot;,&quot;now&quot;:&quot;Live now: the second show&quot;}]}" data-words="{&quot;in&quot;:&quot;{name} in {span}&quot;,&quot;soon&quot;:&quot;{name} is starting now&quot;,&quot;at0&quot;:&quot;{t} your time&quot;,&quot;at&quot;:&quot;at {t} your time&quot;,&quot;until&quot;:&quot;until {t} your time&quot;,&quot;h&quot;:&quot;{n} h&quot;,&quot;min&quot;:&quot;{n} min&quot;,&quot;join&quot;:&quot; &quot;,&quot;local&quot;:&quot; ({a} to {b} your time)&quot;,&quot;from&quot;:&quot; ({a} your time)&quot;,&quot;sep&quot;:&quot;, &quot;}"><div class="calls-rows"><a class="calls-a" data-on-row="show" href="https://www.youtube.com/@Iran-Uncensored/live?utm_source=iranuncensored.com&amp;utm_medium=website&amp;utm_campaign=site-link&amp;utm_content=en-panel" target="_blank" rel="noopener"><i aria-hidden="true"></i><span><b>Persian live shows on YouTube</b><small>Every day, from 10am U.S. Eastern</small></span></a></div><button class="calls-x" id="calls-x" type="button" aria-label="Hide this invitation">&times;</button></div>
 <footer><div class="wrap">
@@ -190,16 +213,16 @@
 <p class="fine">Scores come from recorded votes and signed bills in the United States Congress from 2021, counted through 30 September 2026, and from sourced public statements. Last updated 4 October 2026.</p>
 <p class="fine">The Iran Scorecard scores public records. This site does not endorse or oppose any candidate for office. It is not connected to any party, campaign or committee, or to the office of Prince Reza Pahlavi. I run no gathering, pay for none and decide nothing for one. Vote data: Voteview, the Clerk of the House, the Secretary of the Senate and Congress.gov.</p>
 </div></footer>
-<script src="../../assets/config.js?v=7e1d563f80" defer></script>
-<script src="../../assets/site.js?v=7e1d563f80" defer></script>
-<script src="../../assets/whatson.js?v=7e1d563f80" defer></script>
-<script src="../../assets/community-en.js?v=7e1d563f80" defer></script>
-<script src="../../assets/share.js?v=7e1d563f80" defer></script>
-<script src="../../assets/discussion.js?v=7e1d563f80" defer></script>
+<script src="../../assets/config.js?v=4e48e54245" defer></script>
+<script src="../../assets/site.js?v=4e48e54245" defer></script>
+<script src="../../assets/whatson.js?v=4e48e54245" defer></script>
+<script src="../../assets/community-en.js?v=4e48e54245" defer></script>
+<script src="../../assets/share.js?v=4e48e54245" defer></script>
+<script src="../../assets/discussion.js?v=4e48e54245" defer></script>
 <script type="application/json" id="lp-cfg">{"fb":{"apiKey":"AIzaSyCVAZmYlNuKeEJG7yGqkVZfxEtLKAVyLeY","authDomain":"iranuncensored.firebaseapp.com","projectId":"iranuncensored","appId":"1:337062817222:web:912951620da17c71a916c7"},"google":false,"sdk":"12.19.0","max":600}</script>
-<script type="module" src="../../assets/community.js?v=7e1d563f80"></script>
-<link rel="stylesheet" href="../../assets/members.css?v=7e1d563f80">
-<script type="module" src="../../assets/members.js?v=7e1d563f80" data-site="iu"></script>
-<script src="../../assets/ownerfb.js?v=7e1d563f80" data-board="iusite" defer></script>
+<script type="module" src="../../assets/community.js?v=4e48e54245"></script>
+<link rel="stylesheet" href="../../assets/members.css?v=4e48e54245">
+<script type="module" src="../../assets/members.js?v=4e48e54245" data-site="iu"></script>
+<script src="../../assets/ownerfb.js?v=4e48e54245" data-board="iusite" defer></script>
 </body>
 </html>

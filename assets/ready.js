@@ -14,7 +14,7 @@
   var num = function (n) { return FA ? String(n).replace(/[0-9]/g, function (d) { return '۰۱۲۳۴۵۶۷۸۹'.charAt(+d); }) : String(n); };
   var fmt = function (s, o) { return String(s).replace(/\{(\w)\}/g, function (m, k) { return k in o ? (typeof o[k] === 'number' ? num(o[k]) : String(o[k])) : m; }); };
   var esc = function (s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); };
-  var pctSign = FA ? '٪' : '%';
+  var pctSign = FA ? '٪' : '%', OF = FA ? ' از ' : ' of ';
 
   // ------------------------------------------------------------------ storage
   function probe(kind) { try { var s = window[kind], k = K + 'probe'; s.setItem(k, '1'); s.removeItem(k); return s; } catch (e) { return null; } }
@@ -136,6 +136,17 @@
         if (cnt) { cnt.textContent = n ? num(n) + (FA ? ' از ' : ' of ') + num(g.i.length) : ''; }
         card.classList.toggle('rd-lit', on);
       }
+    });
+    // the board on the hub: the five levels, the three counts, and each track's badges
+    $$('#rd-ladder li').forEach(function (li) { var i = +li.getAttribute('data-lv'); li.classList.toggle('rd-on', i <= lv); li.classList.toggle('rd-cur', i === lv); });
+    var lit = D.guides.filter(badge), sd = $('#rd-st-done'), sb = $('#rd-st-badges'), sx = $('#rd-st-best');
+    if (sd) { sd.textContent = num(P.n) + OF + num(P.t); }
+    if (sb) { sb.textContent = num(lit.length) + OF + num(D.guides.length); }
+    if (sx) { sx.textContent = typeof S.b === 'number' ? num(S.b) + OF + num(Math.min(10, (D.drills || []).length)) : W.st_none; }
+    $$('[data-trk]').forEach(function (el) {
+      var k = el.getAttribute('data-trk'), n = lit.filter(function (g) { return g.k === k; }).length;
+      el.textContent = fmt(W.trk_n, { n: n, t: +el.getAttribute('data-of') });
+      el.classList.toggle('rd-has', n > 0);
     });
     $$('input[type="checkbox"][data-id]').forEach(function (c) { c.checked = ticked(c.getAttribute('data-id')); });
     if (typeof S.L !== 'number') { S.L = lv; save(); }
@@ -273,7 +284,7 @@
     $$('[data-go]', dbox).forEach(function (b) {
       b.addEventListener('click', function () { startRound(b.getAttribute('data-go') === 'redo' ? keepMissed : shuffle(D.drills).slice(0, 10)); var f = $('.rd-opt', dbox); if (f) { f.focus(); } });
     });
-    bestLine();
+    bestLine(); paint(false);
     if (full && score === round.length) { celebrate(dbox); }
   }
   if (dbox && D.drills) {

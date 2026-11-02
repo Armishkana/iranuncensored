@@ -580,6 +580,32 @@ export default function register(K) {
       gx[i] = cx; gz[i] = cz; const a2 = r() * PI * 2, d2 = Math.sqrt(r()) * spread; ox[i] = Math.cos(a2) * d2; oz[i] = Math.sin(a2) * d2;
       hd[i] = r() * PI * 2; sp[i] = (o.speed || 1.35) * (0.8 + 0.4 * r()); ph[i] = r() * 50; sc[i] = 0.92 + r() * 0.16; idle[i] = r() * 4;
     }
+    // DRIVEN (2 November 2026, the Uprising Simulator's street movement, build/uprising-street.js): with o.driven the crowd
+    // never steers itself. The caller writes each figure's place (px, pz), heading, speed in metres a second (spd: 0 =
+    // standing, so it chants or strikes by its kind) and size (vs: 0 hides it); update() only swings the limbs and writes
+    // the matrices. Without o.driven nothing below changes.
+    const spd = new Float32Array(count), vs = new Float32Array(count).fill(1);
+    if (o.driven) {
+      const upd = function (dt, t) {
+        dt = Math.min(dt || 0, 0.1);
+        for (let i = 0; i < count; i++) {
+          const v = spd[i];
+          if (v > 0.15) { const ta = 0.55 * Math.min(1, v / 1.1); amp[i] += (ta - amp[i]) * Math.min(1, dt * 6); ph[i] += Math.min(v, 6) * dt * 4.4; up[i] += (0 - up[i]) * Math.min(1, dt * 5); }
+          else {
+            amp[i] += (0 - amp[i]) * Math.min(1, dt * 4);
+            let tu = 0; if (mode[i] === 1) tu = Math.sin(t * 0.8 + i * 1.7) > 0.15 ? 1 : 0; else if (mode[i] === 2) tu = Math.sin(t * 1.9 + i * 2.3) > 0.55 ? 1 : 0;
+            up[i] += (tu - up[i]) * Math.min(1, dt * 4); ph[i] += dt * (mode[i] === 1 ? 5.5 : 4);
+          }
+          const m = meshes[mi[i]], j = li[i], te = m.mesh.instanceMatrix.array, k16 = j * 16, s = sc[i] * vs[i], c = Math.cos(hd[i]) * s, sn = Math.sin(hd[i]) * s;
+          te[k16] = c; te[k16 + 1] = 0; te[k16 + 2] = -sn; te[k16 + 3] = 0; te[k16 + 4] = 0; te[k16 + 5] = s; te[k16 + 6] = 0; te[k16 + 7] = 0;
+          te[k16 + 8] = sn; te[k16 + 9] = 0; te[k16 + 10] = c; te[k16 + 11] = 0; te[k16 + 12] = px[i]; te[k16 + 13] = Math.abs(Math.sin(ph[i])) * 0.06 * amp[i] * vs[i]; te[k16 + 14] = pz[i]; te[k16 + 15] = 1;
+          const aa = m.ia.array; aa[j * 3] = ph[i]; aa[j * 3 + 1] = amp[i]; aa[j * 3 + 2] = up[i];
+        }
+        for (let q = 0; q < meshes.length; q++) { meshes[q].mesh.instanceMatrix.needsUpdate = true; meshes[q].ia.needsUpdate = true; }
+      };
+      upd(0, 0);
+      return { mesh: group, setTargets: () => { }, update: upd, px, pz, heading: hd, spd, vs, kind: kindOf, count, driven: true };
+    }
     let tgtSpread = spread;
     function setTargets(points, spr) {
       if (!points || !points.length) return; const n = points.length;

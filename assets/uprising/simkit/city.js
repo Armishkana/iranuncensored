@@ -586,9 +586,14 @@ export default function register(K) {
     // the matrices. Without o.driven nothing below changes.
     const spd = new Float32Array(count), vs = new Float32Array(count).fill(1);
     if (o.driven) {
+      // only the figures up to the last one shown are drawn: a hidden figure costs no triangles (the phone budget, 2 Nov 2026)
+      const top = new Int32Array(meshes.length), cap0 = meshes.map(m => m.mesh.count);
       const upd = function (dt, t) {
-        dt = Math.min(dt || 0, 0.1);
+        dt = Math.min(dt || 0, 0.1); top.fill(0);
+        for (let i = 0; i < count; i++) if (vs[i] > 0) { const q = mi[i]; if (li[i] + 1 > top[q]) top[q] = li[i] + 1; }
+        for (let q = 0; q < meshes.length; q++) meshes[q].mesh.count = Math.min(cap0[q], top[q]);
         for (let i = 0; i < count; i++) {
+          if (!(vs[i] > 0) && li[i] >= top[mi[i]]) continue;
           const v = spd[i];
           if (v > 0.15) { const ta = 0.55 * Math.min(1, v / 1.1); amp[i] += (ta - amp[i]) * Math.min(1, dt * 6); ph[i] += Math.min(v, 6) * dt * 4.4; up[i] += (0 - up[i]) * Math.min(1, dt * 5); }
           else {

@@ -2347,6 +2347,7 @@ async function run(opts) {
       if (t.shown > LABCAP() + 3) bad.push(t.shown + ' names on the board, over the cap of ' + (LABCAP() + 3));
       if (FXMAX > FXCAP) bad.push(FXMAX + ' effects at once, over the cap of ' + FXCAP);
       if (frameErr || pageErr) bad.push((frameErr + pageErr) + ' errors on the page');
+      { renderer.render(scene, camera); const ri = renderer.info.render; if (LOD2 && (ri.triangles > 200000 || ri.calls > 80)) bad.push('the phone frame is ' + ri.triangles + ' triangles and ' + ri.calls + ' draw calls (budget 200,000 and 80)'); }
       if (LOD2 && FPS < (opt.fpsFloor || 5)) bad.push('the phone level of detail runs at ' + Math.round(FPS) + ' frames a second (floor ' + (opt.fpsFloor || 5) + ')');
       stopPlay();
       return { bad, audit: a, fps: Math.round(FPS), lod: LOD2 ? 'phone' : LOWP ? 'low' : 'full' };

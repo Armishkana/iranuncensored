@@ -1606,6 +1606,34 @@ html[lang="fa"] .hi-q{quotes:"\00AB" "\00BB"}
 .rg-fil,.rg-camps,.rg-wars{-webkit-mask-image:linear-gradient(to right,#000 calc(100% - var(--rg-fade)),transparent);mask-image:linear-gradient(to right,#000 calc(100% - var(--rg-fade)),transparent);animation:rg-fade linear both;animation-timeline:scroll(self inline)}
 html[dir="rtl"] .rg-fil,html[dir="rtl"] .rg-camps,html[dir="rtl"] .rg-wars{-webkit-mask-image:linear-gradient(to left,#000 calc(100% - var(--rg-fade)),transparent);mask-image:linear-gradient(to left,#000 calc(100% - var(--rg-fade)),transparent)}
 
+/* ---- THE TOOLS IN EVERY MENU (1 November 2026, the parity audit; render.py tools_bar, tools_group, fill_tools_menu). Armin:
+   "I don't see them on the homepage of IranUncensored. That's a major failure!" The menus had typed their tools by hand and
+   missed the Uprising Simulator; now each lists the register's tools. Own prefix, iutm-.
+   In the bar (1240px up) Tools is a menu in the place the Tools link had, a native <details> (render.py tools_bar): it opens
+   with scripts off, and site.js closes it on a tap elsewhere and on Escape. The Regime Board left the bar for it, so the bar
+   still holds seven items and fits at 1240px. The list opens toward the reading direction, its start under the word. */
+.top nav .iutm{display:none;position:relative;flex:none}
+@media(min-width:1240px){.top nav .iutm{display:block}}
+.top nav .iutm>summary{display:inline-flex;align-items:center;gap:7px;min-height:44px;margin:0;padding:0 12px;border:0;border-radius:var(--r);background:none;color:var(--ink);font-weight:600;font-size:var(--fs-5);cursor:pointer;list-style:none;white-space:nowrap}
+.top nav .iutm>summary::-webkit-details-marker{display:none}
+.top nav .iutm>summary::after{content:"";width:6px;height:6px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg);margin-top:-4px}
+.top nav .iutm[open]>summary::after{transform:rotate(225deg);margin-top:3px}
+.top nav .iutm>summary:hover,.top nav .iutm[open]>summary{background:var(--raise);color:var(--ink)}
+.top nav .iutm>summary.on{color:var(--ink);box-shadow:inset 0 -2px 0 var(--field);border-radius:0}
+.iutm-l{position:absolute;inset-inline-start:0;top:100%;z-index:40;display:grid;gap:2px;min-width:15rem;margin-top:4px;padding:6px;background:var(--panel);border:1px solid var(--line);border-radius:var(--r2);box-shadow:0 18px 40px -12px rgba(0,0,0,.8)}
+.top nav .iutm-l a{display:flex;align-items:center;min-height:44px;padding:0 12px;border-radius:var(--r);color:var(--ink);font-weight:600;font-size:.9375rem;text-decoration:none;white-space:nowrap;box-shadow:none}
+.top nav .iutm-l a:hover{background:var(--raise)}
+.top nav .iutm-l a[aria-current="page"]{color:var(--field);box-shadow:none;border-radius:var(--r)}
+.top nav .iutm-l a.iutm-x{margin-top:4px;border-top:1px solid var(--line);border-radius:0 0 var(--r) var(--r);color:var(--field);font-weight:700}
+@media(min-width:1240px) and (max-width:1439px){.top nav .iutm>summary{padding-inline:8px;font-size:.875rem}}
+@media(min-width:1240px) and (max-width:1299px){.top nav .iutm>summary{padding-inline:5px}}
+/* In the phone Menu the tools are a group after the bar's links: a heading the width of the Menu, then the tools as tiles. */
+.nav-menu-l .iutm-h{grid-column:1/-1;margin:8px 4px 0;font-size:.75rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
+html[lang="fa"] .nav-menu-l .iutm-h{letter-spacing:0;font-size:.8125rem}
+/* The tools pair up as tiles: the heading is a child of the grid too, so the general rule (the last tile alone spans the row)
+   would count it. The bar's links are an even number, so the tools start on an even child: the last spans only when it is alone. */
+.nav-menu-l .iutm-h ~ a:last-child:nth-child(odd){grid-column:auto}.nav-menu-l .iutm-h ~ a:last-child:nth-child(even){grid-column:1/-1}
+
 /* The share panel (build/share.js): what opens when a reader taps Share. ONE FILE FOR BOTH SITES. Each site's
    render.py adds it to the end of its own site.css, so it is written with the names both stylesheets share
    (--panel --sunk --raise --bg --ink --dim --line --field --on-field --ga --on-grade --r --r2 --body --s1..--s5)
@@ -1691,3 +1719,32 @@ html[dir="rtl"] .rg-fil,html[dir="rtl"] .rg-camps,html[dir="rtl"] .rg-wars{-webk
 }
 .shot-make{gap:8px}
 .shot-make svg{flex:none}
+
+/* THE STREAM VIEW (build/stream.js; the tour card and the doors are styled by build/tour.js itself), added to the end of site.css by
+   render.py. Each tool's own stream layout is in its own CSS under html.lp-stream (midterms.css, coalition.css, regime.css).
+   Nothing here hides content and animates it back. */
+
+/* ---------------------------------------------------------------- the doors and the tour card
+   Their look moved into build/tour.js on 1 November 2026 (one home, injected as <style id="lpt-css">, so Iran Uncensored's
+   pages wear it too). Only what the stream view does to them is here. */
+.lpt-how[hidden],.lps-go[hidden]{display:none}
+
+/* ---------------------------------------------------------------- the stream view: the tool alone, filling the screen */
+/* one rem step up on the canvas (18px, not 16), so a tool's smallest words (.75rem) are 13.5px there and 20px on a 1920 x 1080 stream */
+html.lp-stream{font-size:18px}
+html.lp-stream,html.lp-stream body{overflow:hidden!important;height:100%;background:var(--bg)}
+html.lp-stream body{padding:0!important;margin:0!important}
+/* everything that is not on the way to the tool goes (dialogs and the tour stay: they are opened from the tool) */
+html.lp-stream .lps-path>:not(.lps-path):not(.lps-root):not(.lps-keep):not(dialog){display:none!important}
+html.lp-stream .lps-path{display:block!important;position:static!important;transform:none!important;filter:none!important;contain:none!important;content-visibility:visible!important;margin:0!important;padding:0!important;border:0!important;min-height:0!important}
+html.lp-stream #calls,html.lp-stream .top,html.lp-stream .modes,html.lp-stream footer{display:none!important}
+html.lp-stream .lps-root{position:fixed!important;top:0!important;left:0!important;right:auto!important;bottom:auto!important;width:100vw;height:100vh;max-width:none!important;margin:0!important;border:0!important;border-radius:0!important;box-shadow:none!important;z-index:40;overflow:hidden;background:var(--bg)}
+html.lp-stream .lps-root .lpt-doors,html.lp-stream .lps-root .acct-ask{display:none!important}
+/* the corner: the site's address, and the way out. Sized with the zoom, so it reads on the stream like the tool does. */
+.lps-bar{display:none}
+html.lp-stream .lps-bar{display:flex;position:fixed;top:calc(10px * var(--lps-z,1));right:calc(14px * var(--lps-z,1));z-index:60;align-items:center;gap:calc(10px * var(--lps-z,1))}
+.lps-mark{font:800 calc(14px * var(--lps-z,1))/1 var(--display);letter-spacing:.02em;color:var(--ink);white-space:nowrap}
+.lps-mark b{color:var(--field);font-weight:800}
+.lps-x{min-height:max(40px,calc(30px * var(--lps-z,1)));padding:0 calc(12px * var(--lps-z,1));border:1px solid #3a3936;border-radius:999px;background:var(--panel);color:var(--dim);font:700 max(13px,calc(13.5px * var(--lps-z,1)))/1 var(--body);cursor:pointer}
+.lps-x:hover{color:var(--ink);border-color:var(--dim)}
+

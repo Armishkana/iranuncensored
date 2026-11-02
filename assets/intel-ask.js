@@ -381,7 +381,7 @@
     var allw = (' ' + (V.stopFa ? tw.replace(V.stopFa, ' ') : tw) + ' ').replace(gl(SOFT), ' ').replace(STOP, ' ').replace(STOP, ' ').replace(/[^a-z0-9_\u0590-\u06ff' -]/g, ' ').replace(/\s+/g, ' ').trim().split(' ')
       .filter(function (w, i, a) { return (w.length > 2 || /^(uk|un|eu)$/.test(w) || (w.length === 2 && /[\u0600-\u06ff]/.test(w))) && !/^\d+$/.test(w) && a.indexOf(w) === i && (!claim || w !== claim.w); });
     var allq = (claim ? [claim.said || claim.w] : []).concat(allw.filter(function (w) { return !claim || w !== claim.said; })).slice(0, 6).join(' ');
-    return { ns: ns, did: did, left: left, intent: intent, raw: raw, claim: claim, toBank: toBank, actor: actorOf, allq: allq, timed: timed || !!bank, kindGuess: kindGuess, want: want, hotGuess: hotGuess, pfGuess: pfGuess, crGuess: crGuess };
+    return { ns: ns, did: did, left: left, intent: intent, raw: raw, claim: claim, toBank: toBank, actor: actorOf, allq: allq, allw: allw, timed: timed || !!bank, kindGuess: kindGuess, want: want, hotGuess: hotGuess, pfGuess: pfGuess, crGuess: crGuess };
   }
 
   /* ------------------------------------------------------------------ saying what a set of filters is, in one line */
@@ -626,8 +626,23 @@
     // facet at all, a platform or kind said outright included: «از طریق این نشانی در تلگرام» at the end of a pasted caption
     // says where it was sent, not where to look (29 Oct 2026, ask gate: that caption, an X post, found nothing on Telegram).
     // This reading never wins on its own score; only the rule below picks it, for an item that says all of it.
-    var C = cp(ns); C.tp = []; C.fx = []; C.place = ''; C.ext = {}; C.kind = ''; C.hot = ''; C.pf = []; if (p.crGuess) C.crmin = 0; C.q = p.allq; C.qm = 'best';
+    // an @handle inside a pasted post names someone the post mentions, not who posted it (2 Nov 2026, ask gate: a post that
+    // tags @PahlaviReza was read as "only from that account", and every reading of it found nothing)
+    var C = cp(ns); C.tp = []; C.fx = []; C.place = ''; C.ext = {}; C.kind = ''; C.hot = ''; C.pf = []; C.who = ''; if (p.crGuess) C.crmin = 0; C.q = p.allq; C.qm = 'best';
     if (p.allq.split(' ').length >= 4 && p.raw.split(/\s+/).length >= 8 && JSON.stringify(C) !== JSON.stringify(cands[cands.length - 1].ns)) cands.push({ ns: C, pref: 0, words: 2, last: true });
+    // A LONG QUESTION IS ALSO SEARCHED BY ITS RAREST WORDS (2 Nov 2026, ask gate: a Persian X post about Prince Reza Pahlavi,
+    // asked in its own words, was searched by its first five words, «هم متحد همصدا کنار رضا», which 25 other posts also
+    // carry, and every reading lost it). Every reading above searches the first five or six words, so a headline that opens
+    // with common words could never find itself. This reading searches the six words of the question that the fewest items
+    // carry (IRoom.qw, the room's own weights; the longer word first where two weigh the same), with no facet; like the one above it never wins on its own score, only by the
+    // rules below, for an item whose headline says (nearly) all of the question.
+    var aw0 = (p.allw || []).filter(function (w) { return !/^[\u0600-\u06ff]{1,2}$/.test(w); });
+    if (R.qw && p.raw.split(/\s+/).length >= 8 && aw0.length > 6) {
+      var rq = aw0.map(function (w, i) { return { w: w, i: i, k: R.qw(w, w) }; }).sort(function (x, y) { return (y.k - x.k) || (y.w.length - x.w.length) || (x.i - y.i); }).slice(0, 6)
+        .sort(function (x, y) { return x.i - y.i; }).map(function (x) { return x.w; }).join(' ');
+      var D = cp(C); D.q = rq;
+      if (rq !== C.q) cands.push({ ns: D, pref: 0, words: 2, last: true });
+    }
     var other = here === 'live' ? 'bank' : here === 'bank' && V.live ? 'live' : '';
     if (other && V.sorts[other] && !p.timed && !p.toBank && !p.intent && !(ns.hot && !p.hotGuess) && !ns.who && !(/^(likes|views|viral)$/.test(p.want || '') && (V.sorts[other] || []).indexOf(p.want) < 0) && !ns.lmin && !ns.vmin) {
       cands.slice().forEach(function (c) {
@@ -708,7 +723,20 @@
     // does not show, in its first ten, an item whose headline is exactly what was asked (three words or more, the question's
     // own lead-in such as "show me" before it allowed), the best reading that does wins.
     var nz = function (s) { return String(s || '').toLowerCase().replace(/[^\p{L}\p{N}]+/gu, ' ').trim(); }, rawN = nz(p.raw);
-    var exact = function (it) { var t = nz(it && it.t); return t.split(' ').length >= 3 && (rawN === t || rawN.slice(-t.length - 1) === ' ' + t); };
+    // NEAR ENOUGH COUNTS (2 Nov 2026): a question of six words or more is that headline when nearly every one of its words is
+    // in it (a typo, a word left out) and it covers at least half of the headline (a long post asked by its first sentences)
+    var rawW = rawN.split(' '), rawSet = {};
+    rawW.forEach(function (w) { rawSet[w] = 1; });
+    var exact = function (it) {
+      var t = nz(it && it.t), tw = t.split(' ');
+      if (tw.length >= 3 && (rawN === t || rawN.slice(-t.length - 1) === ' ' + t)) return true;
+      if (rawW.length < 6) return false;
+      var ts = {}, hit = 0, back = 0;
+      tw.forEach(function (w) { ts[w] = 1; });
+      rawW.forEach(function (w) { if (ts[w]) hit++; });
+      tw.forEach(function (w) { if (rawSet[w]) back++; });
+      return hit >= 0.85 * rawW.length && back >= 0.5 * tw.length;
+    };
     if (best && !R.peek(best.ns, true).slice(0, 10).some(exact)) {
       var ex = null;
       cands.forEach(function (c) { if (c.n && (!ex || c.score > ex.score) && R.peek(c.ns, true).slice(0, 10).some(exact)) ex = c; });

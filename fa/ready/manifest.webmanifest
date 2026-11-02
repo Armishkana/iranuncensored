@@ -1,0 +1,24 @@
+{
+ "name": "آماده باشیم",
+ "short_name": "آماده باشیم",
+ "start_url": "./",
+ "scope": "./",
+ "display": "standalone",
+ "background_color": "#12120E",
+ "theme_color": "#12120E",
+ "lang": "fa",
+ "dir": "rtl",
+ "icons": [
+  {
+   "src": "../../assets/ready/icon-192.png",
+   "sizes": "192x192",
+   "type": "image/png"
+  },
+  {
+   "src": "../../assets/ready/icon-512.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "any maskable"
+  }
+ ]
+}

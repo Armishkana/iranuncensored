@@ -395,3 +395,15 @@ html[dir="rtl"] .rd-srcs a::after{content:"\2196"}
   .rd-plan-card dd{margin:1mm 0 0;min-height:9mm;border-bottom:1pt solid #888;white-space:pre-wrap}
   html:not(.rd-print-kit):not(.rd-print-plan) .rd-exit,html:not(.rd-print-kit):not(.rd-print-plan) .rd-gbtns,html:not(.rd-print-kit):not(.rd-print-plan) .rd-tf{display:none}
 }
+/* the picture beside every instruction (3 November 2026, build/ready_art/). Drawn at once, never animated in. */
+.rd-pic svg{display:block;width:100%;height:auto;aspect-ratio:1;border-radius:14px;background:var(--panel);border:1px solid color-mix(in srgb,var(--line) 70%,transparent)}
+.rd-items li.rd-art{display:grid;grid-template-columns:96px minmax(0,1fr);column-gap:14px;align-items:start}
+.rd-items li.rd-art .rd-pic{width:96px}
+.rd-items li.rd-art .rd-art-t b{display:block}
+.rd-nowc-l li.rd-nowa{grid-template-columns:44px minmax(0,1fr) 84px}
+.rd-nowc-l li.rd-nowa .rd-pic{grid-column:3;grid-row:1 / span 2;width:84px;align-self:start}
+@media(min-width:700px){.rd-items li.rd-art{grid-template-columns:124px minmax(0,1fr);column-gap:18px}.rd-items li.rd-art .rd-pic{width:124px}
+.rd-nowc-l li.rd-nowa{grid-template-columns:44px minmax(0,1fr) 112px}.rd-nowc-l li.rd-nowa .rd-pic{width:112px}}
+.rd-nowc-l li.rd-nowa::before{grid-column:1}.rd-nowc-l li.rd-nowa>b,.rd-nowc-l li.rd-nowa>span:not(.rd-pic){grid-column:2}
+
+.rf{stroke-linecap:round;stroke-linejoin:round;fill:none;stroke:none}.rf .k{stroke:#F2F1E6}.rf .m{stroke:#8C8A7E}.rf .a{stroke:#D9B45A}.rf .r{stroke:#F0545A}.rf .g{stroke:#46CC82}.rf .b{stroke:#6FA8DC}.rf .o{stroke:#FF9A3D}.rf .w{stroke:#FFFFFF}.rf .p{stroke:#1D1D18}.rf .fk{fill:#F2F1E6}.rf .fm{fill:#8C8A7E}.rf .fs{fill:#3A3A33}.rf .fw{fill:#2A2A24}.rf .fa{fill:#D9B45A}.rf .fr{fill:#F0545A}.rf .fg{fill:#46CC82}.rf .fb{fill:#6FA8DC}.rf .fo{fill:#FF9A3D}.rf .fp{fill:#1D1D18}.rf .fh{fill:rgba(217,180,90,.28)}

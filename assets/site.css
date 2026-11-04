@@ -541,22 +541,36 @@ html[dir="rtl"] textarea[dir="auto"]:placeholder-shown,html[dir="rtl"] input[dir
 .chips-gap{flex:none;inline-size:1px;margin:8px 4px;background:var(--line)}
 .talk-ctl .chips + .chips{margin-top:8px}
 /* All discussions, one card a discussion (community.js groupCard, 31 October 2026; the same as libertypolitics.com). */
-.dg{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;scroll-margin-top:180px}
+.dg{position:relative;background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:12px 16px 14px;scroll-margin-top:180px}
 .dg-on{border-color:var(--field)}
+/* 4 November 2026 (Armin: "so confusing"): a closed card is ONE tap. Its button (.dg-p) covers the whole card, so the name,
+   the count and the words all open it; the name links to its page only once the card is open (community.js groupCard). */
+.dg:not(.dg-on):hover{border-color:var(--field)}
+.dg:not(.dg-on) .dg-t{padding:2px 0 4px}
+.dg:has(.dg-p:focus-visible){outline:2px solid var(--field);outline-offset:2px}
 .dg-h{display:flex;flex-wrap:wrap;align-items:center;gap:0 12px}
 .dg-t{flex:1 1 12rem;min-width:0;display:inline-block;padding:10px 0;font:700 var(--fs-3, 1.15rem)/1.4 var(--body);color:var(--ink);text-decoration:none;overflow-wrap:anywhere}
 a.dg-t:hover{color:var(--field);text-decoration:underline}
 .dg-x{flex:none;min-height:44px;padding:0 16px;border:1px solid var(--line);border-radius:999px;background:transparent;color:var(--ink);font:700 var(--fs-2, .95rem)/1 var(--body);cursor:pointer}
 .dg-x:hover{border-color:var(--field)}
 .dg-m{flex:1 0 100%;margin:0;color:var(--dim);font-size:var(--fs-2, .9rem)}
-.dg-p{display:grid;gap:8px;inline-size:100%;margin-top:12px;padding:12px 14px;text-align:start;background:var(--bg);border:1px solid var(--line);border-radius:var(--r);color:var(--dim);font:inherit;line-height:1.6;cursor:pointer}
-.dg-p:hover{border-color:var(--field)}
+.dg-p{display:grid;gap:8px;inline-size:100%;margin-top:10px;padding:10px 0 0;text-align:start;background:none;border:0;border-top:1px solid var(--line);border-radius:0;color:var(--dim);font:inherit;line-height:1.6;cursor:pointer}
+.dg-p::after{content:'';position:absolute;inset:0;border-radius:var(--r)}
+.dg-p:focus-visible{outline:none}
 .dg-q{overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 .dg-q b{color:var(--ink);font-weight:700}
-.dg-go{font-weight:700;color:var(--field)}
+.dg-go{justify-self:end;font-weight:700;color:var(--field)}
+.dg-go::after{content:' →'}
+[dir="rtl"] .dg-go::after{content:' ←'}
 .dg-l{margin-top:12px}
 .dg-l>.vote{background:var(--bg)}
-.dg-sum{margin:0 0 12px;color:var(--dim);font-weight:600}
+.dg-sum{margin:0 0 10px;color:var(--dim);font-weight:600}
+/* All discussions' one picker, Show, beside Newest and Busiest (it took the place of ten chips, 4 November 2026). */
+.talk-ctl .chips:has(.talk-show){flex-wrap:wrap;overflow-x:visible;align-items:center}
+.talk-show{display:inline-flex;align-items:center;gap:8px;margin-inline-start:auto;color:var(--dim);font:600 var(--fs-2, .92rem)/1 var(--body)}
+.talk-show select{min-height:44px;max-width:100%;padding:0 12px;font:600 var(--fs-2, .92rem)/1.2 var(--body);color:var(--ink);background:var(--panel);border:1px solid var(--line);border-radius:999px;cursor:pointer}
+.talk-show select:hover{border-color:var(--field)}
+.talk-show select option{color:var(--ink);background:var(--panel)}
 .dg-more{display:flex;justify-content:center;padding:4px 0}
 .votes{display:grid;gap:10px;margin:16px 0 0}
 .talk-list{max-width:48rem}
@@ -1633,6 +1647,51 @@ html[lang="fa"] .nav-menu-l .iutm-h{letter-spacing:0;font-size:.8125rem}
 /* The tools pair up as tiles: the heading is a child of the grid too, so the general rule (the last tile alone spans the row)
    would count it. The bar's links are an even number, so the tools start on an even child: the last spans only when it is alone. */
 .nav-menu-l .iutm-h ~ a:last-child:nth-child(odd){grid-column:auto}.nav-menu-l .iutm-h ~ a:last-child:nth-child(even){grid-column:1/-1}
+
+/* People first (4 November 2026): every comment says what it answers, the site's own answers sit folded under the comment
+   they answer, and the side of All discussions offers comments worth answering (community.js, row, groupCard, drawJump). */
+.said-to{display:flex;flex-direction:column;gap:2px;margin:8px 0 2px;padding:6px 10px;min-height:40px;justify-content:center;border-inline-start:3px solid var(--field);background:var(--raise);border-radius:6px;color:var(--dim);font-size:.85rem;line-height:1.35;text-decoration:none}
+.said-to:hover{color:var(--ink)}
+.said-to-w{font-weight:700;color:var(--ink)}
+.said-to q{quotes:none;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
+.said-to q::before{content:'\201C'}.said-to q::after{content:'\201D'}
+.said.fold{padding:0;background:transparent;border-style:dashed}
+.said.fold>:not(.said-fold){display:none}
+.said-fold{display:flex;align-items:center;gap:10px;inline-size:100%;min-height:44px;padding:8px 12px;border:0;background:transparent;color:var(--dim);font:600 .88rem/1.3 var(--body);text-align:start;cursor:pointer}
+.said-fold-w{flex:1 1 auto;min-width:0}
+.said-fold-w::before{content:'';display:inline-block;inline-size:8px;block-size:8px;margin-inline-end:8px;border-radius:50%;background:var(--field);vertical-align:middle}
+.said-fold-when{flex:none;font-weight:500}
+.said-fold-go{flex:none;color:var(--field);font-weight:700}
+.said-fold:hover .said-fold-go{text-decoration:underline}
+.said-lit{outline:2px solid var(--field);outline-offset:2px}
+.said .meta .tag.xp{color:var(--field);font-weight:700}
+.said .meta .tag.newbie{color:var(--ga);font-weight:700}
+.reply-here{display:grid;gap:4px;padding:8px 10px;background:var(--raise);border-radius:6px;font-size:.88rem;color:var(--dim)}
+.reply-here-w{margin:0}
+.reply-here-w b{color:var(--ink)}
+.reply-here q{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
+.dg-k{flex:1 0 100%;margin-top:0;font:700 .75rem/1.2 var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--dim)}
+.dg-wait{display:inline-block;margin-inline-start:4px;padding:2px 8px;border-radius:999px;background:var(--raise);color:var(--ink);font-weight:700;font-size:.82rem}
+.dg-c{display:grid;gap:2px}
+.dg-c+.dg-c{padding-top:8px;border-top:1px solid var(--line)}
+.dg-who{font-size:.86rem;color:var(--dim)}
+.dg-who b{color:var(--ink)}
+.dg-to{font-weight:600}
+.dg-c .dg-q{color:var(--ink);-webkit-line-clamp:2}
+.jump-best{display:grid;gap:4px;margin:0 0 14px;padding:12px;border:1px solid var(--field);border-radius:8px;color:var(--ink);text-decoration:none}
+.jump-best:hover{background:var(--raise)}
+.jump-best-k{font:700 .75rem/1.3 var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--field)}
+.jump-best-k::before{content:'';display:inline-block;inline-size:10px;block-size:10px;margin-inline-end:6px;background:var(--field);clip-path:polygon(50% 0,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);vertical-align:-1px}
+.jump-best-who{font-size:.82rem;color:var(--dim)}
+.jump-best-t{font-size:.95rem;line-height:1.45;overflow-wrap:anywhere}
+.jump-to{margin:2px 0 0;font-size:.82rem;color:var(--dim)}
+.jump-why{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 8px}
+.jump-why span{padding:2px 8px;border-radius:999px;background:var(--bg);color:var(--dim);font-size:.78rem;font-weight:700}
+.replies>.said.reply{position:relative}
+.said .meta>.who{flex-shrink:0;max-width:100%}
+html[lang="fa"] .said-to q::before{content:"\00AB"}html[lang="fa"] .said-to q::after{content:"\00BB"}
+.said .who>.said-sub{flex-shrink:0}
+.replies .said .meta>.who{flex-basis:100%}
 
 /* The share panel (build/share.js): what opens when a reader taps Share. ONE FILE FOR BOTH SITES. Each site's
    render.py adds it to the end of its own site.css, so it is written with the names both stylesheets share

@@ -1,5 +1,5 @@
 /* The Intel Room's globe: d3-array 3.2.4 and d3-geo 3.1.1, unchanged, from npm (cdn.jsdelivr.net/npm), so the page needs no
-   other site. build/intel.py copies this file to assets/intel-geo.js?v=2d7cfab472.
+   other site. build/intel.py copies this file to assets/intel-geo.js?v=d1e1a8a722.
 
 Copyright 2010-2023 Mike Bostock
 

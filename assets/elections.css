@@ -143,6 +143,7 @@ html[lang="fa"] .il-sub{text-transform:none;letter-spacing:0;font-size:1rem}
 .il-next li{display:grid;grid-template-columns:7.5rem minmax(0,1fr);gap:10px;font-size:var(--fs-4)}
 .il-src{margin-top:var(--s5);font-size:var(--fs-4)}
 /* Beat the Markets (build/markets_iu.py, build/iu-markets.js) */
+.mki .lpt-doors + .mk-how{margin-top:var(--s5)}      /* 7 Nov 2026: How it works sat directly on "How a call scores" */
 .mk-safe{margin:var(--s3) 0 0;padding:10px 12px;border-radius:var(--r);background:var(--panel);border:1px solid var(--line);font-size:var(--fs-4)}
 .mk-score{list-style:none;margin:var(--s3) 0 0;padding:0;display:grid;gap:6px}
 .mk-score li{display:flex;flex-wrap:wrap;gap:4px 10px;font-size:var(--fs-4);color:var(--dim)}
